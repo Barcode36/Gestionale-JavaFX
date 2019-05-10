@@ -9,6 +9,7 @@ public abstract class Gioiello
 	private boolean venduto;
 	private String genere; //maschile,femminile
 	protected String tipoGioiello;
+	protected String nomeGioiello;
 	
 	public Gioiello(String id, double prezzo, double peso, MATERIALE materiale, String genere)
 	{
@@ -32,8 +33,9 @@ public abstract class Gioiello
 			String genere = dati[5];
 			double raggio = Double.parseDouble(dati[6]);
 			boolean pietra = Boolean.parseBoolean(dati[7]);
+			String nomeGioiello = dati[8];
 			
-			return new Anello(id,prezzo,peso,m,genere,raggio,pietra);
+			return new Anello(id,prezzo,peso,m,genere,raggio,pietra,nomeGioiello);
 		}
 		else if(dati[0].equals("Bracciale"))
 		{
@@ -45,12 +47,15 @@ public abstract class Gioiello
 			double lunghezza = Double.parseDouble(dati[6]);
 			double spessore = Double.parseDouble(dati[7]);
 			double larghezza = Double.parseDouble(dati[8]);
+			String nomeGioiello = dati[9];
 			
-			return new Bracciale(id,prezzo,peso,m,genere,lunghezza,spessore,larghezza);
+			return new Bracciale(id,prezzo,peso,m,genere,lunghezza,spessore,larghezza,nomeGioiello);
 		}
 		
 		return null;
 	}
+	
+	public String getNomeGioiello() { return this.nomeGioiello; }
 	
 	public boolean getVenduto() {return this.venduto;}
 	public void setVenduto(boolean venduto) { this.venduto = venduto;}

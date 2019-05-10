@@ -1,6 +1,7 @@
 package grafica;
 
 import logica.*;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -16,7 +17,9 @@ public class Main extends Application
 		try 
 		{
 			Gioielleria gioielleria = new Gioielleria("Francesco");
-			BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("Interfaccia.fxml"));
+			gioielleria.caricaGioielli();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("InterfacciaRoot.fxml"));
+			BorderPane root = (BorderPane) loader.load();
 			Scene scene = new Scene(root,1920,1080);
 			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setMinHeight(800);
@@ -24,6 +27,10 @@ public class Main extends Application
 			primaryStage.setTitle(gioielleria.getNomeGioielleria());
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			//MainController controller = loader.getController();
+			GestioneInterfaccia gestioneInterfaccia = new GestioneInterfaccia();
+			gestioneInterfaccia.start(loader.getController(), gioielleria);
+			
 		} 
 		catch(Exception e) 
 		{

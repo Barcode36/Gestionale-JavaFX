@@ -127,4 +127,9 @@ public class Gioielleria
 			System.out.println(s);
 		}
 	}
+
+	public ArrayList<Gioiello> getGioielli() {
+		return gioielli;
+	}
+
 }
