@@ -2,7 +2,6 @@ package eventi;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +17,7 @@ import logica.*;
 public class MainController
 {
 	private Gioielleria gioielleria;
+	AggiungiGioielloController controller;
 	
 	@FXML
 	private TextArea textAreaGioielli;
@@ -33,8 +33,8 @@ public class MainController
 	
 	@FXML
     private Button nuovoGioielloButton;
-	 
-	public void setGioielli(Gioielleria gioielleria) 
+	
+	public void setGioielli(Gioielleria gioielleria)
 	{ 
 		this.gioielleria = gioielleria; 
 		for(Gioiello g : this.gioielleria.getGioielli())
@@ -42,6 +42,8 @@ public class MainController
 			listView.getItems().add(g);
 		}
 	}
+	
+	//public void setAggiungiGioielloController(AggiungiGioielloController controller) {this.controller = controller; }
 	
 	public void showInListView()
 	{	 
@@ -53,7 +55,7 @@ public class MainController
 				imageViewer1.setImage(new Image(new FileInputStream("immagine.jpg")));
 				imageViewer2.setImage(new Image(new FileInputStream("immagine.jpg")));
 			} 
-			catch (FileNotFoundException e) 
+			catch (FileNotFoundException e)
 			{
 				System.out.println("impossibile caricare l'immagine");
 				e.printStackTrace();
@@ -64,15 +66,18 @@ public class MainController
 	@FXML
     void aggiungiGioiello(ActionEvent event) //bottone aggiungi gioiello cliccato
 	{
-		AggiungiGioielloController controller = new AggiungiGioielloController();
+		controller = new AggiungiGioielloController();
 		try 
 		{
 			controller.start(new Stage());
+			listView.getItems().add(controller.);
 		} 
 		catch (Exception e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		//listView.getItems().add(controller.getGioiello());
     }
 }

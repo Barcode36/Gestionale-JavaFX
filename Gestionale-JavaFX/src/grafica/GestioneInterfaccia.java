@@ -3,14 +3,16 @@ package grafica;
 import eventi.MainController;
 import logica.Gioielleria;
 
-public class GestioneInterfaccia
+public class GestioneInterfaccia //implements Runnable
 {
-	public void start(MainController controller, Gioielleria gioielleria)
+	public void inizio(MainController controller, Gioielleria gioielleria)
 	{
+		//AggiungiGioielloController aggiungiGioielloController = new AggiungiGioielloController();
 		gioielleria.caricaGioielli();
 		controller.setGioielli(gioielleria);
-		//ArrayList<Gioiello> gioielli = gioielleria.getGioielli();
+		//controller.setAggiungiGioielloController(aggiungiGioielloController);
 		controller.showInListView();
+		//controller.addGioiello(aggiungiGioielloController.getGioiello());
 		
 	}
 }
