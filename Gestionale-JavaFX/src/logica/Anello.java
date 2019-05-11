@@ -20,7 +20,10 @@ public class Anello extends Gioiello
 	public void setPietra(boolean pietra) { this.pietra = pietra; }
 	
 	@Override
-	public String toString()
+	public String toString() { return this.nomeGioiello; }
+	
+	@Override
+	public String save()
 	{
 		return "Anello;" + super.getId() + ";" + super.getPrezzo() + ";" + super.getPeso() + ";" + super.getMateriale() + ";" + super.getGenere() + ";" + raggio + ";" + pietra + ";" + nomeGioiello;
 	}

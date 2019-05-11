@@ -29,7 +29,7 @@ public class Gioielleria
 			
 			for(Gioiello g : gioielli)
 			{
-				file.append(g.toString());
+				file.append(g.save());
 				file.newLine();
 			}
 			

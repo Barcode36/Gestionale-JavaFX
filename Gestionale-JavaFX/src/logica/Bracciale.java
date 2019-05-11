@@ -27,7 +27,10 @@ public class Bracciale extends Gioiello
 	public void setLarghezza(double larghezza) { this.larghezza = larghezza; }
 	
 	@Override
-	public String toString()
+	public String toString() { return this.nomeGioiello; }
+	
+	@Override
+	public String save()
 	{
 		return "Bracciale;"+super.getId() + ";" + super.getPrezzo() + ";" + super.getPeso() + ";" + super.getMateriale() + ";" + super.getGenere() + ";" + lunghezza + ";" + spessore + ";" + larghezza + ";" + nomeGioiello;
 	}

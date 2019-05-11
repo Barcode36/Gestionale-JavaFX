@@ -1,7 +1,6 @@
 package grafica;
 
-import logica.*;
-
+import logica.Gioielleria;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -17,7 +16,7 @@ public class Main extends Application
 		try 
 		{
 			Gioielleria gioielleria = new Gioielleria("Francesco");
-			gioielleria.caricaGioielli();
+			
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("InterfacciaRoot.fxml"));
 			BorderPane root = (BorderPane) loader.load();
 			Scene scene = new Scene(root,1920,1080);

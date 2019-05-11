@@ -76,4 +76,6 @@ public abstract class Gioiello
 	public void setGenere(String genere) { this.genere = genere; }
 	
 	public String getTipo() { return this.tipoGioiello;}
+	
+	public abstract String save();
 }

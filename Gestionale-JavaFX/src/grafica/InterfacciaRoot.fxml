@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.web.*?>
 <?import javafx.scene.*?>
@@ -12,12 +13,16 @@
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventi.MainController">
    <left>
       <BorderPane prefHeight="1035.0" prefWidth="335.0" BorderPane.alignment="CENTER">
-         <right>
-            <Separator orientation="VERTICAL" prefHeight="1035.0" prefWidth="18.0" BorderPane.alignment="CENTER" />
-         </right>
          <center>
             <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
          </center>
+         <top>
+            <ToolBar prefHeight="45.0" prefWidth="295.0" BorderPane.alignment="CENTER">
+              <items>
+                <Button fx:id="nuovoGioielloButton" mnemonicParsing="false" onAction="#aggiungiGioiello" text="Nuovo Gioiello" />
+              </items>
+            </ToolBar>
+         </top>
       </BorderPane>
    </left>
    <center>
@@ -25,7 +30,19 @@
         <tabs>
           <Tab text="Gioielli">
                <content>
-                  <TextArea fx:id="textAreaGioielli" editable="false" prefHeight="200.0" prefWidth="200.0" />
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <left>
+                        <TextArea fx:id="textAreaGioielli" editable="false" prefHeight="1009.0" prefWidth="1105.0" BorderPane.alignment="CENTER" />
+                     </left>
+                     <right>
+                        <VBox prefHeight="1009.0" prefWidth="481.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <ImageView fx:id="imageViewer1" fitHeight="400.0" fitWidth="480.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="imageViewer2" fitHeight="400.0" fitWidth="480.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </VBox>
+                     </right>
+                  </BorderPane>
                </content>
             </Tab>
           <Tab text="Clienti" />

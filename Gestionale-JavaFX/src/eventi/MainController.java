@@ -1,44 +1,78 @@
 package eventi;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import logica.*;
 
 public class MainController
 {
-	 @FXML
-	 private TextArea textAreaGioielli;
+	private Gioielleria gioielleria;
+	
+	@FXML
+	private TextArea textAreaGioielli;
 	 
-	 @FXML
-	 private ListView<String> listView;
+	@FXML
+	private ListView<Gioiello> listView;
+	
+	@FXML
+	private ImageView imageViewer1;
+	
+	@FXML
+    private ImageView imageViewer2;
+	
+	@FXML
+    private Button nuovoGioielloButton;
 	 
-	 public void stampaGioielli(String testo)
-	 {
-		 textAreaGioielli.appendText(testo+"\n");
-		 
-	 }
-	 
-	 public void showListView(ArrayList<Gioiello> gioielli)
-	 {
-//		 gioielli.sort(new Comparator<String>() 
-//		 {
-//
-//			@Override
-//			public int compare(String o1, String o2) 
-//			{
-//				return o1.compareToIgnoreCase(o2);
-//			}
-//		});
-		 
-		 for(Gioiello g : gioielli)
-		 {
-			 listView.getItems().add(g.getNomeGioiello());
-		 }
-		 
-	 }
+	public void setGioielli(Gioielleria gioielleria) 
+	{ 
+		this.gioielleria = gioielleria; 
+		for(Gioiello g : this.gioielleria.getGioielli())
+		{
+			listView.getItems().add(g);
+		}
+	}
+	
+	public void showInListView()
+	{	 
+		listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		listView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Gioiello> obs, Gioiello oldVal, Gioiello newVal) -> {
+			textAreaGioielli.setText(newVal.getNomeGioiello());
+			try 
+			{
+				imageViewer1.setImage(new Image(new FileInputStream("immagine.jpg")));
+				imageViewer2.setImage(new Image(new FileInputStream("immagine.jpg")));
+			} 
+			catch (FileNotFoundException e) 
+			{
+				System.out.println("impossibile caricare l'immagine");
+				e.printStackTrace();
+			}
+		});
+	}
+	
+	@FXML
+    void aggiungiGioiello(ActionEvent event) //bottone aggiungi gioiello cliccato
+	{
+		AggiungiGioielloController controller = new AggiungiGioielloController();
+		try 
+		{
+			controller.start(new Stage());
+		} 
+		catch (Exception e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 }
