@@ -45,7 +45,14 @@
                   </BorderPane>
                </content>
             </Tab>
-          <Tab text="Clienti" />
+          <Tab fx:id="tabClienti" onSelectionChanged="#tabClientiSelezionato" text="Clienti">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <TextArea fx:id="textAreaClienti" editable="false" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+               </content></Tab>
         </tabs>
       </TabPane>
    </center>

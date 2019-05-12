@@ -15,7 +15,7 @@ import logica.MATERIALE;
 
 public class AggiungiGioielloController extends Application
 {
-	private Gioiello gioiello;
+	private Gioiello gioiello = null;
 	
 	@FXML
     private TextField textFieldPeso;
@@ -27,23 +27,29 @@ public class AggiungiGioielloController extends Application
     private TextField textFieldTipo;
 	
 	@FXML
-	private Button submitButton;
+	Button submitButton;
+	
+	public AggiungiGioielloController() 
+	{
+		System.out.print("Controller creato ");
+		System.out.println(this);
+	}
 	
 	@Override
-	public void start(Stage primaryStage) throws Exception 
+	public void start(Stage secondaryStage) throws Exception 
 	{
 		try 
 		{	
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("InterfacciaAggiungiGioiello.fxml"));
-			BorderPane root = (BorderPane) loader.load();
-			Scene scene = new Scene(root,900,600);
+			BorderPane aggiungiGioielloPane = (BorderPane) loader.load();
+			Scene scene = new Scene(aggiungiGioielloPane,900,600);
 			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setMinHeight(600);
-			primaryStage.setMinWidth(900);
-			primaryStage.setResizable(false);
-			primaryStage.setTitle("Aggiungi Gioiello");
-			primaryStage.setScene(scene);
-			primaryStage.show();
+			secondaryStage.setMinHeight(600);
+			secondaryStage.setMinWidth(900);
+			secondaryStage.setResizable(false);
+			secondaryStage.setTitle("Aggiungi Gioiello");
+			secondaryStage.setScene(scene);
+			secondaryStage.show();
 			//MainController controller = loader.getController();
 		} 
 		catch(Exception e) 
@@ -57,16 +63,9 @@ public class AggiungiGioielloController extends Application
 	@FXML
     void submit(ActionEvent event) //quando il tasto ok è premuto
     {
-		Gioiello g = creaGioiello();
-    }
-	
-	Gioiello creaGioiello()
-	{
 		if(textFieldTipo.getText().equals("Anello"))
 		{
 			gioiello = new Anello("012",15.2,Double.parseDouble(textFieldPeso.getText()),MATERIALE.ACCIAIO,"Maschile",15,true,textFieldNomeGioiello.getText());
-			return gioiello;
 		}
-		return  null;
-	}
+    }
 }

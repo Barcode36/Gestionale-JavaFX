@@ -26,8 +26,11 @@ public class Main extends Application
 			primaryStage.setTitle(gioielleria.getNomeGioielleria());
 			primaryStage.setScene(scene);
 			primaryStage.show();
-			GestioneInterfaccia gestioneInterfaccia = new GestioneInterfaccia();
-			gestioneInterfaccia.inizio(loader.getController(), gioielleria);
+			GestioneInterfaccia gestioneInterfaccia = new GestioneInterfaccia(loader.getController(), gioielleria);
+			gestioneInterfaccia.inizio();
+//			Thread t = new Thread(gestioneInterfaccia);
+//			t.start();
+			//gestioneInterfaccia.inizio(loader.getController(), gioielleria);
 			
 		} 
 		catch(Exception e) 
