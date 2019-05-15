@@ -9,3 +9,5 @@ Bracciale;007;32.0;17.0;RAME;Femminile;17.0;7.5;7.75;Bracciale di gomma
 Bracciale;008;33.0;18.0;RAME;Femminile;18.0;8.5;8.75;Bracciale tondo
 Bracciale;009;34.0;19.0;RAME;Maschile;19.0;9.5;9.75;Bracciale di Francesco
 Bracciale;010;34.0;19.0;ORO_GIALLO;Femminile;32.0;45.5;9.75;Bracciale di Martina
+Anello;012;15.2;15.0;ACCIAIO;Maschile;15.0;true;Anellino con pietre
+

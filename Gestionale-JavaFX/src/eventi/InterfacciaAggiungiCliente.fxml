@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventi.AggiungiClienteController">
+   <top>
+      <Label prefHeight="21.0" prefWidth="113.0" text="Aggiungi Cliente" textAlignment="CENTER" BorderPane.alignment="CENTER" />
+   </top>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nome Cliente" wrappingWidth="91.6708984375" />
+            <TextField fx:id="inserisciNomeCliente" prefHeight="31.0" prefWidth="892.0" promptText="Inserisci nome cliente" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cognome Cliente" wrappingWidth="120.6708984375" />
+            <TextField fx:id="inserisciCognomeCliente" promptText="Inserisci cognome cliente" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Numero di Telefono" wrappingWidth="141.6708984375" />
+            <TextField fx:id="inserisciNumeroTelefono" promptText="Inserisci numero di telefono" />
+            <Button fx:id="aggiungiOrdineButton" mnemonicParsing="false" prefHeight="31.0" prefWidth="136.0" text="Aggiungi Ordine" />
+            <Pane prefHeight="365.0" prefWidth="900.0">
+               <children>
+                  <ListView prefHeight="362.0" prefWidth="900.0" />
+               </children>
+            </Pane>
+            <Button fx:id="aggiungiButton" mnemonicParsing="false" onAction="#AggiungiButtonPremuto" prefHeight="31.0" prefWidth="94.0" text="Aggiungi" />
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

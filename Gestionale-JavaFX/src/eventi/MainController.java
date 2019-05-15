@@ -3,35 +3,47 @@ package eventi;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-
+import java.util.Observable;
+import java.util.Observer;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import logica.*;
+import logica.Cliente;
+import logica.Gioielleria;
+import logica.Gioiello;
 
-public class MainController implements Runnable
-{
-	//private Gioielleria gioielleria;
-	private AggiungiGioielloController controller = null;
+public class MainController extends Observable implements Observer
+{	
+	private Gioiello g;
+	private Cliente cliente;
+	private AggiungiGioielloController controllerGioiello;
+	private AggiungiClienteController controllerCliente;
 	
 	@FXML
-	private TextArea textAreaGioielli;
+    private TabPane tabPane;
 	
 	@FXML
     private Tab tabClienti;
 	
 	@FXML
-    private TextArea textAreaClienti;
+	private TextArea textAreaGioielli;
+	
+	@FXML
+	private MenuItem salvaMenuItem;
 	 
 	@FXML
 	private ListView<Gioiello> listView;
@@ -46,35 +58,24 @@ public class MainController implements Runnable
     private Button nuovoGioielloButton;
 	
 	@FXML
-    private Button submitButton;
-
-    @FXML
-    private TextField textFieldNomeGioiello;
-
-    @FXML
-    private TextField textFieldPeso;
-
-    @FXML
-    private TextField textFieldTipo;
+    private Button aggiungiClienteButton;
+	
+	public Gioiello getGioiello() { return this.g; }
+	
+	public void aggiungiInListView(Gioiello gioiello) { listView.getItems().add(gioiello); }
 	
 	public void setGioielli(Gioielleria gioielleria)
 	{ 
-		//this.gioielleria = gioielleria; 
 		for(Gioiello g : gioielleria.getGioielli())
 		{
 			listView.getItems().add(g);
 		}
 	}
 	
-	public void setClienti(ArrayList<Cliente> clienti)
-	{
-		
-	}
-	
-	//public void setAggiungiGioielloController(AggiungiGioielloController controller) {this.controller = controller; }
+	public Tab getTab() { return tabClienti; }
 	
 	public void showInListView()
-	{	 
+	{
 		listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Gioiello> obs, Gioiello oldVal, Gioiello newVal) -> {
 			textAreaGioielli.setText(newVal.getNomeGioiello());
@@ -93,42 +94,71 @@ public class MainController implements Runnable
 	@FXML
     void aggiungiGioiello(ActionEvent event) throws IOException //bottone aggiungi gioiello cliccato
 	{
-		try 
-		{
-			controller = new AggiungiGioielloController();
-			controller.start(new Stage());
-			
-			while(controller.getGioiello() == null) System.out.println("gioiello nunllo");
-			//listView.getItems().add(controller.submit(new Event()));
-		} 
-		catch (Exception e) 
-		{			
-			e.printStackTrace();
-		}
-		
-		
-		//listView.getItems().add(controller.getGioiello());
+		Stage aggiungiGioielloStage = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("InterfacciaAggiungiGioiello.fxml"));
+		BorderPane aggiungiGioielloPane = (BorderPane) loader.load();
+		Scene scene = new Scene(aggiungiGioielloPane,900,600);
+		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		aggiungiGioielloStage.setResizable(false);
+		aggiungiGioielloStage.setTitle("Aggiungi Gioiello");
+		aggiungiGioielloStage.setScene(scene);
+		aggiungiGioielloStage.show();
+		controllerGioiello = loader.getController();
+		controllerGioiello.addObserver(this);
+    }
+	
+	@FXML
+    void aggiungiCliente(ActionEvent event) throws IOException 
+	{
+		Stage aggiungiClienteStage = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("InterfacciaAggiungiCliente.fxml"));
+		BorderPane aggiungiClientePane = (BorderPane) loader.load();
+		Scene scene = new Scene(aggiungiClientePane,900,600);
+		aggiungiClienteStage.setResizable(false);
+		aggiungiClienteStage.setTitle("Aggiungi Cliente");
+		aggiungiClienteStage.setScene(scene);
+		aggiungiClienteStage.show();
+		controllerCliente = loader.getController();
+		controllerCliente.addObserver(this);
     }
 	
 	@FXML
     void tabClientiSelezionato(ActionEvent event) 
 	{
-		listView.getItems().clear();
+		System.out.println("TAB");
     }
-
-	@Override
-	public void run() 
+	
+	@FXML
+    void tabClientiChiuso(ActionEvent event) 
 	{
-		while(true)
+		System.out.println("chiuso");
+    }
+	
+	@Override
+	public void update(Observable o, Object arg) 
+	{ 
+		if(arg.equals("Creato"))
 		{
-			if(controller != null)
-			{
-				if(controller.getGioiello() != null)
-				{
-					listView.getItems().add(controller.getGioiello());
-					controller = null;
-				}
-			}
+			g = controllerGioiello.getGioiello();
+			setChanged();
+			notifyObservers("Creato");
+		}
+		
+		
+		if(arg.equals("Cliente creato"))
+		{
+			cliente = controllerCliente.getCliente();
+			setChanged();
+			notifyObservers("Cliente creato");
 		}
 	}
+	
+	public Cliente getCliente() { return this.cliente; }
+	
+	 @FXML
+	 void menuItemSave(ActionEvent event) 
+	 {
+		setChanged();
+		notifyObservers("Salvato");
+	 }
 }

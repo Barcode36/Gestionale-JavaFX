@@ -1,19 +1,23 @@
 package grafica;
 
+import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
+
 import eventi.MainController;
 import logica.GestioneOrdini;
 import logica.Gioielleria;
 
-public class GestioneInterfaccia //implements Runnable
+public class GestioneInterfaccia implements Observer
 {
 	private MainController controller;
 	private Gioielleria gioielleria;
-	private GestioneOrdini ordini;
-	public void inizio()
+	private GestioneOrdini gestioneOrdini;
+	
+	public void inizio() throws IOException
 	{
-		//controller.showInListView();
-		Thread t = new Thread(controller);
-		t.start();
+		controller.showInListView();
+		controller.addObserver(this);
 	}
 	
 	public GestioneInterfaccia(MainController controller, Gioielleria gioielleria) 
@@ -22,16 +26,24 @@ public class GestioneInterfaccia //implements Runnable
 		this.gioielleria = gioielleria;
 		this.gioielleria.caricaGioielli();
 		this.controller.setGioielli(this.gioielleria);
-		this.ordini = new GestioneOrdini();
+		gestioneOrdini = new GestioneOrdini();
 	}
-	
-//	@Override
-//	public void run() 
-//	{
-//		while(true)
-//		{
-//			inizio();
-//		}
-//		
-//	}
+
+	@Override
+	public void update(Observable o, Object arg) 
+	{
+		if(arg.equals("Creato"))
+		{
+			gioielleria.aggiungiGioiello(controller.getGioiello());
+			controller.aggiungiInListView(controller.getGioiello());
+		}
+		
+		if(arg.equals("Salvato")) gioielleria.salvaGioielli();
+		
+		if(arg.equals("Cliente Creato"))
+		{
+			gestioneOrdini.aggiungiCliente(controller.getCliente());
+		}
+		
+	}
 }

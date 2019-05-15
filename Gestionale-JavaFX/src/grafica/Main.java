@@ -16,6 +16,7 @@ public class Main extends Application
 		try 
 		{
 			Gioielleria gioielleria = new Gioielleria("Francesco");
+			System.out.println(gioielleria);
 			
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("InterfacciaRoot.fxml"));
 			BorderPane root = (BorderPane) loader.load();
@@ -28,9 +29,7 @@ public class Main extends Application
 			primaryStage.show();
 			GestioneInterfaccia gestioneInterfaccia = new GestioneInterfaccia(loader.getController(), gioielleria);
 			gestioneInterfaccia.inizio();
-//			Thread t = new Thread(gestioneInterfaccia);
-//			t.start();
-			//gestioneInterfaccia.inizio(loader.getController(), gioielleria);
+			
 			
 		} 
 		catch(Exception e) 
