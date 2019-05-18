@@ -7,13 +7,12 @@ public class Bracciale extends Gioiello
 	private double larghezza;
 	
 	
-	public Bracciale(String id, double prezzo, double peso, MATERIALE materiale, String genere, double lunghezza, double spessore, double larghezza, String nomeGioiello)
+	public Bracciale(int id, double prezzo, double peso, MATERIALE materiale, String genere,boolean venduto, double lunghezza, double spessore, double larghezza, String nomeGioiello,String descrizione)
 	{
-		super(id,prezzo,peso,materiale,genere);
+		super(id,prezzo,peso,materiale,genere,venduto,descrizione);
 		this.lunghezza = lunghezza;
 		this.spessore = spessore;
 		this.larghezza = larghezza;
-		this.tipoGioiello = "Bracciale";
 		this.nomeGioiello = nomeGioiello;
 	}
 	

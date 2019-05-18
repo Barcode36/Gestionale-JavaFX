@@ -14,7 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
@@ -78,7 +77,7 @@ public class MainController extends Observable implements Observer
 	{
 		listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Gioiello> obs, Gioiello oldVal, Gioiello newVal) -> {
-			textAreaGioielli.setText(newVal.getNomeGioiello());
+			textAreaGioielli.setText(newVal.getDescrizione());
 			try 
 			{
 				imageViewer1.setImage(new Image(new FileInputStream("immagine.jpg")));
@@ -95,7 +94,7 @@ public class MainController extends Observable implements Observer
     void aggiungiGioiello(ActionEvent event) throws IOException //bottone aggiungi gioiello cliccato
 	{
 		Stage aggiungiGioielloStage = new Stage();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("InterfacciaAggiungiGioiello.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("AggiungiGioiello.fxml"));
 		BorderPane aggiungiGioielloPane = (BorderPane) loader.load();
 		Scene scene = new Scene(aggiungiGioielloPane,900,600);
 		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -137,11 +136,11 @@ public class MainController extends Observable implements Observer
 	@Override
 	public void update(Observable o, Object arg) 
 	{ 
-		if(arg.equals("Creato"))
+		if(arg.equals("Gioiello Creato"))
 		{
 			g = controllerGioiello.getGioiello();
 			setChanged();
-			notifyObservers("Creato");
+			notifyObservers("Gioiello Creato");
 		}
 		
 		

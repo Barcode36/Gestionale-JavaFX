@@ -4,10 +4,9 @@ public class Anello extends Gioiello
 {
 	private double raggio;
 	boolean pietra;
-	public Anello(String id, double prezzo, double peso, MATERIALE materiale, String genere, double raggio, boolean pietra, String nomeGioiello)
+	public Anello(int id, double prezzo, double peso, MATERIALE materiale, String genere,boolean venduto, double raggio, boolean pietra, String nomeGioiello,String descrizione)
 	{
-		super(id,prezzo,peso,materiale,genere);
-		this.tipoGioiello = "Anello";
+		super(id,prezzo,peso,materiale,genere,venduto,descrizione);
 		this.raggio = raggio;
 		this.pietra = pietra;
 		this.nomeGioiello = nomeGioiello;

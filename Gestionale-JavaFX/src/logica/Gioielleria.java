@@ -1,71 +1,32 @@
 package logica;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import gestioneDB.GestioneQuery;;
 public class Gioielleria 
 {
+	private GestioneQuery database;
 	private ArrayList <Gioiello> gioielli;
 	private String nomeGioielleria;
 	private double incassoGiornaliero;
 	private double guadagnoGiornaliero;
 	
-	public Gioielleria(String nomeGioielleria)
+	public Gioielleria(String nomeGioielleria) throws ClassNotFoundException, SQLException
 	{
-		gioielli = new ArrayList <Gioiello>();
+		database = new GestioneQuery();
 		this.nomeGioielleria = nomeGioielleria;
 		this.guadagnoGiornaliero = 0;
 		this.incassoGiornaliero = 0;
 	}
 	
-	public boolean salvaGioielli()
+	public void salvaGioielli()
 	{
-		try 
-		{
-			BufferedWriter file = new BufferedWriter(new FileWriter("gioielli.txt"));
-			
-			for(Gioiello g : gioielli)
-			{
-				file.append(g.save());
-				file.newLine();
-			}
-			
-			file.close();
-			return true;
-		} 
-		catch (IOException e) 
-		{
-			System.out.println("impossibile salvare il file");
-			e.printStackTrace();
-			return false;
-		}
+		
 	}
 	
-	public boolean caricaGioielli()
+	public void caricaGioielli()
 	{
-		try 
-		{
-			BufferedReader file = new BufferedReader(new FileReader("gioielli.txt"));
-			
-			while(file.ready())
-			{
-				String gioiello = file.readLine();
-				String[] dati = gioiello.split(";");
-				
-				if(Gioiello.costruisciGioiello(dati) != null) gioielli.add(Gioiello.costruisciGioiello(dati));
-			}
-			file.close();
-			return true;
-		} 
-		catch (IOException e) 
-		{
-			System.out.println("file non trovato");
-			e.printStackTrace();
-			return false;
-		}
+		gioielli = database.caricaGioielli();
 	}
 	
 	public String getNomeGioielleria() { return this.nomeGioielleria; }
@@ -74,23 +35,22 @@ public class Gioielleria
 	
 	public void aggiungiGioiello(Gioiello g) { this.gioielli.add(g);}
 	
-	public Gioiello getGioiello(String id)
+	public Gioiello getGioiello(int id)
 	{
-		for(Gioiello g : gioielli)
-		{
-			if(g.getId().equals(id)) return g;
-		}
+//		for(Gioiello g : gioielli)
+//		{
+//			if(g.getId() == id) return g;
+//		}
 		
-		return null;
-		//return new Bracciale("0",0,0,MATERIALE.ZINCO,"null",0,0,0);
+		return database.findByPrimaryKey(id);
 	}
 	
-	public boolean rimuoviGioiello(String id)
+	public boolean rimuoviGioiello(int id)
 	{
 		boolean trovato = false;
 		for(int i = 0; i < gioielli.size(); i++)
 		{
-			if(gioielli.get(i).getId().equals(id))
+			if(gioielli.get(i).getId() == id)
 			{
 				gioielli.remove(i);
 				trovato = true;
@@ -100,12 +60,12 @@ public class Gioielleria
 		return trovato;
 	}
 	
-	public boolean vendiGioiello(String id, int prezzoVenduto)
+	public boolean vendiGioiello(int id, float prezzoVenduto)
 	{
 		boolean venduto = false;
 		for(int i = 0; i < gioielli.size(); i++)
 		{
-			if(gioielli.get(i).getId().equals(id))
+			if(gioielli.get(i).getId() == id)
 			{
 				this.incassoGiornaliero += prezzoVenduto;
 				this.guadagnoGiornaliero += prezzoVenduto - gioielli.get(i).getPrezzo();

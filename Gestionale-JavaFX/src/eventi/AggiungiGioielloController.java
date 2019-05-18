@@ -40,9 +40,9 @@ public class AggiungiGioielloController extends Observable
     {
 		if(textFieldTipo.getText().equals("Anello"))
 		{
-			gioiello = new Anello("012",15.2,Double.parseDouble(textFieldPeso.getText()),MATERIALE.ACCIAIO,"Maschile",15,true,textFieldNomeGioiello.getText());
+			//gioiello = new Anello("012",15.2,Double.parseDouble(textFieldPeso.getText()),MATERIALE.ACCIAIO,"Maschile",15,true,textFieldNomeGioiello.getText());
 			setChanged();
-			notifyObservers("Creato");
+			notifyObservers("Gioiello Creato");
 		}
     }
 }

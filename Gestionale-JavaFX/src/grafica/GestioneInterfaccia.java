@@ -7,6 +7,7 @@ import java.util.Observer;
 import eventi.MainController;
 import logica.GestioneOrdini;
 import logica.Gioielleria;
+import logica.Gioiello;
 
 public class GestioneInterfaccia implements Observer
 {
@@ -18,9 +19,10 @@ public class GestioneInterfaccia implements Observer
 	{
 		controller.showInListView();
 		controller.addObserver(this);
+		//System.out.println(gioielleria.getGioiello(3));
 	}
 	
-	public GestioneInterfaccia(MainController controller, Gioielleria gioielleria) 
+	public GestioneInterfaccia(MainController controller, Gioielleria gioielleria)
 	{
 		this.controller = controller;
 		this.gioielleria = gioielleria;
@@ -32,7 +34,7 @@ public class GestioneInterfaccia implements Observer
 	@Override
 	public void update(Observable o, Object arg) 
 	{
-		if(arg.equals("Creato"))
+		if(arg.equals("Gioiello Creato"))
 		{
 			gioielleria.aggiungiGioiello(controller.getGioiello());
 			controller.aggiungiInListView(controller.getGioiello());
@@ -40,9 +42,10 @@ public class GestioneInterfaccia implements Observer
 		
 		if(arg.equals("Salvato")) gioielleria.salvaGioielli();
 		
-		if(arg.equals("Cliente Creato"))
+		if(arg.equals("Cliente creato"))
 		{
 			gestioneOrdini.aggiungiCliente(controller.getCliente());
+			System.out.println("cliente aggiunto");
 		}
 		
 	}
