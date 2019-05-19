@@ -19,8 +19,13 @@
          <top>
             <ToolBar prefHeight="45.0" prefWidth="295.0" BorderPane.alignment="CENTER">
               <items>
-                <Button fx:id="nuovoGioielloButton" mnemonicParsing="false" onAction="#aggiungiGioiello" text="Nuovo Gioiello" />
                   <Button fx:id="aggiungiClienteButton" mnemonicParsing="false" onAction="#aggiungiCliente" prefHeight="31.0" prefWidth="118.0" text="Nuovo Cliente" />
+                  <MenuButton mnemonicParsing="false" text="Aggiungi Gioiello">
+                    <items>
+                      <MenuItem fx:id="aggiungiAnelloMenuItem" mnemonicParsing="false" onAction="#aggiungiAnelloClicked" text="Anello" />
+                      <MenuItem fx:id="aggiungiBraccialeMenuItem" mnemonicParsing="false" onAction="#aggiungiBraccialeClicked" text="Bracciale" />
+                    </items>
+                  </MenuButton>
               </items>
             </ToolBar>
          </top>

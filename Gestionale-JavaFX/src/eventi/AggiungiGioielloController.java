@@ -12,7 +12,7 @@ import logica.MATERIALE;
 
 public class AggiungiGioielloController extends Observable
 {
-	private Gioiello gioiello = null;
+	private Gioiello gioiello;
 	//private boolean stato = false;
 	
 	@FXML
@@ -38,11 +38,8 @@ public class AggiungiGioielloController extends Observable
 	@FXML
     void submit(ActionEvent event) //quando il tasto ok è premuto
     {
-		if(textFieldTipo.getText().equals("Anello"))
-		{
-			//gioiello = new Anello("012",15.2,Double.parseDouble(textFieldPeso.getText()),MATERIALE.ACCIAIO,"Maschile",15,true,textFieldNomeGioiello.getText());
-			setChanged();
-			notifyObservers("Gioiello Creato");
-		}
+		gioiello = new Anello(0,15.3, Double.parseDouble(textFieldPeso.getText()),MATERIALE.ACCIAIO, "Maschile",false,22,true,textFieldNomeGioiello.getText(),"anellomoltobello");
+		setChanged();
+		notifyObservers("Gioiello Creato");
     }
 }

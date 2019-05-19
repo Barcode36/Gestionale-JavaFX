@@ -29,8 +29,9 @@ public class MainController extends Observable implements Observer
 {	
 	private Gioiello g;
 	private Cliente cliente;
-	private AggiungiGioielloController controllerGioiello;
+	private AggiungiGioielloController controllerAnello;
 	private AggiungiClienteController controllerCliente;
+	private AggiungiBraccialeController controllerBracciale;
 	
 	@FXML
     private TabPane tabPane;
@@ -54,10 +55,13 @@ public class MainController extends Observable implements Observer
     private ImageView imageViewer2;
 	
 	@FXML
-    private Button nuovoGioielloButton;
+    private Button aggiungiClienteButton;
 	
 	@FXML
-    private Button aggiungiClienteButton;
+    private MenuItem aggiungiBraccialeMenuItem;
+	
+	@FXML
+    private MenuItem aggiungiAnelloMenuItem;
 	
 	public Gioiello getGioiello() { return this.g; }
 	
@@ -91,7 +95,7 @@ public class MainController extends Observable implements Observer
 	}
 	
 	@FXML
-    void aggiungiGioiello(ActionEvent event) throws IOException //bottone aggiungi gioiello cliccato
+	void aggiungiAnelloClicked(ActionEvent event) throws IOException 
 	{
 		Stage aggiungiGioielloStage = new Stage();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("AggiungiGioiello.fxml"));
@@ -99,11 +103,28 @@ public class MainController extends Observable implements Observer
 		Scene scene = new Scene(aggiungiGioielloPane,900,600);
 		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		aggiungiGioielloStage.setResizable(false);
-		aggiungiGioielloStage.setTitle("Aggiungi Gioiello");
+		aggiungiGioielloStage.setTitle("Aggiungi Anello");
 		aggiungiGioielloStage.setScene(scene);
 		aggiungiGioielloStage.show();
-		controllerGioiello = loader.getController();
-		controllerGioiello.addObserver(this);
+		controllerAnello = loader.getController();
+		controllerAnello.addObserver(this); 
+	}
+	
+	@FXML
+    void aggiungiBraccialeClicked(ActionEvent event) throws IOException 
+	{
+		Stage aggiungiGioielloStage = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("AggiungiBracciale.fxml"));
+		BorderPane aggiungiGioielloPane = (BorderPane) loader.load();
+		Scene scene = new Scene(aggiungiGioielloPane,900,600);
+		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		aggiungiGioielloStage.setResizable(false);
+		aggiungiGioielloStage.setTitle("Aggiungi Bracciale");
+		aggiungiGioielloStage.setScene(scene);
+		aggiungiGioielloStage.show();
+		controllerBracciale = loader.getController();
+		controllerBracciale.initialize();
+		controllerBracciale.addObserver(this); 
     }
 	
 	@FXML
@@ -138,11 +159,17 @@ public class MainController extends Observable implements Observer
 	{ 
 		if(arg.equals("Gioiello Creato"))
 		{
-			g = controllerGioiello.getGioiello();
+			g = controllerAnello.getGioiello();
 			setChanged();
 			notifyObservers("Gioiello Creato");
 		}
 		
+		if(arg.equals("Bracciale Creato"))
+		{
+			g = controllerBracciale.getGioiello();
+			setChanged();
+			notifyObservers("Bracciale Creato");
+		}
 		
 		if(arg.equals("Cliente creato"))
 		{

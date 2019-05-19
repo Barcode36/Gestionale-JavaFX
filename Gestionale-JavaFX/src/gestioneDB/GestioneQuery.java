@@ -26,10 +26,28 @@ public class GestioneQuery implements GestioneDB
 	}
 	
 	@Override
-	public void save(Gioiello gioiello) 
+	public void save(Gioiello gioiello)//, int tipo) 
 	{
 		
-		
+		try
+		{
+			if(gioiello instanceof Anello)
+			{
+				Anello a = (Anello)gioiello;
+				cmd.executeUpdate("insert into anello values ("+a.getId()+","+a.getPrezzo()+","+a.getPeso()+",'"
+						+a.getMateriale()+"','"+a.getGenere()+"',"+a.getVenduto()+","+a.getRaggio()+","+a.isPietra()+",'"+a.getNomeGioiello()+"','"+a.getDescrizione()+"');");
+			}
+			else if(gioiello instanceof Bracciale)
+			{
+				Bracciale a = (Bracciale)gioiello;
+				cmd.executeUpdate("insert into bracciale values ("+a.getId()+","+a.getPrezzo()+","+a.getPeso()+",'"
+					+a.getMateriale()+"','"+a.getGenere()+"',"+a.getVenduto()+","+a.getLunghezza()+","+a.getSpessore()+","+a.getLarghezza()+",'"+a.getNomeGioiello()+"','"+a.getDescrizione()+"');");
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -73,6 +91,8 @@ public class GestioneQuery implements GestioneDB
 				    return new Bracciale(gioielloId,prezzo,peso,materiale,genere,venduto,lunghezza,spessore,larghezza,nomeGioiello,descrizione);
 				}
 			}
+			
+			res.close();
 			
 		} 
 		catch (SQLException e) 
@@ -130,6 +150,8 @@ public class GestioneQuery implements GestioneDB
 			    String descrizione = res.getString(11);
 			    gioielli.add(new Bracciale(gioielloId,prezzo,peso,materiale,genere,venduto,lunghezza,spessore,larghezza,nomeGioiello,descrizione));
 	    	}
+	    	
+	    	res.close();
 		} 
 	    catch (SQLException e) 
 	    {
@@ -141,7 +163,7 @@ public class GestioneQuery implements GestioneDB
 	}
 
 	@Override
-	public void update(Gioiello gioiello) {
+	public void update(Gioiello gioiello, int tipo) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -151,8 +173,8 @@ public class GestioneQuery implements GestioneDB
 	{
 		try 
 		{
-			cmd.executeQuery("delete from anello where gioielloid = " + id + ";");
-			cmd.executeQuery("delete from bracciale where gioielloid = " + id + ";");
+			cmd.executeUpdate("delete from anello where gioielloid = " + id + ";");
+			cmd.executeUpdate("delete from bracciale where gioielloid = " + id + ";");
 		} 
 		catch (SQLException e) 
 		{
@@ -161,6 +183,29 @@ public class GestioneQuery implements GestioneDB
 		}
 		
 		
+	}
+
+	@Override
+	public int getDBSize() 
+	{
+		int size = 0;
+		
+		try 
+		{
+			ResultSet res = cmd.executeQuery("select count(*) from anello;");
+			while(res.next()) size+=res.getInt(1);
+			res = cmd.executeQuery("select count(*) from bracciale;");
+			while(res.next()) size+=res.getInt(1);
+			
+			res.close();
+		} 
+		catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return size;
 	}
 
 }

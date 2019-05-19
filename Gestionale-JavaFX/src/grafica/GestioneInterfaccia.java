@@ -3,11 +3,9 @@ package grafica;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
-
 import eventi.MainController;
 import logica.GestioneOrdini;
 import logica.Gioielleria;
-import logica.Gioiello;
 
 public class GestioneInterfaccia implements Observer
 {
@@ -35,6 +33,12 @@ public class GestioneInterfaccia implements Observer
 	public void update(Observable o, Object arg) 
 	{
 		if(arg.equals("Gioiello Creato"))
+		{
+			gioielleria.aggiungiGioiello(controller.getGioiello());
+			controller.aggiungiInListView(controller.getGioiello());
+		}
+		
+		if(arg.equals("Bracciale Creato"))
 		{
 			gioielleria.aggiungiGioiello(controller.getGioiello());
 			controller.aggiungiInListView(controller.getGioiello());

@@ -18,7 +18,7 @@ public class Main extends Application
 			Gioielleria gioielleria = new Gioielleria("Francesco");
 			System.out.println(gioielleria);
 			
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("InterfacciaRoot.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("InterfacciaPrincipale.fxml"));
 			BorderPane root = (BorderPane) loader.load();
 			Scene scene = new Scene(root,1920,1080);
 			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -43,3 +43,8 @@ public class Main extends Application
 		launch(args);
 	}
 }
+
+//caratteristiche pietre
+//peso
+//caratura
+//diametro
