@@ -32,6 +32,7 @@ public class MainController extends Observable implements Observer
 	private AggiungiGioielloController controllerAnello;
 	private AggiungiClienteController controllerCliente;
 	private AggiungiBraccialeController controllerBracciale;
+	private int somma;
 	
 	@FXML
     private TabPane tabPane;
