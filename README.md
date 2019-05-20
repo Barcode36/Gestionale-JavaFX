@@ -1,5 +1,5 @@
 # Gestionale-JavaFX
-# version 0.3.0 ALPHA
+# version 0.3.2 ALPHA
 
 This software is released "as is" and it is under development. To develop the graphic interface i'm using SceneBuilder for Java FX. 
 For any suggestion or to report a bug please contact the developer.
@@ -16,3 +16,7 @@ Added the save on TXT file and loading function.
 0.3.0
 Added a database to store data and deleted the BufferedReader to load objects from TXT.
 There are only 2 tables : Anello and Bracciale. I'll add other tables in next version.
+
+0.3.0
+fixed the bug when you saved data twice and raised an SQLException because the data
+was already saved in the database.
