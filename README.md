@@ -13,10 +13,10 @@ Added GestoreOrdini class and Scheduler class.
 0.2.0 ALPHA
 Added the save on TXT file and loading function.
 
-0.3.0
+0.3.0 ALPHA
 Added a database to store data and deleted the BufferedReader to load objects from TXT.
 There are only 2 tables : Anello and Bracciale. I'll add other tables in next version.
 
-0.3.2
-fixed the bug when you saved data twice and raised an SQLException because the data
+0.3.2 ALPHA
+Fixed the bug when you saved data twice and raised an SQLException because the data
 was already saved in the database.
