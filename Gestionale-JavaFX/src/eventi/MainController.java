@@ -29,7 +29,7 @@ public class MainController extends Observable implements Observer
 {	
 	private Gioiello g;
 	private Cliente cliente;
-	private AggiungiGioielloController controllerAnello;
+	private AggiungiAnelloController controllerAnello;
 	private AggiungiClienteController controllerCliente;
 	private AggiungiBraccialeController controllerBracciale;
 	
@@ -49,10 +49,7 @@ public class MainController extends Observable implements Observer
 	private ListView<Gioiello> listView;
 	
 	@FXML
-	private ImageView imageViewer1;
-	
-	@FXML
-    private ImageView imageViewer2;
+	private ListView<ImageView> listViewImmagini;
 	
 	@FXML
     private Button aggiungiClienteButton;
@@ -78,14 +75,15 @@ public class MainController extends Observable implements Observer
 	public Tab getTab() { return tabClienti; }
 	
 	public void showInListView()
-	{
+	{	
 		listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Gioiello> obs, Gioiello oldVal, Gioiello newVal) -> {
-			textAreaGioielli.setText(newVal.getDescrizione());
+			textAreaGioielli.setText(newVal.stampaCaratteristiche());
 			try 
 			{
-				imageViewer1.setImage(new Image(new FileInputStream("immagine.jpg")));
-				imageViewer2.setImage(new Image(new FileInputStream("immagine.jpg")));
+				listViewImmagini.getItems().clear();
+				listViewImmagini.getItems().add(new ImageView(new Image(new FileInputStream("immagine.jpg"))));
+				listViewImmagini.getItems().add(new ImageView(new Image(new FileInputStream("immagine.jpg"))));
 			} 
 			catch (FileNotFoundException e)
 			{
@@ -107,6 +105,7 @@ public class MainController extends Observable implements Observer
 		aggiungiGioielloStage.setScene(scene);
 		aggiungiGioielloStage.show();
 		controllerAnello = loader.getController();
+		controllerAnello.initialize();
 		controllerAnello.addObserver(this); 
 	}
 	
@@ -157,11 +156,11 @@ public class MainController extends Observable implements Observer
 	@Override
 	public void update(Observable o, Object arg) 
 	{ 
-		if(arg.equals("Gioiello Creato"))
+		if(arg.equals("Anello Creato"))
 		{
 			g = controllerAnello.getGioiello();
 			setChanged();
-			notifyObservers("Gioiello Creato");
+			notifyObservers("Anello Creato");
 		}
 		
 		if(arg.equals("Bracciale Creato"))
@@ -181,10 +180,10 @@ public class MainController extends Observable implements Observer
 	
 	public Cliente getCliente() { return this.cliente; }
 	
-	 @FXML
-	 void menuItemSave(ActionEvent event) 
-	 {
+	@FXML
+	void menuItemSave(ActionEvent event) 
+	{
 		setChanged();
 		notifyObservers("Salvato");
-	 }
+	}
 }

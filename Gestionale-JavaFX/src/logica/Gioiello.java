@@ -47,4 +47,5 @@ public abstract class Gioiello
 	public void setDescrizione(String descrizione) { this.descrizione = descrizione; }
 	
 	public abstract String save();
+	public abstract String stampaCaratteristiche();
 }

@@ -26,15 +26,24 @@ public class Gioielleria
 	{
 		for(int i = gioielliNelDatabase; i < gioielli.size(); i++)
 		{
-			if(gioielli.get(i) instanceof Anello) database.save(gioielli.get(i));//,0);
-			else if(gioielli.get(i) instanceof Bracciale) database.save(gioielli.get(i));//,1);
+			if(gioielli.get(i) instanceof Anello)
+			{
+				database.save(gioielli.get(i));
+				gioielliNelDatabase++;
+			}
+			else if(gioielli.get(i) instanceof Bracciale)
+			{
+				database.save(gioielli.get(i));
+				gioielliNelDatabase++;
+			}
 		}
+		System.out.println("Ora i gioielli nel DB sono "+gioielliNelDatabase);
 	}
 	
 	public void caricaGioielli()
 	{
 		gioielliNelDatabase = database.getDBSize();
-		System.out.println("Database size "+gioielliNelDatabase);
+		System.out.println("Database size "+ gioielliNelDatabase);
 		gioielli = database.caricaGioielli();
 		
 		gioielli.sort(new Comparator<Gioiello>() {
@@ -62,6 +71,7 @@ public class Gioielleria
 	public void aggiungiGioiello(Gioiello g)
 	{
 		g.setId(gioielli.get(gioielli.size()-1).getId()+1);
+		System.out.println("id gioiello " + g.getId());
 		this.gioielli.add(g);
 	}
 	

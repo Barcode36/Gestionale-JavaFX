@@ -18,14 +18,15 @@ public class Main extends Application
 			Gioielleria gioielleria = new Gioielleria("Francesco");
 			System.out.println(gioielleria);
 			
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("InterfacciaPrincipale.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("MainController.fxml"));
 			BorderPane root = (BorderPane) loader.load();
-			Scene scene = new Scene(root,1920,1080);
+			Scene scene = new Scene(root,1366,768);
 			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setMinHeight(800);
 			primaryStage.setMinWidth(1000);
 			primaryStage.setTitle(gioielleria.getNomeGioielleria());
 			primaryStage.setScene(scene);
+			//primaryStage.setAlwaysOnTop(true);
 			primaryStage.show();
 			GestioneInterfaccia gestioneInterfaccia = new GestioneInterfaccia(loader.getController(), gioielleria);
 			gestioneInterfaccia.inizio();

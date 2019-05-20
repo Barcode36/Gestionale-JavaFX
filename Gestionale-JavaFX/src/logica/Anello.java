@@ -26,4 +26,26 @@ public class Anello extends Gioiello
 	{
 		return "Anello;" + super.getId() + ";" + super.getPrezzo() + ";" + super.getPeso() + ";" + super.getMateriale() + ";" + super.getGenere() + ";" + raggio + ";" + pietra + ";" + nomeGioiello;
 	}
+	
+	@Override
+	public String stampaCaratteristiche()
+	{
+		String venduto;
+		if(getVenduto()) venduto = "Si";
+		else venduto = "No";
+		
+		String haPietra;
+		if(pietra) haPietra = "Si";
+		else haPietra = "No";
+		
+		return "Id: " + getId() + "\n"
+				+"Prezzo: "+getPrezzo()+"\n"
+				+"Peso: "+getPeso()+"\n"
+				+"Materiale: "+ getMateriale()+"\n"
+				+"Genere: "+getGenere()+"\n"
+				+"Venduto: "+venduto+"\n"
+				+"Diametro: "+raggio+"\n"
+				+"Pietra: "+haPietra+"\n"
+				+"Descrizione: \n"+getDescrizione();
+	}
 }

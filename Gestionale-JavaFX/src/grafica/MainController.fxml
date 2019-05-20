@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventi.MainController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+                  <MenuItem fx:id="salvaMenuItem" mnemonicParsing="false" onAction="#menuItemSave" text="Salva" />
+              <MenuItem mnemonicParsing="false" text="Chiudi" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <left>
+      <BorderPane BorderPane.alignment="CENTER">
+         <center>
+            <ListView fx:id="listView" BorderPane.alignment="CENTER" />
+         </center>
+         <top>
+            <ToolBar BorderPane.alignment="CENTER">
+              <items>
+                <Button fx:id="aggiungiClienteButton" mnemonicParsing="false" onAction="#aggiungiCliente" text="Nuovo Cliente" />
+                  <MenuButton mnemonicParsing="false" text="Aggiungi Gioiello">
+                    <items>
+                      <MenuItem fx:id="aggiungiAnelloMenuItem" mnemonicParsing="false" onAction="#aggiungiAnelloClicked" text="Anello" />
+                      <MenuItem fx:id="aggiungiBraccialeMenuItem" mnemonicParsing="false" onAction="#aggiungiBraccialeClicked" text="Bracciale" />
+                    </items>
+                  </MenuButton>
+              </items>
+            </ToolBar>
+         </top>
+      </BorderPane>
+   </left>
+   <center>
+      <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab text="Gioielli">
+               <content>
+                  <BorderPane>
+                     <left>
+                        <TextArea fx:id="textAreaGioielli" editable="false" prefHeight="1009.0" prefWidth="1082.0" BorderPane.alignment="CENTER" />
+                     </left>
+                     <right>
+                        <ListView fx:id="listViewImmagini" prefHeight="1009.0" prefWidth="547.0" BorderPane.alignment="CENTER" />
+                     </right>
+                  </BorderPane>
+               </content>
+            </Tab>
+          <Tab text="Clienti" />
+        </tabs>
+      </TabPane>
+   </center>
+</BorderPane>

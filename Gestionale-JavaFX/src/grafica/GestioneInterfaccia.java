@@ -32,7 +32,7 @@ public class GestioneInterfaccia implements Observer
 	@Override
 	public void update(Observable o, Object arg) 
 	{
-		if(arg.equals("Gioiello Creato"))
+		if(arg.equals("Anello Creato"))
 		{
 			gioielleria.aggiungiGioiello(controller.getGioiello());
 			controller.aggiungiInListView(controller.getGioiello());

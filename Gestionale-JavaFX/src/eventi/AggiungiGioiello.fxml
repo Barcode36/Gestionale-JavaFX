@@ -7,19 +7,28 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventi.AggiungiGioielloController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventi.AggiungiAnelloController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Peso" wrappingWidth="137.6708984375" />
-            <TextField fx:id="textFieldPeso" prefHeight="15.0" prefWidth="900.0" promptText="Inserisci peso" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nome Gioiello" wrappingWidth="211.6708984375" />
-            <TextField fx:id="textFieldNomeGioiello" prefHeight="16.0" prefWidth="900.0" promptText="Inserisci nome gioiello" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tipo" wrappingWidth="80.6708984375" />
-            <TextField fx:id="textFieldTipo" promptText="Inserisci tipo " />
-            <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submit" prefHeight="16.0" prefWidth="65.0" text="OK" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Prezzo" wrappingWidth="93.6708984375" />
+            <TextField fx:id="prezzoTextField" promptText="Inserisci Prezzo" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Peso" wrappingWidth="63.39892578125" />
+            <TextField fx:id="pesoTextField" promptText="Inserisci Peso" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Diametro" wrappingWidth="68.69189453125" />
+            <TextField fx:id="diametroTextField" promptText="Inserisci Diametro" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nome Gioiello" wrappingWidth="110.126953125" />
+            <TextField fx:id="nomeGioielloTextField" promptText="Inserisci nome gioiello" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Materiale" wrappingWidth="80.6708984375" />
+            <ComboBox fx:id="materialeComboBox" prefHeight="31.0" prefWidth="193.0" promptText="Seleziona materiale" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pietra" wrappingWidth="54.8076171875" />
+            <ComboBox fx:id="pietraComboBox" prefHeight="31.0" prefWidth="194.0" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Genere" wrappingWidth="58.6708984375" />
+            <ComboBox fx:id="genereComboBox" prefHeight="31.0" prefWidth="193.0" promptText="Seleziona Genere" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Descrizione" wrappingWidth="88.0400390625" />
+            <TextArea fx:id="descrizioneTextArea" prefHeight="191.0" prefWidth="900.0" promptText="Inserisci descrizione" />
+            <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submit" prefHeight="31.0" prefWidth="73.0" text="OK" />
          </children>
       </VBox>
    </center>
 </BorderPane>
-
