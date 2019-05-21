@@ -16,6 +16,7 @@ public class GestioneQuery implements GestioneDB
 {
 	private final String driver = "org.postgresql.Driver";
 	private final String url = "jdbc:postgresql://localhost/Gioielleria";
+	
 	private Connection con; 
 	private Statement cmd;
 
