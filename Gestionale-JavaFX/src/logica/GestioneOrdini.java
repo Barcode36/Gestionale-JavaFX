@@ -1,17 +1,45 @@
 package logica;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import gestioneDB.GestioneQuery;
 
 
 public class GestioneOrdini 
 {
 	private ArrayList <Cliente> clienti;
+	private GestioneQuery database;
+	private int clientiNelDatabase = 0;
 	
 	public GestioneOrdini()
 	{
+		try 
+		{
+			this.database = new GestioneQuery();
+		} 
+		catch (ClassNotFoundException | SQLException e) 
+		{
+			e.printStackTrace();
+		}
 		this.clienti = new ArrayList<Cliente>();
 	}
 	
+	public void caricaClienti()
+	{
+		clienti = database.caricaClienti();
+		clientiNelDatabase = database.getClientiNelDB();
+	}
+	
+	public void salvaClienti()
+	{
+		for(int i = clientiNelDatabase; i < clienti.size(); i++)
+		{
+			database.salvaClienti(clienti.get(i));
+			clientiNelDatabase++;
+		}
+		System.out.println("Ora i clienti nel db sono "+clientiNelDatabase);
+	}
 	public ArrayList <Cliente> getClienti(){ return this.clienti;}
 	public void aggiungiCliente(Cliente cliente) {this.clienti.add(cliente);}
 	public Cliente getCliente(int index)
@@ -20,27 +48,5 @@ public class GestioneOrdini
 		else return null;
 	}
 	
-	public boolean rimuoviCliente(String nomeCliente, int numeroTelefono)
-	{
-		for(int i = 0; i < clienti.size(); i++)
-		{
-			if(clienti.get(i).getNomeCliente().equals(nomeCliente) && clienti.get(i).getNumeroTelefono() == numeroTelefono)
-			{
-				clienti.remove(i);
-				return true;
-			}
-		}
-		
-		return false;
-	}
 	
-	public void salvaOrdini()
-	{
-		
-	}
-	
-	public void caricaOrdini()
-	{
-		
-	}
 }

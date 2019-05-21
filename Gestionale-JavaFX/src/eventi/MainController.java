@@ -22,6 +22,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import logica.Cliente;
+import logica.GestioneOrdini;
 import logica.Gioielleria;
 import logica.Gioiello;
 
@@ -43,6 +44,9 @@ public class MainController extends Observable implements Observer
 	private TextArea textAreaGioielli;
 	
 	@FXML
+    private TextArea textAreaClienti;
+	
+	@FXML
 	private MenuItem salvaMenuItem;
 	 
 	@FXML
@@ -50,6 +54,9 @@ public class MainController extends Observable implements Observer
 	
 	@FXML
 	private ListView<ImageView> listViewImmagini;
+	
+	@FXML
+	private ListView<Cliente> listViewClienti;
 	
 	@FXML
     private Button aggiungiClienteButton;
@@ -62,13 +69,19 @@ public class MainController extends Observable implements Observer
 	
 	public Gioiello getGioiello() { return this.g; }
 	
-	public void aggiungiInListView(Gioiello gioiello) { listView.getItems().add(gioiello); }
+	public void aggiungiInListViewGioiello(Gioiello gioiello) { listView.getItems().add(gioiello); }
+	public void aggiungiInListViewCliente(Cliente cliente) { listViewClienti.getItems().add(cliente); }
 	
-	public void setGioielli(Gioielleria gioielleria)
+	public void setGioielliEClienti(Gioielleria gioielleria, GestioneOrdini ordini)
 	{ 
 		for(Gioiello g : gioielleria.getGioielli())
 		{
 			listView.getItems().add(g);
+		}
+		
+		for(Cliente c : ordini.getClienti())
+		{
+			listViewClienti.getItems().add(c);
 		}
 	}
 	
@@ -89,6 +102,12 @@ public class MainController extends Observable implements Observer
 			{
 				e.printStackTrace();
 			}
+		});
+		
+		listViewClienti.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		listViewClienti.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Cliente> obs, Cliente oldVal, Cliente newVal) ->{
+			textAreaClienti.setText(newVal.stampaCaratteristiche());
+			
 		});
 	}
 	

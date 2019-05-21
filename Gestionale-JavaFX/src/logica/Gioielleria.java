@@ -42,7 +42,7 @@ public class Gioielleria
 	
 	public void caricaGioielli()
 	{
-		gioielliNelDatabase = database.getDBSize();
+		gioielliNelDatabase = database.getGioielliNelDB();
 		System.out.println("Database size "+ gioielliNelDatabase);
 		gioielli = database.caricaGioielli();
 		

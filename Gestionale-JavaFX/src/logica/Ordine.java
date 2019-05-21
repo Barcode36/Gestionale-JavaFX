@@ -4,14 +4,14 @@ import java.util.Date;
 
 public class Ordine 
 {
-	private String id;
+	private int id;
 	private String nomeCliente; //nome del cliente associato all'ordine
 	private Gioiello gioiello;
 	private Date dataScadenza;
 	private Date dataOrdine;
 	private String tipologia; //riparazione o creazione
 	
-	public Ordine(String id,Date dataScadenza, String nomeCliente, Gioiello gioiello, String tipologia)
+	public Ordine(int id,Date dataScadenza, String nomeCliente, Gioiello gioiello, String tipologia)
 	{
 		this.dataOrdine = new Date();
 		this.tipologia = tipologia;
@@ -21,8 +21,8 @@ public class Ordine
 		this.gioiello = gioiello;
 	}
 	
-	public String getId() { return this.id;}
-	public void setId(String id) { this.id = id;}
+	public int getId() { return this.id;}
+	public void setId(int id) { this.id = id;}
 	
 	public String getNomeCliente() { return this.nomeCliente;}
 	public void setNomeCliente(String nomeCliente) { this.nomeCliente = nomeCliente;}

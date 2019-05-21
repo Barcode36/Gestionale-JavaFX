@@ -11,5 +11,6 @@ public interface GestioneDB
 	public ArrayList<Gioiello> caricaGioielli();
 	public void update(Gioiello gioiello, int tipo);
 	public void delete(int id);
-	public int getDBSize();
+	public int getGioielliNelDB();
+	public int getClientiNelDB();
 }

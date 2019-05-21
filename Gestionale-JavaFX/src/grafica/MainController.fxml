@@ -63,7 +63,17 @@
                   </BorderPane>
                </content>
             </Tab>
-          <Tab text="Clienti" />
+          <Tab text="Clienti">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <right>
+                        <ListView fx:id="listViewClienti" prefHeight="1009.0" prefWidth="322.0" BorderPane.alignment="CENTER" />
+                     </right>
+                     <left>
+                        <TextArea fx:id="textAreaClienti" editable="false" prefHeight="1009.0" prefWidth="410.0" BorderPane.alignment="CENTER" />
+                     </left>
+                  </BorderPane>
+               </content></Tab>
         </tabs>
       </TabPane>
    </center>

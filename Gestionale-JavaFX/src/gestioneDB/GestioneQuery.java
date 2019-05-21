@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import logica.Anello;
 import logica.Bracciale;
+import logica.Cliente;
 import logica.Gioiello;
 import logica.MATERIALE;
 
@@ -23,6 +24,18 @@ public class GestioneQuery implements GestioneDB
 		Class.forName(driver);
 		con = DriverManager.getConnection(url, "postgres", "password");
 		cmd = con.createStatement();
+	}
+	
+	public void chiudiConnessione()
+	{
+		try 
+		{
+			con.close();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -181,12 +194,10 @@ public class GestioneQuery implements GestioneDB
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 	}
 
 	@Override
-	public int getDBSize() 
+	public int getGioielliNelDB() 
 	{
 		int size = 0;
 		
@@ -195,6 +206,66 @@ public class GestioneQuery implements GestioneDB
 			ResultSet res = cmd.executeQuery("select count(*) from anello;");
 			while(res.next()) size+=res.getInt(1);
 			res = cmd.executeQuery("select count(*) from bracciale;");
+			while(res.next()) size+=res.getInt(1);
+			
+			res.close();
+		} 
+		catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return size;
+	}
+	
+	public ArrayList<Cliente> caricaClienti()
+	{
+		ArrayList<Cliente> clienti = new ArrayList<Cliente>();
+		String query = "select * from cliente;";
+		
+		try 
+		{
+			ResultSet res = cmd.executeQuery(query);
+			
+			while(res.next())
+			{
+				clienti.add(new Cliente(res.getInt(1),res.getString(2),res.getString(3),res.getString(4),null));
+			}
+			
+			res.close();
+		} 
+		catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return clienti;
+	}
+	
+	public void salvaClienti(Cliente cliente)
+	{
+		try 
+		{
+			cmd.executeUpdate("insert into cliente (nomecliente, cognomecliente, numeroditelefono) values"
+					+ "('"+cliente.getNomeCliente()+"','"+cliente.getCognomeCliente()+"','"+cliente.getNumeroTelefono()+"');");
+		} 
+		catch (SQLException e) 
+		{
+			
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public int getClientiNelDB() 
+	{
+		int size = 0;
+		
+		try 
+		{
+			ResultSet res = cmd.executeQuery("select count(*) from cliente;");
 			while(res.next()) size+=res.getInt(1);
 			
 			res.close();
