@@ -1,12 +1,13 @@
 package gestioneDB;
 
 import java.util.ArrayList;
-import logica.Gioiello;
+
+import models.Gioiello;
 
 public interface GestioneDB
 {
 	public void save(Gioiello gioiello);//, int tipo);
-	public Gioiello findByPrimaryKey(int id);
+	public Gioiello findByPrimaryKey(long id);
 	public int findIdByElements(Gioiello gioiello);	
 	public ArrayList<Gioiello> caricaGioielli();
 	public void update(Gioiello gioiello, int tipo);

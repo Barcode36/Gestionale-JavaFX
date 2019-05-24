@@ -1,4 +1,4 @@
-package logica;
+package models;
 
 public class Anello extends Gioiello
 {
@@ -20,12 +20,6 @@ public class Anello extends Gioiello
 	
 	@Override
 	public String toString() { return this.nomeGioiello; }
-	
-	@Override
-	public String save()
-	{
-		return "Anello;" + super.getId() + ";" + super.getPrezzo() + ";" + super.getPeso() + ";" + super.getMateriale() + ";" + super.getGenere() + ";" + raggio + ";" + pietra + ";" + nomeGioiello;
-	}
 	
 	@Override
 	public String stampaCaratteristiche()

@@ -3,6 +3,8 @@ package logica;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import models.Ordine;
+
 public class Scheduler
 {
 	private ArrayList<Ordine> ordini;

@@ -21,10 +21,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import logica.Cliente;
 import logica.GestioneOrdini;
 import logica.Gioielleria;
-import logica.Gioiello;
+import models.Cliente;
+import models.Gioiello;
 
 public class MainController extends Observable implements Observer
 {	

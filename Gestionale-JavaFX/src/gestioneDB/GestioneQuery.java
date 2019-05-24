@@ -6,11 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import logica.Anello;
-import logica.Bracciale;
-import logica.Cliente;
-import logica.Gioiello;
-import logica.MATERIALE;
+
+import models.Anello;
+import models.Bracciale;
+import models.Cliente;
+import models.Gioiello;
+import models.MATERIALE;
 
 public class GestioneQuery implements GestioneDB
 {
@@ -64,7 +65,7 @@ public class GestioneQuery implements GestioneDB
 	}
 
 	@Override
-	public Gioiello findByPrimaryKey(int id) 
+	public Gioiello findByPrimaryKey(long id) 
 	{
 		try 
 		{

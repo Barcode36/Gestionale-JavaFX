@@ -9,8 +9,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import logica.Cliente;
-import logica.Ordine;
+import models.Cliente;
+import models.Ordine;
 
 public class AggiungiClienteController extends Observable
 {

@@ -8,9 +8,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import logica.Bracciale;
-import logica.Gioiello;
-import logica.MATERIALE;
+import models.Bracciale;
+import models.Gioiello;
+import models.MATERIALE;
 
 public class AggiungiBraccialeController extends Observable
 {
@@ -67,7 +67,7 @@ public class AggiungiBraccialeController extends Observable
 		double larghezza = Double.parseDouble(larghezzaTextField.getText());
 		String nomeGioiello = nomeGioielloTextField.getText();
 		String descrizione = descrizioneTextArea.getText();
-		gioiello = new Bracciale(0,prezzo,peso,materiale,genere,venduto,lunghezza,spessore,larghezza,nomeGioiello,descrizione);
+		gioiello = new Bracciale((long)0,prezzo,peso,materiale,genere,venduto,lunghezza,spessore,larghezza,nomeGioiello,descrizione);
 		setChanged();
 		notifyObservers("Bracciale Creato");
     }

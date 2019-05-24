@@ -10,9 +10,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import logica.Anello;
-import logica.Gioiello;
-import logica.MATERIALE;
+import models.Anello;
+import models.Gioiello;
+import models.MATERIALE;
 
 public class AggiungiAnelloController extends Observable
 {
@@ -76,7 +76,7 @@ public class AggiungiAnelloController extends Observable
 		String nomeGioiello = nomeGioielloTextField.getText();
 		String descrizione = descrizioneTextArea.getText();
 		
-		gioiello = new Anello(0,prezzo,peso,materiale,genere,venduto,raggio,pietra,nomeGioiello,descrizione);
+		gioiello = new Anello((long)0,prezzo,peso,materiale,genere,venduto,raggio,pietra,nomeGioiello,descrizione);
 		setChanged();
 		notifyObservers("Anello Creato");
     }

@@ -1,4 +1,4 @@
-package logica;
+package models;
 
 public abstract class Gioiello 
 {
@@ -46,6 +46,5 @@ public abstract class Gioiello
 	public String getDescrizione() { return this.descrizione; }
 	public void setDescrizione(String descrizione) { this.descrizione = descrizione; }
 	
-	public abstract String save();
 	public abstract String stampaCaratteristiche();
 }

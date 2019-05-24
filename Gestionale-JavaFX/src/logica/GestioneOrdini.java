@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import gestioneDB.GestioneQuery;
+import models.Cliente;
 
 
 public class GestioneOrdini 

@@ -3,21 +3,31 @@ package logica;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import gestioneDB.GestioneQuery;
+import models.Anello;
+import models.Bracciale;
+import models.Gioiello;
 
-import gestioneDB.GestioneQuery;;
 public class Gioielleria 
 {
 	private GestioneQuery database;
 	private ArrayList <Gioiello> gioielli;
-	private int gioielliNelDatabase;
+	private long gioielliNelDatabase;
 	private String nomeGioielleria;
 	private double incassoGiornaliero;
 	private double guadagnoGiornaliero;
-	private long calcoloid;
 	
-	public Gioielleria(String nomeGioielleria) throws ClassNotFoundException, SQLException
+	public Gioielleria(String nomeGioielleria)
 	{
-		database = new GestioneQuery();
+		try 
+		{
+			database = new GestioneQuery();
+		} 
+		catch (ClassNotFoundException | SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.nomeGioielleria = nomeGioielleria;
 		this.guadagnoGiornaliero = 0;
 		this.incassoGiornaliero = 0;
@@ -25,16 +35,16 @@ public class Gioielleria
 	
 	public void salvaGioielli()
 	{
-		for(int i = gioielliNelDatabase; i < gioielli.size(); i++)
+		for(long i = gioielliNelDatabase; i < gioielli.size(); i++)
 		{
-			if(gioielli.get(i) instanceof Anello)
+			if(gioielli.get((int)i) instanceof Anello)
 			{
-				database.save(gioielli.get(i));
+				database.save(gioielli.get((int)i));
 				gioielliNelDatabase++;
 			}
-			else if(gioielli.get(i) instanceof Bracciale)
+			else if(gioielli.get((int)i) instanceof Bracciale)
 			{
-				database.save(gioielli.get(i));
+				database.save(gioielli.get((int)i));
 				gioielliNelDatabase++;
 			}
 		}
@@ -46,7 +56,6 @@ public class Gioielleria
 		gioielliNelDatabase = database.getGioielliNelDB();
 		System.out.println("Database size "+ gioielliNelDatabase);
 		gioielli = database.caricaGioielli();
-		calcoloid = gioielli.size();
 		
 		gioielli.sort(new Comparator<Gioiello>() {
 
@@ -72,16 +81,21 @@ public class Gioielleria
 	
 	public void aggiungiGioiello(Gioiello g)
 	{
-		g.setId(calcoloid);
-		this.gioielli.add(g);
-		calcoloid++;
-
-//		g.setId(gioielli.get(gioielli.size()-1).getId()+1);
-//		System.out.println("id gioiello " + g.getId());
-//		this.gioielli.add(g);
+		if(gioielli.size() == 0)
+		{
+			g.setId(0);
+			this.gioielli.add(g);
+			System.out.println("id gioiello " + g.getId());
+		}
+		else
+		{
+			g.setId(gioielli.get(gioielli.size()-1).getId()+1);
+			System.out.println("id gioiello " + g.getId());
+			this.gioielli.add(g);
+		}
 	}
 	
-	public Gioiello getGioiello(int id)
+	public Gioiello getGioiello(long id)
 	{
 //		for(Gioiello g : gioielli)
 //		{
@@ -134,8 +148,6 @@ public class Gioielleria
 		}
 	}
 
-	public ArrayList<Gioiello> getGioielli() {
-		return gioielli;
-	}
+	public ArrayList<Gioiello> getGioielli() { return gioielli; }
 
 }

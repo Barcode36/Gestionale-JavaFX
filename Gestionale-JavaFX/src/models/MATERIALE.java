@@ -1,4 +1,4 @@
-package logica;
+package models;
 
 public enum MATERIALE 
 {
