@@ -20,3 +20,6 @@ There are only 2 tables : Anello and Bracciale. I'll add other tables in next ve
 0.3.2 ALPHA
 Fixed the bug when you saved data twice and raised an SQLException because the data
 was already saved in the database.
+
+0.3.5 ALPHA
+Added other tables into database and fixed some bugs.
