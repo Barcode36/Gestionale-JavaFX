@@ -13,6 +13,7 @@ public class Gioielleria
 	private String nomeGioielleria;
 	private double incassoGiornaliero;
 	private double guadagnoGiornaliero;
+	private long calcoloid;
 	
 	public Gioielleria(String nomeGioielleria) throws ClassNotFoundException, SQLException
 	{
@@ -45,6 +46,7 @@ public class Gioielleria
 		gioielliNelDatabase = database.getGioielliNelDB();
 		System.out.println("Database size "+ gioielliNelDatabase);
 		gioielli = database.caricaGioielli();
+		calcoloid = gioielli.size();
 		
 		gioielli.sort(new Comparator<Gioiello>() {
 
@@ -70,9 +72,13 @@ public class Gioielleria
 	
 	public void aggiungiGioiello(Gioiello g)
 	{
-		g.setId(gioielli.get(gioielli.size()-1).getId()+1);
-		System.out.println("id gioiello " + g.getId());
+		g.setId(calcoloid);
 		this.gioielli.add(g);
+		calcoloid++;
+
+//		g.setId(gioielli.get(gioielli.size()-1).getId()+1);
+//		System.out.println("id gioiello " + g.getId());
+//		this.gioielli.add(g);
 	}
 	
 	public Gioiello getGioiello(int id)

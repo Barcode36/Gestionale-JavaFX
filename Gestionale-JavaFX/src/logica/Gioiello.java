@@ -2,7 +2,7 @@ package logica;
 
 public abstract class Gioiello 
 {
-	private int id;
+	private long id;
 	private double prezzo; 
 	private double peso;
 	private MATERIALE materiale;
@@ -11,7 +11,7 @@ public abstract class Gioiello
 	protected String nomeGioiello;
 	private String descrizione;
 	
-	public Gioiello(int id, double prezzo, double peso, MATERIALE materiale, String genere, boolean venduto, String descrizione)
+	public Gioiello(long id, double prezzo, double peso, MATERIALE materiale, String genere, boolean venduto, String descrizione)
 	{
 		if(prezzo >= 0) this.prezzo = prezzo;
 		if(peso >= 0) this.peso = peso;
@@ -28,8 +28,8 @@ public abstract class Gioiello
 	public boolean getVenduto() {return this.venduto;}
 	public void setVenduto(boolean venduto) { this.venduto = venduto;}
 	
-	public int getId() { return this.id; }
-	public void setId(int id) { this.id = id; }
+	public long getId() { return this.id; }
+	public void setId(long id) { this.id = id; }
 	
 	public double getPrezzo() { return prezzo; }
 	public void setPrezzo(double prezzo) { this.prezzo = prezzo; }
