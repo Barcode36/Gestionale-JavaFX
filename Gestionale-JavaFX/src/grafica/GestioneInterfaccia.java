@@ -15,7 +15,7 @@ public class GestioneInterfaccia implements Observer
 	
 	public void inizio() throws IOException
 	{
-		controller.showInListView();
+		controller.start();
 		controller.addObserver(this);
 		//System.out.println(gioielleria.getGioiello(3));
 	}
@@ -59,6 +59,5 @@ public class GestioneInterfaccia implements Observer
 			controller.aggiungiInListViewCliente(controller.getCliente());
 			System.out.println("cliente aggiunto");
 		}
-		
 	}
 }

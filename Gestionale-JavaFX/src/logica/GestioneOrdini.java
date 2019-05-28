@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import gestioneDB.GestioneQuery;
 import models.Cliente;
+import models.Ordine;
 
 
 public class GestioneOrdini 
@@ -47,6 +48,19 @@ public class GestioneOrdini
 	{
 		if(index < clienti.size()) return clienti.get(index);
 		else return null;
+	}
+	
+	public void aggiungiOrdine(Cliente cliente,Ordine o)
+	{
+		try 
+		{
+			database.salvaOrdine(o, cliente);
+		} 
+		catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	

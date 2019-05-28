@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventi.AggiungiOrdineController">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" prefHeight="21.0" prefWidth="906.0" text="Aggiungi Ordine" textAlignment="CENTER" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Data Consegna" wrappingWidth="152.6708984375" />
+            <DatePicker fx:id="selettoreDataConsegna" promptText="Seleziona Data" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tipologia Ordine" wrappingWidth="188.0498046875" />
+            <ComboBox fx:id="tipologiaComboBox" prefHeight="31.0" prefWidth="220.0" promptText="Seleziona Tipologia" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Gioiello" wrappingWidth="80.244140625" />
+            <ListView fx:id="gioielloListView" prefHeight="258.0" prefWidth="900.0" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Descrizione" wrappingWidth="111.0400390625" />
+            <TextArea fx:id="descrizioneTextArea" prefHeight="200.0" prefWidth="200.0" promptText="Inserisci Descrizione" />
+            <Button fx:id="bottone" mnemonicParsing="false" onAction="#bottonePremuto" prefHeight="31.0" prefWidth="76.0" text="OK" />
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

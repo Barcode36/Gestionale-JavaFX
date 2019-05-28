@@ -41,19 +41,19 @@ public class Scheduler
 	
 	public void sort()
 	{
-		ordini.sort(new Comparator<Ordine>() 
-		{
-
-			@Override
-			public int compare(Ordine o1, Ordine o2) 
-			{
-				int compare = 0;
-				if(o1.getDataScadenza().before(o2.getDataScadenza())) compare = -1;
-				if(o1.getDataScadenza().equals(o2.getDataScadenza())) compare = 0;
-				if(o1.getDataScadenza().after(o2.getDataScadenza())) compare = 1;
-				return compare;
-			}
-		});
+//		ordini.sort(new Comparator<Ordine>() 
+//		{
+//
+//			@Override
+//			public int compare(Ordine o1, Ordine o2) 
+//			{
+//				int compare = 0;
+//				if(o1.getDataScadenza().before(o2.getDataScadenza())) compare = -1;
+//				if(o1.getDataScadenza().equals(o2.getDataScadenza())) compare = 0;
+//				if(o1.getDataScadenza().after(o2.getDataScadenza())) compare = 1;
+//				return compare;
+//			}
+//		});
 	}
 	
 	public void stampaOrdini()

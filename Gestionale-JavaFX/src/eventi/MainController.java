@@ -7,10 +7,12 @@ import java.util.Observable;
 import java.util.Observer;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
@@ -25,14 +27,18 @@ import logica.GestioneOrdini;
 import logica.Gioielleria;
 import models.Cliente;
 import models.Gioiello;
+import models.Ordine;
 
 public class MainController extends Observable implements Observer
 {	
 	private Gioiello g;
 	private Cliente cliente;
+	private ContextMenu contextMenu;
+	private Ordine ordine;
 	private AggiungiAnelloController controllerAnello;
 	private AggiungiClienteController controllerCliente;
 	private AggiungiBraccialeController controllerBracciale;
+	private AggiungiOrdineController controllerOrdine;
 	
 	@FXML
     private TabPane tabPane;
@@ -85,11 +91,19 @@ public class MainController extends Observable implements Observer
 		}
 	}
 	
-	public Tab getTab() { return tabClienti; }
-	
-	public void showInListView()
-	{	
+	public void start()
+	{
+		contextMenu = new ContextMenu();
+		contextMenu.getItems().addAll(new MenuItem("Aggiungi Ordine"), new MenuItem("Elimina Cliente"));
+		listViewClienti.setContextMenu(contextMenu);
 		listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		listViewClienti.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		showInListView();
+	}
+	
+	private void showInListView()
+	{	
+		
 		listView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Gioiello> obs, Gioiello oldVal, Gioiello newVal) -> {
 			textAreaGioielli.setText(newVal.stampaCaratteristiche());
 			try 
@@ -104,9 +118,28 @@ public class MainController extends Observable implements Observer
 			}
 		});
 		
-		listViewClienti.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		
 		listViewClienti.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Cliente> obs, Cliente oldVal, Cliente newVal) ->{
 			textAreaClienti.setText(newVal.stampaCaratteristiche());
+			
+			contextMenu.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					try 
+					{
+						controllerOrdine = getControllerOrdine();
+						cliente = newVal;
+					} 
+					catch (IOException e) 
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					controllerOrdine.initialize();
+				}
+			});
 			
 		});
 	}
@@ -195,14 +228,35 @@ public class MainController extends Observable implements Observer
 			setChanged();
 			notifyObservers("Cliente creato");
 		}
+		
+		if(arg.equals("Ordine Creato"))
+		{
+			cliente.aggiungiOrdine(controllerOrdine.getOrdine());
+		}
 	}
 	
 	public Cliente getCliente() { return this.cliente; }
+	public Ordine getOrdine() {return this.ordine;}
 	
 	@FXML
 	void menuItemSave(ActionEvent event) 
 	{
 		setChanged();
 		notifyObservers("Salvato");
+	}
+	
+	private AggiungiOrdineController getControllerOrdine() throws IOException
+	{
+		Stage aggiungiClienteStage = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("AggiungiOrdine.fxml"));
+		BorderPane aggiungiClientePane = (BorderPane) loader.load();
+		Scene scene = new Scene(aggiungiClientePane,900,600);
+		aggiungiClienteStage.setResizable(false);
+		aggiungiClienteStage.setTitle("Aggiungi Cliente");
+		aggiungiClienteStage.setScene(scene);
+		aggiungiClienteStage.show();
+		AggiungiOrdineController controller = loader.getController();
+		controller.addObserver(this);
+		return controller;
 	}
 }

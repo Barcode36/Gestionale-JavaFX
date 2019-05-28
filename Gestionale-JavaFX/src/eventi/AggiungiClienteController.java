@@ -1,20 +1,17 @@
 package eventi;
 
-import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import models.Cliente;
-import models.Ordine;
 
-public class AggiungiClienteController extends Observable
+public class AggiungiClienteController extends Observable implements Observer
 {
-	private ArrayList<Ordine> ordini;
 	private Cliente cliente;
 	
 	@FXML
@@ -22,9 +19,6 @@ public class AggiungiClienteController extends Observable
 
     @FXML
     private TextField inserisciNumeroTelefono;
-
-    @FXML
-    private Button aggiungiOrdineButton;
 
     @FXML
     private TextField inserisciCognomeCliente;
@@ -41,7 +35,7 @@ public class AggiungiClienteController extends Observable
 		
     	if(mat.matches() && mat2.matches() && Pattern.matches("[0-9]+", inserisciNumeroTelefono.getText()))
     	{
-    		cliente = new Cliente(0,inserisciNomeCliente.getText(), inserisciCognomeCliente.getText(),inserisciNumeroTelefono.getText(), ordini);
+    		cliente = new Cliente(0,inserisciNomeCliente.getText(), inserisciCognomeCliente.getText(),inserisciNumeroTelefono.getText());
     		System.out.println(cliente);
     		setChanged();
     		notifyObservers("Cliente creato");
@@ -49,5 +43,11 @@ public class AggiungiClienteController extends Observable
     }
     
     public Cliente getCliente() { return this.cliente; }
+
+	@Override
+	public void update(Observable o, Object arg) 
+	{
+		
+	}
     
 }

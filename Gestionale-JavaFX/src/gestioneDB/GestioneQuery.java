@@ -12,8 +12,9 @@ import models.Bracciale;
 import models.Cliente;
 import models.Gioiello;
 import models.MATERIALE;
+import models.Ordine;
 
-public class GestioneQuery implements GestioneDB
+public class GestioneQuery
 {
 	private final String driver = "org.postgresql.Driver";
 	private final String url = "jdbc:postgresql://localhost/Gioielleria";
@@ -39,8 +40,7 @@ public class GestioneQuery implements GestioneDB
 		}
 	}
 	
-	@Override
-	public void save(Gioiello gioiello)//, int tipo) 
+	public void salvaGioiello(Gioiello gioiello)//, int tipo) 
 	{
 		
 		try
@@ -64,7 +64,6 @@ public class GestioneQuery implements GestioneDB
 		}
 	}
 
-	@Override
 	public Gioiello findByPrimaryKey(long id) 
 	{
 		try 
@@ -117,13 +116,6 @@ public class GestioneQuery implements GestioneDB
 		return null;
 	}
 
-	@Override
-	public int findIdByElements(Gioiello gioiello) {
-		
-		return 0;
-	}
-
-	@Override
 	public ArrayList<Gioiello> caricaGioielli() 
 	{
 		ArrayList<Gioiello> gioielli = new ArrayList<Gioiello>();
@@ -176,14 +168,7 @@ public class GestioneQuery implements GestioneDB
 	    return gioielli;
 	}
 
-	@Override
-	public void update(Gioiello gioiello, int tipo) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete(int  id) 
+	public void delete(int id) 
 	{
 		try 
 		{
@@ -197,7 +182,6 @@ public class GestioneQuery implements GestioneDB
 		}
 	}
 
-	@Override
 	public int getGioielliNelDB() 
 	{
 		int size = 0;
@@ -231,7 +215,7 @@ public class GestioneQuery implements GestioneDB
 			
 			while(res.next())
 			{
-				clienti.add(new Cliente(res.getInt(1),res.getString(2),res.getString(3),res.getString(4),null));
+				clienti.add(new Cliente(res.getInt(1),res.getString(2),res.getString(3),res.getString(4)));
 			}
 			
 			res.close();
@@ -249,8 +233,8 @@ public class GestioneQuery implements GestioneDB
 	{
 		try 
 		{
-			cmd.executeUpdate("insert into cliente (nomecliente, cognomecliente, numeroditelefono) values"
-					+ "('"+cliente.getNomeCliente()+"','"+cliente.getCognomeCliente()+"','"+cliente.getNumeroTelefono()+"');");
+			cmd.executeUpdate("insert into cliente (nome, cognome, numerotelefono) values"
+				+ "('"+cliente.getNomeCliente()+"','"+cliente.getCognomeCliente()+"','"+cliente.getNumeroTelefono()+"');");
 		} 
 		catch (SQLException e) 
 		{
@@ -258,8 +242,7 @@ public class GestioneQuery implements GestioneDB
 			e.printStackTrace();
 		}
 	}
-
-	@Override
+	
 	public int getClientiNelDB() 
 	{
 		int size = 0;
@@ -278,6 +261,44 @@ public class GestioneQuery implements GestioneDB
 		}
 		
 		return size;
+	}
+	
+	public void salvaOrdine(Ordine o, Cliente cliente) throws SQLException
+	{
+		if(o.getGioiello() instanceof Anello)
+		{
+			String query = "insert into ordine(dataEmissione,dataScadenza,tipologia,idAnello,descrizione,idCliente)"
+					+ "values('"+o.getDataOrdine()+"','"+o.getDataScadenza()+"','"+o.getTipologia()+"',"+o.getGioiello().getId()+",'"+o.getDescrizione()+"',"+cliente.getId()+")";
+			
+			cmd.executeUpdate(query);
+		}
+		else if(o.getGioiello() instanceof Bracciale)
+		{
+			String query = "insert into ordine(dataEmissione,dataScadenza,tipologia,idBracciale,descrizione,idCliente)"
+					+ "values('"+ o.getDataOrdine()+"','"+o.getDataScadenza()+"','"+o.getTipologia()+"',"+o.getGioiello().getId()+",'"+o.getDescrizione()+"',"+cliente.getId()+")";
+			cmd.executeUpdate(query);
+		}
+	}
+	
+	public int getNumeroOrdini(Cliente cliente)
+	{
+		int numeroOrdini = 0;
+		String query = "select count(*) "
+				+ "from ordine, cliente "
+				+ "where ordine.idcliente = " + cliente.getId() + ";";
+		try 
+		{
+			ResultSet res = cmd.executeQuery(query);
+			while(res.next()) numeroOrdini+=res.getInt(1);
+			
+			res.close();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return numeroOrdini;
 	}
 
 }

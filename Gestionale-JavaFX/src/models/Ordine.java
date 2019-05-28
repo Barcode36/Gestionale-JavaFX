@@ -1,33 +1,42 @@
 package models;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Ordine 
 {
-	private int id;
-	private String nomeCliente; //nome del cliente associato all'ordine
+	private long id;
 	private Gioiello gioiello;
 	private Date dataScadenza;
 	private Date dataOrdine;
 	private String tipologia; //riparazione o creazione
+	private String descrizione;
 	
-	public Ordine(int id,Date dataScadenza, String nomeCliente, Gioiello gioiello, String tipologia)
+	public Ordine(long id,String dataScadenza,Gioiello gioiello, String tipologia, String descrizione)
 	{
 		this.dataOrdine = new Date();
 		this.tipologia = tipologia;
-		this.dataScadenza = dataScadenza;
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		try 
+		{
+			this.dataScadenza = formatter.parse(dataScadenza);
+		} 
+		catch (ParseException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.id = id;
-		this.nomeCliente = nomeCliente;
 		this.gioiello = gioiello;
+		this.descrizione = descrizione;
 	}
 	
-	public int getId() { return this.id;}
-	public void setId(int id) { this.id = id;}
+	public long getId() { return this.id;}
+	public void setId(long id) { this.id = id;}
 	
-	public String getNomeCliente() { return this.nomeCliente;}
-	public void setNomeCliente(String nomeCliente) { this.nomeCliente = nomeCliente;}
-	
-	public Gioiello getOrdine() { return this.gioiello;}
+	public Gioiello getGioiello() { return this.gioiello;}
 	public void setGioiello(Gioiello g) { this.gioiello = g;}
 	
 	public Date getDataOrdine() { return this.dataOrdine;}
@@ -35,10 +44,16 @@ public class Ordine
 	public Date getDataScadenza() { return this.dataScadenza;}
 	public void setDataScadenza(Date dataScadenza) { this.dataScadenza = dataScadenza;} 
 	
+	public String getDescrizione() { return this.descrizione; }
+	public void setDescrizione(String commento) { this.descrizione = commento; }
+	
+	public String getTipologia() { return this.tipologia;}
+	public void setTipologia(String tipologia) { this.tipologia = tipologia;}
+	
 	@Override
 	public String toString()
 	{
-		return id + ";" + nomeCliente + ";" + gioiello + ";" + dataScadenza.toString() + ";" + dataOrdine.toString() + ";" + tipologia;
+		return dataOrdine.toString();
 	}
 }
 

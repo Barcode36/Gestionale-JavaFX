@@ -46,5 +46,4 @@ public class Bracciale extends Gioiello
 				+"Spessore: "+spessore+"\n"
 				+"Descrizione: \n"+getDescrizione();
 	}
-	
 }

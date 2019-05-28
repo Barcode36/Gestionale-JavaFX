@@ -39,16 +39,16 @@ public class Gioielleria
 		{
 			if(gioielli.get((int)i) instanceof Anello)
 			{
-				database.save(gioielli.get((int)i));
+				database.salvaGioiello(gioielli.get((int)i));
 				gioielliNelDatabase++;
 			}
 			else if(gioielli.get((int)i) instanceof Bracciale)
 			{
-				database.save(gioielli.get((int)i));
+				database.salvaGioiello(gioielli.get((int)i));
 				gioielliNelDatabase++;
 			}
 		}
-		System.out.println("Ora i gioielli nel DB sono "+gioielliNelDatabase);
+		System.out.println("Ora i gioielli nel DB sono " + gioielliNelDatabase);
 	}
 	
 	public void caricaGioielli()

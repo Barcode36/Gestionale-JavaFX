@@ -18,7 +18,7 @@ public class Main extends Application
 			Gioielleria gioielleria = new Gioielleria("Francesco");
 			System.out.println(gioielleria);
 			
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("MainController.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("ControllerPrincipale.fxml"));
 			BorderPane root = (BorderPane) loader.load();
 			Scene scene = new Scene(root,1366,768);
 			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
