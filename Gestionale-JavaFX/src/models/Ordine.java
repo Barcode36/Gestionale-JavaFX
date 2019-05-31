@@ -18,14 +18,14 @@ public class Ordine
 		this.dataOrdine = new Date();
 		this.tipologia = tipologia;
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		try 
 		{
 			this.dataScadenza = formatter.parse(dataScadenza);
 		} 
 		catch (ParseException e) 
 		{
-			// TODO Auto-generated catch block
+			System.out.println("sono quì");
 			e.printStackTrace();
 		}
 		this.id = id;
@@ -53,7 +53,7 @@ public class Ordine
 	@Override
 	public String toString()
 	{
-		return dataOrdine.toString();
+		return gioiello.getNomeGioiello();
 	}
 }
 

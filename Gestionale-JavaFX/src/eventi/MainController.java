@@ -3,8 +3,10 @@ package eventi;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import gestioneDB.GestioneQuery;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -53,6 +55,9 @@ public class MainController extends Observable implements Observer
     private TextArea textAreaClienti;
 	
 	@FXML
+    private TextArea textAreaSpecificheOrdine;
+	
+	@FXML
 	private MenuItem salvaMenuItem;
 	 
 	@FXML
@@ -63,6 +68,9 @@ public class MainController extends Observable implements Observer
 	
 	@FXML
 	private ListView<Cliente> listViewClienti;
+	
+	@FXML
+    private ListView<Ordine> listViewOrdini;
 	
 	@FXML
     private Button aggiungiClienteButton;
@@ -80,15 +88,8 @@ public class MainController extends Observable implements Observer
 	
 	public void setGioielliEClienti(Gioielleria gioielleria, GestioneOrdini ordini)
 	{ 
-		for(Gioiello g : gioielleria.getGioielli())
-		{
-			listView.getItems().add(g);
-		}
-		
-		for(Cliente c : ordini.getClienti())
-		{
-			listViewClienti.getItems().add(c);
-		}
+		listView.getItems().addAll(gioielleria.getGioielli());
+		listViewClienti.getItems().addAll(ordini.getClienti());
 	}
 	
 	public void start()
@@ -98,6 +99,7 @@ public class MainController extends Observable implements Observer
 		listViewClienti.setContextMenu(contextMenu);
 		listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listViewClienti.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		listViewOrdini.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		showInListView();
 	}
 	
@@ -122,25 +124,34 @@ public class MainController extends Observable implements Observer
 		listViewClienti.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Cliente> obs, Cliente oldVal, Cliente newVal) ->{
 			textAreaClienti.setText(newVal.stampaCaratteristiche());
 			
+			ArrayList<Ordine> ordini = newVal.getOrdini();
+			if(ordini.size() > 0) listViewOrdini.getItems().addAll(ordini);
+			else listViewOrdini.getItems().clear();
+			
+			
 			contextMenu.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) 
 				{
-					try 
-					{
 						controllerOrdine = getControllerOrdine();
+						GestioneQuery database = new GestioneQuery();
+						controllerOrdine.initialize(database.caricaGioielli());
+						database.chiudiConnessione();
 						cliente = newVal;
-					} 
-					catch (IOException e) 
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					controllerOrdine.initialize();
 				}
 			});
 			
+			contextMenu.getItems().get(1).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					listViewClienti.getItems().remove(listViewClienti.getSelectionModel().getSelectedIndex());
+					newVal.eliminaCliente();
+				}
+				
+			});
 		});
 	}
 	
@@ -245,11 +256,19 @@ public class MainController extends Observable implements Observer
 		notifyObservers("Salvato");
 	}
 	
-	private AggiungiOrdineController getControllerOrdine() throws IOException
+	private AggiungiOrdineController getControllerOrdine()
 	{
 		Stage aggiungiClienteStage = new Stage();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("AggiungiOrdine.fxml"));
-		BorderPane aggiungiClientePane = (BorderPane) loader.load();
+		BorderPane aggiungiClientePane = null;
+		try 
+		{
+			aggiungiClientePane = (BorderPane) loader.load();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 		Scene scene = new Scene(aggiungiClientePane,900,600);
 		aggiungiClienteStage.setResizable(false);
 		aggiungiClienteStage.setTitle("Aggiungi Cliente");

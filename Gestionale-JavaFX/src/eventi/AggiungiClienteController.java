@@ -35,7 +35,7 @@ public class AggiungiClienteController extends Observable implements Observer
 		
     	if(mat.matches() && mat2.matches() && Pattern.matches("[0-9]+", inserisciNumeroTelefono.getText()))
     	{
-    		cliente = new Cliente(0,inserisciNomeCliente.getText(), inserisciCognomeCliente.getText(),inserisciNumeroTelefono.getText());
+    		cliente = new Cliente(inserisciNomeCliente.getText(), inserisciCognomeCliente.getText(),inserisciNumeroTelefono.getText());
     		System.out.println(cliente);
     		setChanged();
     		notifyObservers("Cliente creato");

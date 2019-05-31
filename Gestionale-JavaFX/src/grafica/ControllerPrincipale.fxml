@@ -72,6 +72,16 @@
                      <left>
                         <TextArea fx:id="textAreaClienti" editable="false" prefHeight="1009.0" prefWidth="410.0" BorderPane.alignment="CENTER" />
                      </left>
+                     <center>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <center>
+                              <ListView fx:id="listViewOrdini" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                           </center>
+                           <bottom>
+                              <TextArea fx:id="textAreaSpecificheOrdine" editable="false" prefHeight="412.0" prefWidth="897.0" BorderPane.alignment="CENTER" />
+                           </bottom>
+                        </BorderPane>
+                     </center>
                   </BorderPane>
                </content></Tab>
         </tabs>

@@ -16,14 +16,7 @@ public class GestioneOrdini
 	
 	public GestioneOrdini()
 	{
-		try 
-		{
-			this.database = new GestioneQuery();
-		} 
-		catch (ClassNotFoundException | SQLException e) 
-		{
-			e.printStackTrace();
-		}
+		this.database = new GestioneQuery();
 		this.clienti = new ArrayList<Cliente>();
 	}
 	
@@ -50,17 +43,9 @@ public class GestioneOrdini
 		else return null;
 	}
 	
-	public void aggiungiOrdine(Cliente cliente,Ordine o)
+	public void aggiungiOrdine(Cliente cliente,Ordine o) throws SQLException
 	{
-		try 
-		{
-			database.salvaOrdine(o, cliente);
-		} 
-		catch (SQLException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		database.salvaOrdine(o, cliente);
 	}
 	
 	

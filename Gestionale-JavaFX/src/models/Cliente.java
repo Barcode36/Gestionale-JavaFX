@@ -12,9 +12,10 @@ public class Cliente
 	private String cognomeCliente;
 	private String numeroTelefono;
 	
-	public Cliente(int clienteId,String nomeCliente, String cognomeCliente, String numeroTelefono)
+	public Cliente(String nomeCliente, String cognomeCliente, String numeroTelefono)
 	{
-		this.clienteId = clienteId;
+		GestioneQuery database = new GestioneQuery();
+		this.clienteId = database.getIDultimoCliente() + 1;
 		this.nomeCliente = nomeCliente;
 		this.cognomeCliente = cognomeCliente;
 		this.numeroTelefono = numeroTelefono;
@@ -32,58 +33,59 @@ public class Cliente
 	public String getNumeroTelefono() { return this.numeroTelefono;}
 	public void setNumeroTelefono(String numeroTelefono) { this.numeroTelefono = numeroTelefono;}
 	
-//	public ArrayList<Ordine> getOrdini() 
-//	{
-//		
-//	}
-//	
-//	
-//	public void aggiungiOrdine(Ordine ordine) {this.ordini.add(ordine);}
-//	public Ordine getOrdine(int index)
-//	{
-//		if(index < ordini.size()) return ordini.get(index);
-//		else return null;
-//	}
-	
 	public String stampaCaratteristiche()
 	{
 		return "Nome Cliente: "+ nomeCliente +"\n"
 				+"Cognome Cliente: "+cognomeCliente+"\n"
 				+"Numero Di Telefono: "+numeroTelefono+"\n"
+				+"ID: "+clienteId+"\n"
 				+"Numero Ordini: "+ getNumeroOrdini();
 	}
 	
 	public int getNumeroOrdini() 
 	{
 		int numeroOrdini = 0;
-		
-		try 
-		{
-			GestioneQuery database = new GestioneQuery();
-			numeroOrdini = database.getNumeroOrdini(this);
-			database.chiudiConnessione();
-		} 
-		catch (ClassNotFoundException | SQLException e) 
-		{
-			e.printStackTrace();
-		}
+		GestioneQuery database = new GestioneQuery();
+		numeroOrdini = database.getNumeroOrdiniCliente(this);
+		//database.chiudiConnessione();
 		
 		return numeroOrdini;
 	}
 	
 	public void aggiungiOrdine(Ordine ordine)
 	{
+		GestioneQuery database = new GestioneQuery();
 		try 
 		{
-			GestioneQuery database = new GestioneQuery();
 			database.salvaOrdine(ordine, this);
-			database.chiudiConnessione();
 		} 
-		catch (ClassNotFoundException | SQLException e) 
+		catch (SQLException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//database.chiudiConnessione();
+	}
+	
+	public ArrayList<Ordine> getOrdini()
+	{
+		GestioneQuery database = new GestioneQuery();
+		ArrayList<Ordine> ordini = database.caricaOrdini(this);
+		database.chiudiConnessione();
+		return ordini;
+	}
+	
+	public void eliminaOrdine(Ordine ordine)
+	{
+		GestioneQuery database = new GestioneQuery();
+		database.eliminaOrdine(ordine);
+		//database.chiudiConnessione();
+	}
+	
+	public void eliminaCliente()
+	{
+		GestioneQuery database = new GestioneQuery();
+		database.eliminaCliente(this);
+		//database.chiudiConnessione();
 	}
 	
 	@Override 

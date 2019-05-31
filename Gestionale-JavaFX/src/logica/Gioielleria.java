@@ -1,6 +1,5 @@
 package logica;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import gestioneDB.GestioneQuery;
@@ -19,15 +18,7 @@ public class Gioielleria
 	
 	public Gioielleria(String nomeGioielleria)
 	{
-		try 
-		{
-			database = new GestioneQuery();
-		} 
-		catch (ClassNotFoundException | SQLException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		database = new GestioneQuery();
 		this.nomeGioielleria = nomeGioielleria;
 		this.guadagnoGiornaliero = 0;
 		this.incassoGiornaliero = 0;
@@ -71,8 +62,6 @@ public class Gioielleria
 			}
 			
 		});
-		
-		//for(Gioiello g : gioielli) System.out.println("Gioielleria ordinata "+g.getId());
 	}
 	
 	public String getNomeGioielleria() { return this.nomeGioielleria; }
@@ -93,16 +82,6 @@ public class Gioielleria
 			System.out.println("id gioiello " + g.getId());
 			this.gioielli.add(g);
 		}
-	}
-	
-	public Gioiello getGioiello(long id)
-	{
-//		for(Gioiello g : gioielli)
-//		{
-//			if(g.getId() == id) return g;
-//		}
-		
-		return database.findByPrimaryKey(id);
 	}
 	
 	public boolean rimuoviGioiello(int id)

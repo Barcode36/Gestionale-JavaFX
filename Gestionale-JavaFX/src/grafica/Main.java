@@ -29,6 +29,8 @@ public class Main extends Application
 			//primaryStage.setAlwaysOnTop(true);
 			primaryStage.show();
 			GestioneInterfaccia gestioneInterfaccia = new GestioneInterfaccia(loader.getController(), gioielleria);
+			Thread t = new Thread(gestioneInterfaccia);
+			t.start();
 			gestioneInterfaccia.inizio();
 			
 			

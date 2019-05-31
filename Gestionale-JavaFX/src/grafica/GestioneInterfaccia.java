@@ -7,7 +7,7 @@ import eventi.MainController;
 import logica.GestioneOrdini;
 import logica.Gioielleria;
 
-public class GestioneInterfaccia implements Observer
+public class GestioneInterfaccia implements Observer, Runnable
 {
 	private MainController controller;
 	private Gioielleria gioielleria;
@@ -15,9 +15,8 @@ public class GestioneInterfaccia implements Observer
 	
 	public void inizio() throws IOException
 	{
-		controller.start();
 		controller.addObserver(this);
-		//System.out.println(gioielleria.getGioiello(3));
+		controller.start();
 	}
 	
 	public GestioneInterfaccia(MainController controller, Gioielleria gioielleria)
@@ -58,6 +57,25 @@ public class GestioneInterfaccia implements Observer
 			gestioneOrdini.aggiungiCliente(controller.getCliente());
 			controller.aggiungiInListViewCliente(controller.getCliente());
 			System.out.println("cliente aggiunto");
+		}
+	}
+
+	@Override
+	public void run() 
+	{
+		while(true)
+		{
+			System.out.println("Salvato");
+			gioielleria.salvaGioielli();
+			gestioneOrdini.salvaClienti();
+			try 
+			{
+				Thread.sleep(300000);
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 }

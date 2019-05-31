@@ -1,10 +1,8 @@
 package eventi;
 
-import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Observable;
-import gestioneDB.GestioneQuery;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -42,35 +40,24 @@ public class AggiungiOrdineController extends Observable
     
     public Ordine getOrdine() { return this.ordine; }
     
-    public void initialize()
+    public void initialize(ArrayList<Gioiello> gioielli)
     {
+    	gioielloListView.getItems().clear();
+    	gioielloListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     	ObservableList<String> opzioni = FXCollections.observableArrayList("Riparazione","Creazione","Altro");
     	tipologiaComboBox.setItems(opzioni);
     	
-    	GestioneQuery database;
-		try 
+    	for(Gioiello g : gioielli)
 		{
-			database = new GestioneQuery();
-			ArrayList<Gioiello> gioielli = database.caricaGioielli();
-			
-			for(Gioiello g : gioielli)
-			{
-				gioielloListView.getItems().add(g);
-			}
-		} 
-		catch (ClassNotFoundException | SQLException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			gioielloListView.getItems().add(g);
 		}
 		
-		gioielloListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     	gioielloListView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Gioiello> obs, Gioiello oldVal, Gioiello newVal) -> {
     		
     		data = selettoreDataConsegna.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    		System.out.println(data);
     		gioiello = newVal;
 		});
-		
     }
     
     @FXML
