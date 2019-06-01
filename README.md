@@ -1,5 +1,5 @@
 # Gestionale-JavaFX
-# version 0.3.9 ALPHA
+# version 0.5.0 BETA
 
 This software is released "as is" and it is under development. To develop the graphic interface i'm using SceneBuilder for Java FX. 
 For any suggestion or to report a bug please contact the developer.
@@ -30,3 +30,7 @@ click "Save" by MenuItem in menu bar, while the orders are saved directly on dat
 
 0.3.9 ALPHA
 Added a Thread that saves every 5 minutes, added PreparedStatement to query the database, added view of orders in listViewOrdini, added the delete of customers (when you delete a customer the query starts on database and he is deleted directly on db and not in ArrayList), other bugfixes. P.S. The "Save bug" of the previous realease is still there.
+
+0.5.0 BETA
+I'm happy to announce BETA phase!!
+There are almost all basic features to manipulate orders, customers and objects. The "Save bug" is still there. Added a dialog windows(when you press on X to close the window, opens a window that remind you to save) but there are some bugs on it. I'll update database's tables later cause some bugs.
