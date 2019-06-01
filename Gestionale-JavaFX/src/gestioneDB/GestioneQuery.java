@@ -28,7 +28,6 @@ public class GestioneQuery
 		} 
 		catch (ClassNotFoundException | SQLException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -65,6 +64,7 @@ public class GestioneQuery
 				cmd.setString(9, a.getNomeGioiello());
 				cmd.setString(10, a.getDescrizione());
 				cmd.executeUpdate();
+				cmd.close();
 			}
 			else if(gioiello instanceof Bracciale)
 			{
@@ -82,6 +82,7 @@ public class GestioneQuery
 				cmd.setString(10, a.getNomeGioiello());
 				cmd.setString(11, a.getDescrizione());
 				cmd.executeUpdate();
+				cmd.close();
 			}
 		}
 		catch(SQLException e)
@@ -133,14 +134,15 @@ public class GestioneQuery
 				    String descrizione = res2.getString(11);
 				    return new Bracciale(gioielloId,prezzo,peso,materiale,genere,venduto,lunghezza,spessore,larghezza,nomeGioiello,descrizione);
 				}
+				res2.close();
+				cmd2.close();
 			}
 			
-			//res.close();
-			//res2.close();
+			res.close();
+			cmd.close();
 		} 
 		catch (SQLException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -187,7 +189,10 @@ public class GestioneQuery
 			    gioielli.add(new Bracciale(gioielloId,prezzo,peso,materiale,genere,venduto,lunghezza,spessore,larghezza,nomeGioiello,descrizione));
 	    	}
 	    	
-	    	//res.close();
+	    	cmd.close();
+	    	cmd2.close();
+	    	res.close();
+	    	res2.close();
 		} 
 	    catch (SQLException e) 
 	    {
@@ -202,13 +207,10 @@ public class GestioneQuery
 	{
 		try 
 		{
-			PreparedStatement cmd = con.prepareStatement("delete from anello where idGioiello = ?");
+			PreparedStatement cmd = con.prepareStatement("delete from ordine where idOrdine = ?");
 			cmd.setLong(1, ordine.getId());
 			cmd.executeUpdate();
-			
-			PreparedStatement cmd2 = con.prepareStatement("delete from bracciale where idGioiello = ?");
-			cmd2.setLong(1, ordine.getId());
-			cmd2.executeUpdate();
+			cmd.close();
 		} 
 		catch (SQLException e) 
 		{
@@ -230,7 +232,10 @@ public class GestioneQuery
 			ResultSet res2 = cmd2.executeQuery();
 			while(res2.next()) size+=res2.getInt(1);
 			
+			cmd.close();
+			cmd2.close();
 			res.close();
+			res2.close();
 		} 
 		catch (SQLException e) 
 		{
@@ -256,7 +261,8 @@ public class GestioneQuery
 				clienti.add(cliente);
 			}
 			
-			//res.close();
+			cmd.close();
+			res.close();
 		} 
 		catch (SQLException e) 
 		{
@@ -275,6 +281,8 @@ public class GestioneQuery
 			cmd.setString(2, cliente.getCognomeCliente());
 			cmd.setString(3, cliente.getNumeroTelefono());
 			cmd.executeUpdate();
+			
+			cmd.close();
 		} 
 		catch (SQLException e) 
 		{
@@ -293,7 +301,8 @@ public class GestioneQuery
 			ResultSet res = cmd.executeQuery();
 			while(res.next()) size+=res.getInt(1);
 			
-			//res.close();
+			cmd.close();
+			res.close();
 		} 
 		catch (SQLException e) 
 		{
@@ -317,19 +326,21 @@ public class GestioneQuery
 			cmd.setInt(6, cliente.getId());
 			
 			cmd.executeUpdate();
+			cmd.close();
 		}
 		else if(o.getGioiello() instanceof Bracciale)
 		{
 			String query = "insert into ordine(dataEmissione,dataScadenza,tipologia,idBracciale,descrizione,idCliente) values(?,?,?,?,?,?)";
 			PreparedStatement cmd = con.prepareStatement(query);
 			cmd.setString(1, o.getDataOrdine().toString());
-			cmd.setString(2, o.getDataScadenza().toString());
+			cmd.setString(2, o.getDataScadenza());
 			cmd.setString(3, o.getTipologia());
 			cmd.setLong(4, o.getGioiello().getId());
 			cmd.setString(5, o.getDescrizione());
 			cmd.setInt(6, cliente.getId());
 			
 			cmd.executeUpdate();
+			cmd.close();
 		}
 	}
 	
@@ -344,7 +355,8 @@ public class GestioneQuery
 			ResultSet res = cmd.executeQuery();
 			while(res.next()) numeroOrdini+=res.getInt(1);
 			
-			//res.close();
+			cmd.close();
+			res.close();
 		} 
 		catch (SQLException e) 
 		{
@@ -354,6 +366,49 @@ public class GestioneQuery
 		return numeroOrdini;
 	}
 
+	public void eliminaGioiello(Gioiello gioiello)
+	{
+		if(gioiello instanceof Anello)
+		{
+			try 
+			{
+				PreparedStatement cmd = con.prepareStatement("update ordine set idAnello = null where idAnello = ?");
+				cmd.setLong(1, gioiello.getId());
+				cmd.executeUpdate();
+				cmd.close();
+				
+				PreparedStatement cmd2 = con.prepareStatement("delete from anello where idGioiello = ?");
+				cmd2.setLong(1, gioiello.getId());
+				cmd2.executeUpdate();
+				cmd2.close();
+			} 
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		if(gioiello instanceof Bracciale)
+		{
+			try
+			{
+				PreparedStatement cmd = con.prepareStatement("update ordine set idBracciale = null where idBracciale = ?");
+				cmd.setLong(1, gioiello.getId());
+				cmd.executeUpdate();
+				cmd.close();
+				
+				PreparedStatement cmd2 = con.prepareStatement("delete from bracciale where idGioiello = ?");
+				cmd2.setLong(1, gioiello.getId());
+				cmd2.executeUpdate();
+				cmd2.close();
+			}
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		
+	}
 	
 	public void eliminaCliente(Cliente cliente)
 	{
@@ -364,8 +419,12 @@ public class GestioneQuery
 			cmd.setInt(1, cliente.getId());
 			cmd.executeUpdate();
 			
-			String query = "delete from cliente where idCliente = "+cliente.getId()+";";
-			cmd.executeUpdate(query);
+			PreparedStatement cmd2 = con.prepareStatement("delete from cliente where idCliente = ?");
+			cmd2.setInt(1, cliente.getId());
+			cmd2.executeUpdate();
+			
+			cmd.close();
+			cmd2.close();
 			
 		} 
 		catch (SQLException e) 
@@ -383,6 +442,9 @@ public class GestioneQuery
 			ResultSet res = cmd.executeQuery();
 			
 			while(res.next()) id = res.getInt(1);
+			
+			res.close();
+			cmd.close();
 		} 
 		catch (SQLException e) 
 		{
@@ -407,7 +469,8 @@ public class GestioneQuery
 				ordini.add(new Ordine(res.getInt(1),res.getString(3),gioiello,res.getString(4),res.getString(8)));
 			}
 			
-			//res.close();
+			cmd.close();
+			res.close();
 		} 
 		catch (SQLException e) 
 		{
@@ -427,10 +490,8 @@ public class GestioneQuery
 			ResultSet res = cmd.executeQuery();
 			while(res.next())
 			{
-				//System.out.println(res.getInt(1));
 				if(res.getInt(5) != 0)
 				{
-					
 					Gioiello gioiello = getGioiello(res.getInt(5));
 					ordini.add(new Ordine(res.getInt(1),res.getString(3),gioiello,res.getString(4),res.getString(8)));
 				}
@@ -438,10 +499,15 @@ public class GestioneQuery
 				{
 					Gioiello gioiello = getGioiello(res.getInt(6));
 					ordini.add(new Ordine(res.getInt(1),res.getString(3),gioiello,res.getString(4),res.getString(8)));
-				}				
+				}
+				else
+				{
+					ordini.add(new Ordine(res.getInt(1),res.getString(3),null,res.getString(4),res.getString(8)));
+				}
 			}
 			
-			//res.close();
+			cmd.close();
+			res.close();
 		} 
 		catch (SQLException e) 
 		{

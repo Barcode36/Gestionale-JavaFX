@@ -31,7 +31,7 @@
    <left>
       <BorderPane BorderPane.alignment="CENTER">
          <center>
-            <ListView fx:id="listView" BorderPane.alignment="CENTER" />
+            <ListView fx:id="listViewGioielli" BorderPane.alignment="CENTER" />
          </center>
          <top>
             <ToolBar BorderPane.alignment="CENTER">
@@ -78,7 +78,14 @@
                               <ListView fx:id="listViewOrdini" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                            </center>
                            <bottom>
-                              <TextArea fx:id="textAreaSpecificheOrdine" editable="false" prefHeight="412.0" prefWidth="897.0" BorderPane.alignment="CENTER" />
+                              <BorderPane prefHeight="454.0" prefWidth="897.0" BorderPane.alignment="CENTER">
+                                 <left>
+                                    <TextArea fx:id="textAreaOrdine" editable="false" prefHeight="454.0" prefWidth="588.0" BorderPane.alignment="CENTER" />
+                                 </left>
+                                 <right>
+                                    <TextArea fx:id="textAreaGioielloOrdine" editable="false" prefHeight="454.0" prefWidth="312.0" BorderPane.alignment="CENTER" />
+                                 </right>
+                              </BorderPane>
                            </bottom>
                         </BorderPane>
                      </center>

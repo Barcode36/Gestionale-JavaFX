@@ -6,6 +6,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
@@ -62,23 +64,41 @@ public class AggiungiAnelloController extends Observable
 	@FXML
 	void submit(ActionEvent event) //quando il tasto ok è premuto
     {
+		boolean tuttoOk = true;
 		double prezzo = Double.parseDouble(prezzoTextField.getText());
 		double peso = Double.parseDouble(pesoTextField.getText());
 		MATERIALE materiale = materialeComboBox.getValue();
 		String genere = genereComboBox.getValue();
 		boolean venduto = false;
-		double raggio = Double.parseDouble(diametroTextField.getText());
+		String nomeGioiello = nomeGioielloTextField.getText();
+		String descrizione = descrizioneTextArea.getText();
+		
+		double raggio = 0;
+		try
+		{
+			raggio = Double.parseDouble(diametroTextField.getText());
+		}
+		catch(NumberFormatException e)
+		{
+			tuttoOk = false;
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERRORE");
+			alert.setHeaderText("Errore di inserimento");
+			alert.setContentText("Inserisci un valore corretto nel campo Diametro");
+			alert.showAndWait();
+		}
 		boolean pietra;
 		
 		if(pietraComboBox.getValue().equals("Si")) pietra = true;
 		else pietra = false;
 		
-		String nomeGioiello = nomeGioielloTextField.getText();
-		String descrizione = descrizioneTextArea.getText();
+		if(tuttoOk)
+		{
+			gioiello = new Anello((long)0,prezzo,peso,materiale,genere,venduto,raggio,pietra,nomeGioiello,descrizione);
+			setChanged();
+			notifyObservers("Anello Creato");
+		}
 		
-		gioiello = new Anello((long)0,prezzo,peso,materiale,genere,venduto,raggio,pietra,nomeGioiello,descrizione);
-		setChanged();
-		notifyObservers("Anello Creato");
     }
 	
 }

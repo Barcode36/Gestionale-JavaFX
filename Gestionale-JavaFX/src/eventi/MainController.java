@@ -35,7 +35,9 @@ public class MainController extends Observable implements Observer
 {	
 	private Gioiello g;
 	private Cliente cliente;
-	private ContextMenu contextMenu;
+	private ContextMenu contextMenuClienti;
+	private ContextMenu contextMenuGioielli;
+	private ContextMenu contextMenuOrdini;
 	private Ordine ordine;
 	private AggiungiAnelloController controllerAnello;
 	private AggiungiClienteController controllerCliente;
@@ -55,13 +57,16 @@ public class MainController extends Observable implements Observer
     private TextArea textAreaClienti;
 	
 	@FXML
-    private TextArea textAreaSpecificheOrdine;
+	private TextArea textAreaOrdine;
+	
+	@FXML
+    private TextArea textAreaGioielloOrdine;
 	
 	@FXML
 	private MenuItem salvaMenuItem;
 	 
 	@FXML
-	private ListView<Gioiello> listView;
+	private ListView<Gioiello> listViewGioielli;
 	
 	@FXML
 	private ListView<ImageView> listViewImmagini;
@@ -83,21 +88,27 @@ public class MainController extends Observable implements Observer
 	
 	public Gioiello getGioiello() { return this.g; }
 	
-	public void aggiungiInListViewGioiello(Gioiello gioiello) { listView.getItems().add(gioiello); }
+	public void aggiungiInListViewGioiello(Gioiello gioiello) { listViewGioielli.getItems().add(gioiello); }
 	public void aggiungiInListViewCliente(Cliente cliente) { listViewClienti.getItems().add(cliente); }
 	
 	public void setGioielliEClienti(Gioielleria gioielleria, GestioneOrdini ordini)
 	{ 
-		listView.getItems().addAll(gioielleria.getGioielli());
+		listViewGioielli.getItems().addAll(gioielleria.getGioielli());
 		listViewClienti.getItems().addAll(ordini.getClienti());
 	}
 	
 	public void start()
 	{
-		contextMenu = new ContextMenu();
-		contextMenu.getItems().addAll(new MenuItem("Aggiungi Ordine"), new MenuItem("Elimina Cliente"));
-		listViewClienti.setContextMenu(contextMenu);
-		listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		contextMenuClienti = new ContextMenu();
+		contextMenuGioielli = new ContextMenu();
+		contextMenuOrdini = new ContextMenu();
+		contextMenuClienti.getItems().addAll(new MenuItem("Aggiungi Ordine"), new MenuItem("Elimina Cliente"));
+		contextMenuGioielli.getItems().addAll(new MenuItem("Elimina Gioiello"), new MenuItem("AggiungiGioiello"));
+		contextMenuOrdini.getItems().addAll(new MenuItem("Elimina Ordine"));
+		listViewOrdini.setContextMenu(contextMenuOrdini);
+		listViewGioielli.setContextMenu(contextMenuGioielli);
+		listViewClienti.setContextMenu(contextMenuClienti);
+		listViewGioielli.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listViewClienti.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listViewOrdini.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		showInListView();
@@ -106,8 +117,19 @@ public class MainController extends Observable implements Observer
 	private void showInListView()
 	{	
 		
-		listView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Gioiello> obs, Gioiello oldVal, Gioiello newVal) -> {
+		listViewGioielli.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Gioiello> obs, Gioiello oldVal, Gioiello newVal) -> {
 			textAreaGioielli.setText(newVal.stampaCaratteristiche());
+			
+			contextMenuGioielli.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					listViewGioielli.getItems().remove(listViewGioielli.getSelectionModel().getSelectedItem());
+					newVal.eliminaGioiello();
+				}
+			});
+			
 			try 
 			{
 				listViewImmagini.getItems().clear();
@@ -124,12 +146,11 @@ public class MainController extends Observable implements Observer
 		listViewClienti.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Cliente> obs, Cliente oldVal, Cliente newVal) ->{
 			textAreaClienti.setText(newVal.stampaCaratteristiche());
 			
+			listViewOrdini.getItems().clear();
 			ArrayList<Ordine> ordini = newVal.getOrdini();
 			if(ordini.size() > 0) listViewOrdini.getItems().addAll(ordini);
-			else listViewOrdini.getItems().clear();
 			
-			
-			contextMenu.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
+			contextMenuClienti.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) 
@@ -142,7 +163,7 @@ public class MainController extends Observable implements Observer
 				}
 			});
 			
-			contextMenu.getItems().get(1).setOnAction(new EventHandler<ActionEvent>() {
+			contextMenuClienti.getItems().get(1).setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) 
@@ -150,9 +171,27 @@ public class MainController extends Observable implements Observer
 					listViewClienti.getItems().remove(listViewClienti.getSelectionModel().getSelectedIndex());
 					newVal.eliminaCliente();
 				}
-				
 			});
 		});
+		
+		listViewOrdini.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Ordine> obs, Ordine oldVal, Ordine newVal)->{
+			
+			if(newVal != null) textAreaOrdine.setText(newVal.getInformazioni());
+			if(newVal != null && newVal.getGioiello() != null) textAreaGioielloOrdine.setText(newVal.getGioiello().getDescrizione());
+			else textAreaGioielloOrdine.setText("Nessun Gioiello presente in quest'ordine");
+			contextMenuOrdini.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					listViewOrdini.getItems().remove(listViewOrdini.getSelectionModel().getSelectedIndex());
+					textAreaOrdine.clear();
+					textAreaGioielloOrdine.clear();
+					newVal.eliminaOrdine();
+				}
+			});
+		});
+		
 	}
 	
 	@FXML
@@ -243,6 +282,7 @@ public class MainController extends Observable implements Observer
 		if(arg.equals("Ordine Creato"))
 		{
 			cliente.aggiungiOrdine(controllerOrdine.getOrdine());
+			listViewOrdini.getItems().add(controllerOrdine.getOrdine());
 		}
 	}
 	

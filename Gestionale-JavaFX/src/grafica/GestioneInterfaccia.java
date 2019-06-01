@@ -65,17 +65,20 @@ public class GestioneInterfaccia implements Observer, Runnable
 	{
 		while(true)
 		{
-			System.out.println("Salvato");
-			gioielleria.salvaGioielli();
-			gestioneOrdini.salvaClienti();
 			try 
 			{
-				Thread.sleep(300000);
+				Thread.sleep(300000); //5 minuti
+				gioielleria.salvaGioielli();
+				gestioneOrdini.salvaClienti();
 			} 
 			catch (InterruptedException e) 
 			{
-				e.printStackTrace();
+				System.out.println("Tread interrotto");
+				gioielleria.salvaGioielli();
+				gestioneOrdini.salvaClienti();
+				return;
 			}
 		}
+		
 	}
 }

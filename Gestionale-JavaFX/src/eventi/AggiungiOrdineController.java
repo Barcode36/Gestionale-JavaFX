@@ -46,17 +46,12 @@ public class AggiungiOrdineController extends Observable
     	gioielloListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     	ObservableList<String> opzioni = FXCollections.observableArrayList("Riparazione","Creazione","Altro");
     	tipologiaComboBox.setItems(opzioni);
-    	
-    	for(Gioiello g : gioielli)
-		{
-			gioielloListView.getItems().add(g);
-		}
+    	gioielloListView.getItems().addAll(gioielli);
 		
     	gioielloListView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Gioiello> obs, Gioiello oldVal, Gioiello newVal) -> {
     		
-    		data = selettoreDataConsegna.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-    		System.out.println(data);
     		gioiello = newVal;
+    		data = selettoreDataConsegna.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 		});
     }
     

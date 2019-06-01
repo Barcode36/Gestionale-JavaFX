@@ -72,7 +72,7 @@ public class Gioielleria
 	{
 		if(gioielli.size() == 0)
 		{
-			g.setId(0);
+			g.setId(1);
 			this.gioielli.add(g);
 			System.out.println("id gioiello " + g.getId());
 		}
@@ -128,5 +128,4 @@ public class Gioielleria
 	}
 
 	public ArrayList<Gioiello> getGioielli() { return gioielli; }
-
 }

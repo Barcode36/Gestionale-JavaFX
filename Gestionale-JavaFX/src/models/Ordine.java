@@ -1,33 +1,23 @@
 package models;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+
+import gestioneDB.GestioneQuery;
 
 public class Ordine 
 {
 	private long id;
 	private Gioiello gioiello;
-	private Date dataScadenza;
-	private Date dataOrdine;
+	private String dataScadenza;
+	private LocalDate dataOrdine;
 	private String tipologia; //riparazione o creazione
 	private String descrizione;
 	
 	public Ordine(long id,String dataScadenza,Gioiello gioiello, String tipologia, String descrizione)
 	{
-		this.dataOrdine = new Date();
+		this.dataOrdine = LocalDate.now();
+		this.dataScadenza = dataScadenza;
 		this.tipologia = tipologia;
-		
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		try 
-		{
-			this.dataScadenza = formatter.parse(dataScadenza);
-		} 
-		catch (ParseException e) 
-		{
-			System.out.println("sono quì");
-			e.printStackTrace();
-		}
 		this.id = id;
 		this.gioiello = gioiello;
 		this.descrizione = descrizione;
@@ -39,10 +29,10 @@ public class Ordine
 	public Gioiello getGioiello() { return this.gioiello;}
 	public void setGioiello(Gioiello g) { this.gioiello = g;}
 	
-	public Date getDataOrdine() { return this.dataOrdine;}
+	public LocalDate getDataOrdine() { return this.dataOrdine;}
 	
-	public Date getDataScadenza() { return this.dataScadenza;}
-	public void setDataScadenza(Date dataScadenza) { this.dataScadenza = dataScadenza;} 
+	public String getDataScadenza() { return this.dataScadenza;}
+	public void setDataScadenza(String dataScadenza) { this.dataScadenza = dataScadenza;} 
 	
 	public String getDescrizione() { return this.descrizione; }
 	public void setDescrizione(String commento) { this.descrizione = commento; }
@@ -53,7 +43,24 @@ public class Ordine
 	@Override
 	public String toString()
 	{
-		return gioiello.getNomeGioiello();
+		if(gioiello != null) return gioiello.getNomeGioiello();
+		return "Questo gioiello è stato eliminato";
+	}
+	
+	public String getInformazioni()
+	{
+		return "Ordine numero: "+id+"\n"
+				+ "Data Ordinazione: "+dataOrdine.toString()+"\n"
+				+ "Data Scadenza: "+dataScadenza+"\n"
+				+ "Tipologia Ordine: "+tipologia+"\n\n"
+				+ "Descrizione:\n"+descrizione;
+	}
+	
+	public void eliminaOrdine()
+	{
+		GestioneQuery database = new GestioneQuery();
+		database.eliminaOrdine(this);
+		database.chiudiConnessione();
 	}
 }
 

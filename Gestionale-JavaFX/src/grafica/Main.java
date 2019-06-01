@@ -1,9 +1,17 @@
 package grafica;
 
 import logica.Gioielleria;
+
+import java.util.Optional;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.fxml.FXMLLoader;
 
@@ -33,6 +41,34 @@ public class Main extends Application
 			t.start();
 			gestioneInterfaccia.inizio();
 			
+			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				
+				@Override
+				public void handle(WindowEvent event) 
+				{	
+					ButtonType si = new ButtonType("Si");
+					ButtonType no = new ButtonType("No");
+					ButtonType annulla = new ButtonType("Annulla");
+					Alert alert = finestraSalvataggio();
+					alert.getButtonTypes().clear();
+					alert.getButtonTypes().addAll(si,no,annulla);
+					Optional<ButtonType> result = alert.showAndWait();
+					if(result.get() == si)
+					{
+						t.interrupt();
+					} 
+					else if(result.get() == no)
+					{
+						//chiedi:
+						//chiedere al prof
+					}
+					else if(result.get() == annulla)
+					{
+						//goto chiedi
+					}
+				}
+			});
+			
 			
 		} 
 		catch(Exception e) 
@@ -44,6 +80,15 @@ public class Main extends Application
 	public static void main(String[] args) 
 	{
 		launch(args);
+	}
+	
+	public Alert finestraSalvataggio()
+	{
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Attenzione");
+		alert.setHeaderText(null);
+		alert.setContentText("Salvare i dati prima di uscire?");
+		return alert;
 	}
 }
 

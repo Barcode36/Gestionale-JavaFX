@@ -1,5 +1,7 @@
 package models;
 
+import gestioneDB.GestioneQuery;
+
 public abstract class Gioiello 
 {
 	private long id;
@@ -47,4 +49,11 @@ public abstract class Gioiello
 	public void setDescrizione(String descrizione) { this.descrizione = descrizione; }
 	
 	public abstract String stampaCaratteristiche();
+	
+	public void eliminaGioiello()
+	{
+		GestioneQuery database = new GestioneQuery();
+		database.eliminaGioiello(this);
+		database.chiudiConnessione();
+	}
 }
