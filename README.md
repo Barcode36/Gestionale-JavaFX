@@ -1,5 +1,5 @@
 # Gestionale-JavaFX
-# version 0.5.5 BETA
+# version 0.5.6 BETA
 
 This software is released "as is" and it is under development. To develop the graphic interface i'm using SceneBuilder for Java FX. 
 For any suggestion or to report a bug please contact the developer.
@@ -37,3 +37,6 @@ There are almost all basic features to manipulate orders, customers and objects.
 
 0.5.5 BETA
 The "Save bug" is fixed, now all changes are made directly in the database. Added Fatture in model package, added Fatture tab in view and listViewFatture. Until the end of development i'll backup all database and upload here.
+
+0.5.6 BETA
+Starting to add Material design with JFoenix and some bugfix.
