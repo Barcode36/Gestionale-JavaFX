@@ -35,6 +35,21 @@ public class GestioneQuery
 		}
 	}
 	
+	public void eliminaFattura(Fattura fattura)
+	{
+		try 
+		{
+			PreparedStatement cmd = con.prepareStatement("delete from fattura where idOrdine = ?");
+			cmd.setInt(1, fattura.getIdFattura());
+			cmd.executeUpdate();
+			cmd.close();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	public void emettiFattura(Ordine ordine) throws SQLException
 	{
 		PreparedStatement cmd2 = con.prepareStatement("select distinct nome,cognome from cliente where idCliente = ?");
@@ -102,6 +117,9 @@ public class GestioneQuery
 				String nomeCliente = res.getString(5);
 				fatture.add(new Fattura(dataEmissione,importo,idOrdine,idCliente,nomeCliente));
 			}
+			
+			cmd.close();
+			res.close();
 		} 
 		catch (SQLException e) 
 		{

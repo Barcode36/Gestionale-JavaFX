@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
+<?import com.jfoenix.controls.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -30,14 +32,11 @@
    </top>
    <left>
       <BorderPane BorderPane.alignment="CENTER">
-         <center>
-            <ListView fx:id="listViewGioielli" BorderPane.alignment="CENTER" />
-         </center>
          <top>
             <ToolBar BorderPane.alignment="CENTER">
               <items>
-                <Button fx:id="aggiungiClienteButton" mnemonicParsing="false" onAction="#aggiungiCliente" text="Nuovo Cliente" />
-                  <MenuButton mnemonicParsing="false" text="Aggiungi Gioiello">
+                  <JFXButton fx:id="aggiungiClienteButton" onAction="#aggiungiCliente" prefHeight="31.0" prefWidth="142.0" ripplerFill="#1b1616" text="Aggiungi Cliente" />
+                  <MenuButton mnemonicParsing="false" prefHeight="31.0" prefWidth="163.0" text="Aggiungi Gioiello">
                     <items>
                       <MenuItem fx:id="aggiungiAnelloMenuItem" mnemonicParsing="false" onAction="#aggiungiAnelloClicked" text="Anello" />
                       <MenuItem fx:id="aggiungiBraccialeMenuItem" mnemonicParsing="false" onAction="#aggiungiBraccialeClicked" text="Bracciale" />
@@ -46,6 +45,9 @@
               </items>
             </ToolBar>
          </top>
+         <center>
+            <JFXListView fx:id="listViewGioielli" BorderPane.alignment="CENTER" />
+         </center>
       </BorderPane>
    </left>
    <center>
@@ -94,12 +96,12 @@
             <Tab text="Fatture">
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
-                     <left>
-                        <ListView fx:id="listViewFatture" prefHeight="1009.0" prefWidth="586.0" BorderPane.alignment="CENTER" />
-                     </left>
                      <right>
                         <TextArea fx:id="textAreaFatture" editable="false" prefHeight="1009.0" prefWidth="1046.0" BorderPane.alignment="CENTER" />
                      </right>
+                     <left>
+                        <JFXListView fx:id="listViewFatture" prefHeight="1009.0" prefWidth="550.0" BorderPane.alignment="CENTER" />
+                     </left>
                   </BorderPane>
                </content>
             </Tab>

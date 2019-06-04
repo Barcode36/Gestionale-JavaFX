@@ -84,7 +84,7 @@ public class AggiungiAnelloController extends Observable
 			alert.setTitle("ERRORE");
 			alert.setHeaderText("Errore di inserimento");
 			alert.setContentText("Inserisci un valore corretto nel campo Diametro");
-			alert.showAndWait();
+			alert.showAndWait(); 
 		}
 		boolean pietra;
 		

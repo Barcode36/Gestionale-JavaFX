@@ -85,6 +85,13 @@ public class Fattura
 				+"Importo: "+importo;
 	}
 	
+	public void elimina()
+	{
+		GestioneQuery database = new GestioneQuery();
+		database.eliminaFattura(this);
+		database.chiudiConnessione();
+	}
+	
 	@Override
 	public String toString()
 	{

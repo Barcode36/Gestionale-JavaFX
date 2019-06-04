@@ -7,6 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
+
 import gestioneDB.GestioneQuery;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -15,7 +19,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
@@ -40,6 +43,7 @@ public class MainController extends Observable implements Observer
 	private ContextMenu contextMenuClienti;
 	private ContextMenu contextMenuGioielli;
 	private ContextMenu contextMenuOrdini;
+	private ContextMenu contextMenuFatture;
 	private AggiungiAnelloController controllerAnello;
 	private AggiungiClienteController controllerCliente;
 	private AggiungiBraccialeController controllerBracciale;
@@ -68,9 +72,9 @@ public class MainController extends Observable implements Observer
 	
 	@FXML
 	private MenuItem salvaMenuItem;
-	 
+	
 	@FXML
-	private ListView<Gioiello> listViewGioielli;
+    private JFXListView<Gioiello> listViewGioielli;
 	
 	@FXML
 	private ListView<ImageView> listViewImmagini;
@@ -82,10 +86,10 @@ public class MainController extends Observable implements Observer
     private ListView<Ordine> listViewOrdini;
 	
 	@FXML
-    private ListView<Fattura> listViewFatture;
+    private JFXListView<Fattura> listViewFatture;
 	
 	@FXML
-    private Button aggiungiClienteButton;
+    private JFXButton aggiungiClienteButton;
 	
 	@FXML
     private MenuItem aggiungiBraccialeMenuItem;
@@ -94,9 +98,7 @@ public class MainController extends Observable implements Observer
     private MenuItem aggiungiAnelloMenuItem;
 	
 	public Gioiello getGioiello() { return this.g; }
-	
-//	public void aggiungiInListViewGioiello(Gioiello gioiello) { listViewGioielli.getItems().add(gioiello); }
-//	public void aggiungiInListViewCliente(Cliente cliente) { listViewClienti.getItems().add(cliente); }
+
 	
 	private void setGioielliEClienti()
 	{ 
@@ -111,12 +113,15 @@ public class MainController extends Observable implements Observer
 		contextMenuClienti = new ContextMenu();
 		contextMenuGioielli = new ContextMenu();
 		contextMenuOrdini = new ContextMenu();
+		contextMenuFatture = new ContextMenu();
 		contextMenuClienti.getItems().addAll(new MenuItem("Aggiungi Ordine"), new MenuItem("Elimina Cliente"));
 		contextMenuGioielli.getItems().addAll(new MenuItem("Elimina Gioiello"), new MenuItem("AggiungiGioiello"));
 		contextMenuOrdini.getItems().addAll(new MenuItem("Elimina Ordine"), new MenuItem("Emetti Fattura"));
+		contextMenuFatture.getItems().addAll(new MenuItem("Stampa Fattura"),new MenuItem("Elimina Fattura"));
 		listViewOrdini.setContextMenu(contextMenuOrdini);
 		listViewGioielli.setContextMenu(contextMenuGioielli);
 		listViewClienti.setContextMenu(contextMenuClienti);
+		listViewFatture.setContextMenu(contextMenuFatture);
 		listViewGioielli.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listViewClienti.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listViewOrdini.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -213,7 +218,6 @@ public class MainController extends Observable implements Observer
 						Fattura.emettiFattura(newVal);
 						Fattura fattura = Fattura.caricaFattura(newVal);
 						listViewFatture.getItems().add(fattura);
-						fattura.fatturaToFile();
 					}
 					catch(SQLException e)
 					{
@@ -233,7 +237,24 @@ public class MainController extends Observable implements Observer
 			
 			textAreaFatture.setText(newVal.stampaFattura());
 			
+			contextMenuFatture.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					newVal.fatturaToFile();
+				}
+				
 			});
+			
+			contextMenuFatture.getItems().get(1).setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					newVal.elimina();
+				}
+			});
+		});
 	}
 	
 	@FXML

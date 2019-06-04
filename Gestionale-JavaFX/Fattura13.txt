@@ -1,5 +1,0 @@
-ID Fattura: 13
-Data Emissione: 04-06-2019
-Cliente: Cosmo Greco
-ID Cliente: 21
-Importo: 230.0
