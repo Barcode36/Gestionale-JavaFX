@@ -1,0 +1,5 @@
+ID Fattura: 18
+Data Emissione: 04-06-2019
+Cliente: Antonio Scalisi
+ID Cliente: 23
+Importo: 256.0
