@@ -1,8 +1,11 @@
 package eventi;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Observable;
+
+import gestioneDB.GestioneQuery;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -51,14 +54,24 @@ public class AggiungiOrdineController extends Observable
     	gioielloListView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Gioiello> obs, Gioiello oldVal, Gioiello newVal) -> {
     		
     		gioiello = newVal;
-    		data = selettoreDataConsegna.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+    		try
+    		{
+    			data = selettoreDataConsegna.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+    		}
+    		catch(NullPointerException e)
+    		{
+    			data = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+    		}
+    		
 		});
     }
     
     @FXML
     void bottonePremuto(ActionEvent event) 
     {
-    	ordine = new Ordine(0,data,gioiello,tipologiaComboBox.getValue(),descrizioneTextArea.getText());
+    	GestioneQuery database = new GestioneQuery();
+    	ordine = new Ordine(database.getNumUltimoOrdine() + 1,data,gioiello,tipologiaComboBox.getValue(),descrizioneTextArea.getText(),0);
+    	database.chiudiConnessione();
     	setChanged();
     	notifyObservers("Ordine Creato");
     }

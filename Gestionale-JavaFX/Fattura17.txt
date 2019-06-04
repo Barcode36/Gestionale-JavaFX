@@ -1,0 +1,5 @@
+ID Fattura: 17
+Data Emissione: 04-06-2019
+Cliente: Matteo Donnini
+ID Cliente: 20
+Importo: 235.0

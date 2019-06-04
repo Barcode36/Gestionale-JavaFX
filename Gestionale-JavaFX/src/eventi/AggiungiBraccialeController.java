@@ -67,7 +67,8 @@ public class AggiungiBraccialeController extends Observable
 		double larghezza = Double.parseDouble(larghezzaTextField.getText());
 		String nomeGioiello = nomeGioielloTextField.getText();
 		String descrizione = descrizioneTextArea.getText();
-		gioiello = new Bracciale((long)0,prezzo,peso,materiale,genere,venduto,lunghezza,spessore,larghezza,nomeGioiello,descrizione);
+		gioiello = new Bracciale(prezzo,peso,materiale,genere,venduto,lunghezza,spessore,larghezza,nomeGioiello,descrizione);
+		gioiello.salva();
 		setChanged();
 		notifyObservers("Bracciale Creato");
     }

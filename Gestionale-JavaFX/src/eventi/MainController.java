@@ -3,6 +3,7 @@ package eventi;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -13,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
@@ -21,13 +23,13 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import logica.GestioneOrdini;
-import logica.Gioielleria;
 import models.Cliente;
+import models.Fattura;
 import models.Gioiello;
 import models.Ordine;
 
@@ -38,7 +40,6 @@ public class MainController extends Observable implements Observer
 	private ContextMenu contextMenuClienti;
 	private ContextMenu contextMenuGioielli;
 	private ContextMenu contextMenuOrdini;
-	private Ordine ordine;
 	private AggiungiAnelloController controllerAnello;
 	private AggiungiClienteController controllerCliente;
 	private AggiungiBraccialeController controllerBracciale;
@@ -55,6 +56,9 @@ public class MainController extends Observable implements Observer
 	
 	@FXML
     private TextArea textAreaClienti;
+	
+	@FXML
+    private TextArea textAreaFatture;
 	
 	@FXML
 	private TextArea textAreaOrdine;
@@ -78,6 +82,9 @@ public class MainController extends Observable implements Observer
     private ListView<Ordine> listViewOrdini;
 	
 	@FXML
+    private ListView<Fattura> listViewFatture;
+	
+	@FXML
     private Button aggiungiClienteButton;
 	
 	@FXML
@@ -88,23 +95,25 @@ public class MainController extends Observable implements Observer
 	
 	public Gioiello getGioiello() { return this.g; }
 	
-	public void aggiungiInListViewGioiello(Gioiello gioiello) { listViewGioielli.getItems().add(gioiello); }
-	public void aggiungiInListViewCliente(Cliente cliente) { listViewClienti.getItems().add(cliente); }
+//	public void aggiungiInListViewGioiello(Gioiello gioiello) { listViewGioielli.getItems().add(gioiello); }
+//	public void aggiungiInListViewCliente(Cliente cliente) { listViewClienti.getItems().add(cliente); }
 	
-	public void setGioielliEClienti(Gioielleria gioielleria, GestioneOrdini ordini)
+	private void setGioielliEClienti()
 	{ 
-		listViewGioielli.getItems().addAll(gioielleria.getGioielli());
-		listViewClienti.getItems().addAll(ordini.getClienti());
+		listViewGioielli.getItems().addAll(Gioiello.caricaGioielli());
+		listViewClienti.getItems().addAll(Cliente.caricaClienti());
+		listViewFatture.getItems().addAll(Fattura.caricaFatture());
 	}
 	
 	public void start()
 	{
+		setGioielliEClienti();
 		contextMenuClienti = new ContextMenu();
 		contextMenuGioielli = new ContextMenu();
 		contextMenuOrdini = new ContextMenu();
 		contextMenuClienti.getItems().addAll(new MenuItem("Aggiungi Ordine"), new MenuItem("Elimina Cliente"));
 		contextMenuGioielli.getItems().addAll(new MenuItem("Elimina Gioiello"), new MenuItem("AggiungiGioiello"));
-		contextMenuOrdini.getItems().addAll(new MenuItem("Elimina Ordine"));
+		contextMenuOrdini.getItems().addAll(new MenuItem("Elimina Ordine"), new MenuItem("Emetti Fattura"));
 		listViewOrdini.setContextMenu(contextMenuOrdini);
 		listViewGioielli.setContextMenu(contextMenuGioielli);
 		listViewClienti.setContextMenu(contextMenuClienti);
@@ -144,9 +153,12 @@ public class MainController extends Observable implements Observer
 		
 		
 		listViewClienti.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Cliente> obs, Cliente oldVal, Cliente newVal) ->{
+			textAreaClienti.clear();
 			textAreaClienti.setText(newVal.stampaCaratteristiche());
 			
 			listViewOrdini.getItems().clear();
+			textAreaOrdine.clear();
+			textAreaGioielloOrdine.clear();
 			ArrayList<Ordine> ordini = newVal.getOrdini();
 			if(ordini.size() > 0) listViewOrdini.getItems().addAll(ordini);
 			
@@ -177,7 +189,7 @@ public class MainController extends Observable implements Observer
 		listViewOrdini.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Ordine> obs, Ordine oldVal, Ordine newVal)->{
 			
 			if(newVal != null) textAreaOrdine.setText(newVal.getInformazioni());
-			if(newVal != null && newVal.getGioiello() != null) textAreaGioielloOrdine.setText(newVal.getGioiello().getDescrizione());
+			if(newVal != null && newVal.getGioiello() != null) textAreaGioielloOrdine.setText(newVal.getGioiello().stampaCaratteristiche());
 			else textAreaGioielloOrdine.setText("Nessun Gioiello presente in quest'ordine");
 			contextMenuOrdini.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
 				
@@ -190,8 +202,38 @@ public class MainController extends Observable implements Observer
 					newVal.eliminaOrdine();
 				}
 			});
+			
+			contextMenuOrdini.getItems().get(1).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					try
+					{
+						Fattura.emettiFattura(newVal);
+						Fattura fattura = Fattura.caricaFattura(newVal);
+						listViewFatture.getItems().add(fattura);
+						fattura.fatturaToFile();
+					}
+					catch(SQLException e)
+					{
+						//e.printStackTrace();
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle("ATTENZIONE");
+						alert.setHeaderText(null);
+						alert.setContentText("ERRORE: Fattura già emessa per quest'ordine");
+						alert.showAndWait();
+					}
+				}
+				
+			});
 		});
 		
+		listViewFatture.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Fattura> obs, Fattura oldVal, Fattura newVal)->{
+			
+			textAreaFatture.setText(newVal.stampaFattura());
+			
+			});
 	}
 	
 	@FXML
@@ -223,6 +265,7 @@ public class MainController extends Observable implements Observer
 		aggiungiGioielloStage.setTitle("Aggiungi Bracciale");
 		aggiungiGioielloStage.setScene(scene);
 		aggiungiGioielloStage.show();
+		//aggiungiGioielloStage.showAndWait();
 		controllerBracciale = loader.getController();
 		controllerBracciale.initialize();
 		controllerBracciale.addObserver(this); 
@@ -258,36 +301,29 @@ public class MainController extends Observable implements Observer
 	@Override
 	public void update(Observable o, Object arg) 
 	{ 
-		if(arg.equals("Anello Creato"))
+		if(arg.equals("Anello Creato")) //messaggio ricevuto dal controller Anello
 		{
-			g = controllerAnello.getGioiello();
-			setChanged();
-			notifyObservers("Anello Creato");
+			listViewGioielli.getItems().add(controllerAnello.getGioiello());
 		}
 		
-		if(arg.equals("Bracciale Creato"))
+		if(arg.equals("Bracciale Creato")) //messaggio ricevuto dal controller bracciale
 		{
-			g = controllerBracciale.getGioiello();
-			setChanged();
-			notifyObservers("Bracciale Creato");
+			listViewGioielli.getItems().add(controllerBracciale.getGioiello());
 		}
 		
-		if(arg.equals("Cliente creato"))
+		if(arg.equals("Cliente creato")) //messaggio ricevuto dal controlle cliente
 		{
-			cliente = controllerCliente.getCliente();
-			setChanged();
-			notifyObservers("Cliente creato");
+			listViewClienti.getItems().add(cliente = controllerCliente.getCliente());
 		}
 		
 		if(arg.equals("Ordine Creato"))
 		{
+			Ordine ordine = controllerOrdine.getOrdine();
+			ordine.setIdCLiente(cliente.getId());
 			cliente.aggiungiOrdine(controllerOrdine.getOrdine());
 			listViewOrdini.getItems().add(controllerOrdine.getOrdine());
 		}
 	}
-	
-	public Cliente getCliente() { return this.cliente; }
-	public Ordine getOrdine() {return this.ordine;}
 	
 	@FXML
 	void menuItemSave(ActionEvent event) 

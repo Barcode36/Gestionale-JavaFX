@@ -1,10 +1,12 @@
 package models;
 
+import java.util.ArrayList;
+
 import gestioneDB.GestioneQuery;
 
 public abstract class Gioiello 
 {
-	private long id;
+	private int id;
 	private double prezzo; 
 	private double peso;
 	private MATERIALE materiale;
@@ -13,16 +15,19 @@ public abstract class Gioiello
 	protected String nomeGioiello;
 	private String descrizione;
 	
-	public Gioiello(long id, double prezzo, double peso, MATERIALE materiale, String genere, boolean venduto, String descrizione)
+	public Gioiello(double prezzo, double peso, MATERIALE materiale, String genere, boolean venduto, String descrizione)
 	{
 		if(prezzo >= 0) this.prezzo = prezzo;
 		if(peso >= 0) this.peso = peso;
 		this.materiale = materiale;
-		this.id = id;
 		if(genere.equals("Maschile") || genere.equals("Femminile"))
 			this.genere = genere;
 		this.venduto = venduto;
 		this.descrizione = descrizione;
+		
+		GestioneQuery database = new GestioneQuery();
+		this.id = database.getNumUltimoGioiello() + 1;
+		database.chiudiConnessione();
 	}
 	
 	public String getNomeGioiello() { return this.nomeGioiello; }
@@ -30,8 +35,8 @@ public abstract class Gioiello
 	public boolean getVenduto() {return this.venduto;}
 	public void setVenduto(boolean venduto) { this.venduto = venduto;}
 	
-	public long getId() { return this.id; }
-	public void setId(long id) { this.id = id; }
+	public int getId() { return this.id; }
+	public void setId(int id) { this.id = id; }
 	
 	public double getPrezzo() { return prezzo; }
 	public void setPrezzo(double prezzo) { this.prezzo = prezzo; }
@@ -50,10 +55,25 @@ public abstract class Gioiello
 	
 	public abstract String stampaCaratteristiche();
 	
+	public void salva()
+	{
+		GestioneQuery database = new GestioneQuery();
+		database.salvaGioiello(this);
+		database.chiudiConnessione();
+	}
+	
 	public void eliminaGioiello()
 	{
 		GestioneQuery database = new GestioneQuery();
 		database.eliminaGioiello(this);
 		database.chiudiConnessione();
+	}
+	
+	public static ArrayList<Gioiello> caricaGioielli()
+	{
+		GestioneQuery database = new GestioneQuery();
+		ArrayList<Gioiello> gioielli = database.caricaGioielli();
+		database.chiudiConnessione();
+		return gioielli;
 	}
 }

@@ -72,7 +72,6 @@ public class AggiungiAnelloController extends Observable
 		boolean venduto = false;
 		String nomeGioiello = nomeGioielloTextField.getText();
 		String descrizione = descrizioneTextArea.getText();
-		
 		double raggio = 0;
 		try
 		{
@@ -94,9 +93,10 @@ public class AggiungiAnelloController extends Observable
 		
 		if(tuttoOk)
 		{
-			gioiello = new Anello((long)0,prezzo,peso,materiale,genere,venduto,raggio,pietra,nomeGioiello,descrizione);
+			gioiello = new Anello(prezzo,peso,materiale,genere,venduto,raggio,pietra,nomeGioiello,descrizione);
+			gioiello.salva();
 			setChanged();
-			notifyObservers("Anello Creato");
+			notifyObservers("Anello Creato"); //messaggio inviato al main controller
 		}
 		
     }

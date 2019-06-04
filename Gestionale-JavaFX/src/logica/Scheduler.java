@@ -1,7 +1,6 @@
 package logica;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import models.Ordine;
 
@@ -12,17 +11,6 @@ public class Scheduler
 	public Scheduler()
 	{
 		ordini = new ArrayList<Ordine>();
-	}
-	
-	private Ordine popFront()
-	{
-		if(!ordini.isEmpty())
-		{
-			Ordine temp = ordini.get(0);
-			ordini.remove(0);
-			return temp;
-		}
-		return null;
 	}
 	
 	public Ordine getProssimoOrdine()

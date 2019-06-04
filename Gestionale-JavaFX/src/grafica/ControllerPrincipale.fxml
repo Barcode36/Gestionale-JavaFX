@@ -91,6 +91,18 @@
                      </center>
                   </BorderPane>
                </content></Tab>
+            <Tab text="Fatture">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <left>
+                        <ListView fx:id="listViewFatture" prefHeight="1009.0" prefWidth="586.0" BorderPane.alignment="CENTER" />
+                     </left>
+                     <right>
+                        <TextArea fx:id="textAreaFatture" editable="false" prefHeight="1009.0" prefWidth="1046.0" BorderPane.alignment="CENTER" />
+                     </right>
+                  </BorderPane>
+               </content>
+            </Tab>
         </tabs>
       </TabPane>
    </center>

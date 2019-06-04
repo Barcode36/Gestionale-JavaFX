@@ -1,8 +1,6 @@
 package models;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-
 import gestioneDB.GestioneQuery;
 
 public class Cliente 
@@ -47,7 +45,7 @@ public class Cliente
 		int numeroOrdini = 0;
 		GestioneQuery database = new GestioneQuery();
 		numeroOrdini = database.getNumeroOrdiniCliente(this);
-		//database.chiudiConnessione();
+		database.chiudiConnessione();
 		
 		return numeroOrdini;
 	}
@@ -55,15 +53,8 @@ public class Cliente
 	public void aggiungiOrdine(Ordine ordine)
 	{
 		GestioneQuery database = new GestioneQuery();
-		try 
-		{
-			database.salvaOrdine(ordine, this);
-		} 
-		catch (SQLException e) 
-		{
-			e.printStackTrace();
-		}
-		//database.chiudiConnessione();
+		database.salvaOrdine(ordine, this);
+		database.chiudiConnessione();
 	}
 	
 	public ArrayList<Ordine> getOrdini()
@@ -74,18 +65,34 @@ public class Cliente
 		return ordini;
 	}
 	
+	public static ArrayList<Cliente> caricaClienti()
+	{
+		GestioneQuery database = new GestioneQuery();
+		ArrayList<Cliente> clienti = database.caricaClienti();
+		database.chiudiConnessione();
+		return clienti;
+	}
+	
+	
 	public void eliminaOrdine(Ordine ordine)
 	{
 		GestioneQuery database = new GestioneQuery();
 		database.eliminaOrdine(ordine);
-		//database.chiudiConnessione();
+		database.chiudiConnessione();
 	}
 	
 	public void eliminaCliente()
 	{
 		GestioneQuery database = new GestioneQuery();
 		database.eliminaCliente(this);
-		//database.chiudiConnessione();
+		database.chiudiConnessione();
+	}
+	
+	public void salva()
+	{
+		GestioneQuery database = new GestioneQuery();
+		database.salvaClienti(this);
+		database.chiudiConnessione();
 	}
 	
 	@Override 

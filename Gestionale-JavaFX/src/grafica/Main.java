@@ -1,8 +1,8 @@
 package grafica;
 
-import logica.Gioielleria;
-
 import java.util.Optional;
+
+import eventi.MainController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.fxml.FXMLLoader;
 
@@ -22,25 +21,19 @@ public class Main extends Application
 	public void start(Stage primaryStage) 
 	{
 		try 
-		{
-			Gioielleria gioielleria = new Gioielleria("Francesco");
-			System.out.println(gioielleria);
-			
+		{	
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("ControllerPrincipale.fxml"));
 			BorderPane root = (BorderPane) loader.load();
 			Scene scene = new Scene(root,1366,768);
 			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setMinHeight(800);
 			primaryStage.setMinWidth(1000);
-			primaryStage.setTitle(gioielleria.getNomeGioielleria());
+			primaryStage.setTitle("Gestionale");
 			primaryStage.setScene(scene);
 			//primaryStage.setAlwaysOnTop(true);
 			primaryStage.show();
-			GestioneInterfaccia gestioneInterfaccia = new GestioneInterfaccia(loader.getController(), gioielleria);
-			Thread t = new Thread(gestioneInterfaccia);
-			t.start();
-			gestioneInterfaccia.inizio();
-			
+			MainController controller = loader.getController();
+			controller.start();
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				
 				@Override
@@ -55,7 +48,7 @@ public class Main extends Application
 					Optional<ButtonType> result = alert.showAndWait();
 					if(result.get() == si)
 					{
-						t.interrupt();
+						//t.interrupt();
 					} 
 					else if(result.get() == no)
 					{
@@ -68,8 +61,6 @@ public class Main extends Application
 					}
 				}
 			});
-			
-			
 		} 
 		catch(Exception e) 
 		{

@@ -1,0 +1,5 @@
+ID Fattura: 16
+Data Emissione: 03-06-2019
+Cliente: Pietro Pallone
+ID Cliente: 22
+Importo: 25.0
