@@ -35,15 +35,15 @@ public class Bracciale extends Gioiello
 		if(getVenduto()) venduto = "Si";
 		else venduto = "No";
 		
-		return "Id: " + getId() + "\n"
-				+"Prezzo: "+getPrezzo()+"\n"
-				+"Peso: "+getPeso()+"\n"
-				+"Materiale: "+ getMateriale()+"\n"
-				+"Genere: "+getGenere()+"\n"
-				+"Venduto: "+venduto+"\n"
-				+"Lunghezza: "+lunghezza+"\n"
-				+"Larghezza: "+larghezza+"\n"
-				+"Spessore: "+spessore+"\n"
-				+"Descrizione: \n"+getDescrizione();
+		return " Id: " + getId() + "\n"
+				+" Prezzo: "+getPrezzo()+"\n"
+				+" Peso: "+getPeso()+"\n"
+				+" Materiale: "+ getMateriale()+"\n"
+				+" Genere: "+getGenere()+"\n"
+				+" Venduto: "+venduto+"\n"
+				+" Lunghezza: "+lunghezza+"\n"
+				+" Larghezza: "+larghezza+"\n"
+				+" Spessore: "+spessore+"\n"
+				+" Descrizione: \n"+" "+getDescrizione();
 	}
 }

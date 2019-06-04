@@ -1,13 +1,14 @@
 package eventi;
 
 import java.util.Observable;
+
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import models.Bracciale;
 import models.Gioiello;
 import models.MATERIALE;
@@ -17,31 +18,31 @@ public class AggiungiBraccialeController extends Observable
 	private Gioiello gioiello;
 	
 	@FXML
-	private ComboBox<MATERIALE> selezionaMaterialeBox;
-	
-	@FXML
-    private TextField lunghezzaTextField;
+    private JFXComboBox<MATERIALE> selezionaMaterialeBox;
 
     @FXML
-    private TextField nomeGioielloTextField;
+    private JFXTextField lunghezzaTextField;
 
     @FXML
-    private TextField spessoreTextField;
+    private JFXTextField nomeGioielloTextField;
 
     @FXML
-    private TextField inserisciPesoTextField;
+    private JFXTextField spessoreTextField;
 
     @FXML
-    private TextField larghezzaTextField;
+    private JFXTextField inserisciPesoTextField;
 
     @FXML
-    private TextField inserisciPrezzoTextField;
+    private JFXTextField larghezzaTextField;
 
     @FXML
-    private ComboBox<String> selezionaGenereBox;
+    private JFXTextField inserisciPrezzoTextField;
 
     @FXML
-    private TextArea descrizioneTextArea;
+    private JFXComboBox<String> selezionaGenereBox;
+
+    @FXML
+    private JFXTextArea descrizioneTextArea;
 	
 	public void initialize()
 	{

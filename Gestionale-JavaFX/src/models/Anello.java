@@ -32,14 +32,14 @@ public class Anello extends Gioiello
 		if(pietra) haPietra = "Si";
 		else haPietra = "No";
 		
-		return "Id: " + getId() + "\n"
-				+"Prezzo: "+getPrezzo()+"\n"
-				+"Peso: "+getPeso()+"\n"
-				+"Materiale: "+ getMateriale()+"\n"
-				+"Genere: "+getGenere()+"\n"
-				+"Venduto: "+venduto+"\n"
-				+"Diametro: "+raggio+"\n"
-				+"Pietra: "+haPietra+"\n"
-				+"Descrizione: \n"+getDescrizione();
+		return " Id: " + getId() + "\n"
+				+" Prezzo: "+getPrezzo()+"\n"
+				+" Peso: "+getPeso()+"\n"
+				+" Materiale: "+ getMateriale()+"\n"
+				+" Genere: "+getGenere()+"\n"
+				+" Venduto: "+venduto+"\n"
+				+" Diametro: "+raggio+"\n"
+				+" Pietra: "+haPietra+"\n"
+				+" Descrizione: \n"+" "+getDescrizione();
 	}
 }

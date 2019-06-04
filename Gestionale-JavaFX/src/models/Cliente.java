@@ -33,11 +33,11 @@ public class Cliente
 	
 	public String stampaCaratteristiche()
 	{
-		return "Nome Cliente: "+ nomeCliente +"\n"
-				+"Cognome Cliente: "+cognomeCliente+"\n"
-				+"Numero Di Telefono: "+numeroTelefono+"\n"
-				+"ID: "+clienteId+"\n"
-				+"Numero Ordini: "+ getNumeroOrdini();
+		return " Nome Cliente: "+ nomeCliente +"\n"
+				+" Cognome Cliente: "+cognomeCliente+"\n"
+				+" Numero Di Telefono: "+numeroTelefono+"\n"
+				+" ID: "+clienteId+"\n"
+				+" Numero Ordini: "+ getNumeroOrdini();
 	}
 	
 	public int getNumeroOrdini() 

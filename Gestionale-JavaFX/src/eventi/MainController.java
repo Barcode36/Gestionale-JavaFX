@@ -7,10 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
-
+import com.jfoenix.controls.JFXTextArea;
 import gestioneDB.GestioneQuery;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -25,7 +24,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,7 +36,7 @@ import models.Ordine;
 
 public class MainController extends Observable implements Observer
 {	
-	private Gioiello g;
+	//private Gioiello g;
 	private Cliente cliente;
 	private ContextMenu contextMenuClienti;
 	private ContextMenu contextMenuGioielli;
@@ -56,19 +54,19 @@ public class MainController extends Observable implements Observer
     private Tab tabClienti;
 	
 	@FXML
-	private TextArea textAreaGioielli;
+	private JFXTextArea textAreaGioielli;
 	
 	@FXML
-    private TextArea textAreaClienti;
+    private JFXTextArea textAreaClienti;
 	
 	@FXML
-    private TextArea textAreaFatture;
+    private JFXTextArea textAreaFatture;
 	
 	@FXML
-	private TextArea textAreaOrdine;
+	private JFXTextArea textAreaOrdine;
 	
 	@FXML
-    private TextArea textAreaGioielloOrdine;
+    private JFXTextArea textAreaGioielloOrdine;
 	
 	@FXML
 	private MenuItem salvaMenuItem;
@@ -80,10 +78,10 @@ public class MainController extends Observable implements Observer
 	private ListView<ImageView> listViewImmagini;
 	
 	@FXML
-	private ListView<Cliente> listViewClienti;
+	private JFXListView<Cliente> listViewClienti;
 	
 	@FXML
-    private ListView<Ordine> listViewOrdini;
+    private JFXListView<Ordine> listViewOrdini;
 	
 	@FXML
     private JFXListView<Fattura> listViewFatture;
@@ -96,8 +94,6 @@ public class MainController extends Observable implements Observer
 	
 	@FXML
     private MenuItem aggiungiAnelloMenuItem;
-	
-	public Gioiello getGioiello() { return this.g; }
 
 	
 	private void setGioielliEClienti()

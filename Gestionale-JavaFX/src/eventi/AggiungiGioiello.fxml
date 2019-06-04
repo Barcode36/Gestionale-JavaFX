@@ -1,33 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.*?>
+<?import com.jfoenix.controls.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.BorderPane?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventi.AggiungiAnelloController">
+   <top>
+      <Label prefHeight="21.0" prefWidth="128.0" text="Aggiungi Anello" BorderPane.alignment="CENTER" />
+   </top>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Prezzo" wrappingWidth="93.6708984375" />
-            <TextField fx:id="prezzoTextField" promptText="Inserisci Prezzo" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Peso" wrappingWidth="63.39892578125" />
-            <TextField fx:id="pesoTextField" promptText="Inserisci Peso" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Diametro" wrappingWidth="68.69189453125" />
-            <TextField fx:id="diametroTextField" promptText="Inserisci Diametro" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nome Gioiello" wrappingWidth="110.126953125" />
-            <TextField fx:id="nomeGioielloTextField" promptText="Inserisci nome gioiello" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Materiale" wrappingWidth="80.6708984375" />
-            <ComboBox fx:id="materialeComboBox" prefHeight="31.0" prefWidth="193.0" promptText="Seleziona materiale" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Pietra" wrappingWidth="54.8076171875" />
-            <ComboBox fx:id="pietraComboBox" prefHeight="31.0" prefWidth="194.0" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Genere" wrappingWidth="58.6708984375" />
-            <ComboBox fx:id="genereComboBox" prefHeight="31.0" prefWidth="193.0" promptText="Seleziona Genere" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Descrizione" wrappingWidth="88.0400390625" />
-            <TextArea fx:id="descrizioneTextArea" prefHeight="191.0" prefWidth="900.0" promptText="Inserisci descrizione" />
-            <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submit" prefHeight="31.0" prefWidth="73.0" text="OK" />
+            <FlowPane hgap="5.0" prefHeight="37.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="96.0" text="Prezzo" />
+                  <JFXTextField fx:id="prezzoTextField" />
+                  <Label prefHeight="21.0" prefWidth="14.0" text="€" />
+               </children>
+            </FlowPane>
+            <FlowPane prefHeight="35.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="102.0" text="Peso" />
+                  <JFXTextField fx:id="pesoTextField" />
+                  <Label text="grammi" />
+               </children>
+            </FlowPane>
+            <FlowPane prefHeight="35.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="103.0" text="Diametro" />
+                  <JFXTextField fx:id="diametroTextField" />
+                  <Label prefHeight="21.0" prefWidth="25.0" text="cm" />
+               </children>
+            </FlowPane>
+            <FlowPane prefHeight="35.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="104.0" text="Nome Gioiello" />
+                  <JFXTextField fx:id="nomeGioielloTextField" prefHeight="31.0" prefWidth="168.0" />
+               </children>
+            </FlowPane>
+            <FlowPane prefHeight="36.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="104.0" text="Materiale" />
+                  <JFXComboBox fx:id="materialeComboBox" prefHeight="31.0" prefWidth="153.0" />
+               </children>
+            </FlowPane>
+            <FlowPane prefHeight="36.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="104.0" text="Genere" />
+                  <JFXComboBox fx:id="genereComboBox" prefHeight="31.0" prefWidth="153.0" />
+               </children>
+            </FlowPane>
+            <FlowPane prefHeight="0.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="105.0" text="Pietra" />
+                  <JFXComboBox fx:id="pietraComboBox" prefHeight="31.0" prefWidth="153.0" />
+               </children>
+            </FlowPane>
+            <JFXTextArea fx:id="descrizioneTextArea" prefHeight="299.0" prefWidth="900.0" promptText="Inserisci una descrizione o dei commenti" />
+            <FlowPane prefHeight="0.0" prefWidth="900.0" />
+            <JFXButton fx:id="submitButton" onAction="#submit" prefHeight="31.0" prefWidth="72.0" text="OK" />
          </children>
       </VBox>
    </center>
