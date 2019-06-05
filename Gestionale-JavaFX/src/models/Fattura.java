@@ -76,21 +76,8 @@ public class Fattura
 		return fatture;
 	}
 	
-	public void fatturaToFile()
+	public void fatturaToFile(String path)
 	{
-//		try 
-//		{
-//			BufferedWriter file = new BufferedWriter(new FileWriter("Fattura"+idOrdine+".txt"));
-//			file.append(stampaFattura());
-//			file.newLine();
-//			file.close();
-//		} 
-//		catch (IOException e) 
-//		{
-//			e.printStackTrace();
-//		}
-		
-		
 		try 
 		{
 			PDDocument document = new PDDocument();
@@ -110,7 +97,7 @@ public class Fattura
 			write.endText();
 			write.close();
 			
-			document.save("Fattura #"+idOrdine+".pdf");
+			document.save(path);
 			document.close();
 		} 
 		catch (IOException e) 

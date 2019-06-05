@@ -27,7 +27,7 @@ public class GestioneQuery
 		try 
 		{
 			Class.forName(driver);
-			con = DriverManager.getConnection(url, "postgres", "password");
+			con = DriverManager.getConnection(url, "postgres", "3890498266");
 		} 
 		catch (ClassNotFoundException | SQLException e) 
 		{

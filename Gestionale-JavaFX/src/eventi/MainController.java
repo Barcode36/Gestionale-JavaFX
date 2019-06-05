@@ -1,5 +1,6 @@
 package eventi;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,6 +29,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import models.Cliente;
 import models.Fattura;
@@ -238,7 +241,16 @@ public class MainController extends Observable implements Observer
 				@Override
 				public void handle(ActionEvent event) 
 				{
-					newVal.fatturaToFile();
+					FileChooser percorsoSalvataggio = new FileChooser();
+					percorsoSalvataggio.setTitle("Salva Fattura");
+					percorsoSalvataggio.setInitialFileName("Fattura #"+newVal.getIdFattura()+".pdf");
+					percorsoSalvataggio.getExtensionFilters().add(new ExtensionFilter("pdf file", ".pdf"));
+					File file = percorsoSalvataggio.showSaveDialog(new Stage());
+					if(file != null)
+					{
+						newVal.fatturaToFile(file.getPath());
+					}
+					
 				}
 				
 			});
