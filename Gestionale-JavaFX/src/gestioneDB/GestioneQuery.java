@@ -1,5 +1,7 @@
 package gestioneDB;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,6 +15,7 @@ import models.Bracciale;
 import models.Cliente;
 import models.Fattura;
 import models.Gioiello;
+import models.Immagine;
 import models.MATERIALE;
 import models.Ordine;
 
@@ -27,12 +30,54 @@ public class GestioneQuery
 		try 
 		{
 			Class.forName(driver);
-			con = DriverManager.getConnection(url, "postgres", "3890498266");
+			con = DriverManager.getConnection(url, "postgres", "password");
 		} 
 		catch (ClassNotFoundException | SQLException e) 
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public void inserisciImmagine(FileInputStream immagine, Gioiello gioiello)
+	{
+		try 
+		{
+			PreparedStatement cmd = con.prepareStatement("insert into immagini(immagine,idProdotto) values(?,?)");
+			cmd.setBinaryStream(1, immagine);
+			cmd.setInt(2,gioiello.getId());
+			cmd.executeUpdate();
+			cmd.close();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public ArrayList<Immagine> caricaImmagini(Gioiello gioiello)
+	{
+		ArrayList<Immagine> immagini = new ArrayList<Immagine>();
+		
+		try 
+		{
+			PreparedStatement cmd = con.prepareStatement("select immagine,idProdotto,idImmagine from immagini where idProdotto = ?");
+			cmd.setInt(1, gioiello.getId());
+			ResultSet res = cmd.executeQuery();
+			
+			while(res.next())
+			{
+				immagini.add(new Immagine(res.getBinaryStream(1),res.getInt(2),res.getInt(3)));
+			}
+			
+			cmd.close();
+			res.close();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return immagini;
 	}
 	
 	public void eliminaFattura(Fattura fattura)

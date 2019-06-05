@@ -1,7 +1,7 @@
 package models;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
-
 import gestioneDB.GestioneQuery;
 
 public abstract class Gioiello 
@@ -75,5 +75,21 @@ public abstract class Gioiello
 		ArrayList<Gioiello> gioielli = database.caricaGioielli();
 		database.chiudiConnessione();
 		return gioielli;
+	}
+	
+	public ArrayList<Immagine> caricaImmagini()
+	{
+		//non inserire png
+		GestioneQuery database = new GestioneQuery();
+		ArrayList<Immagine> immagini = database.caricaImmagini(this);
+		database.chiudiConnessione();
+		return immagini;
+	}
+	
+	public void aggiungiImmagine(FileInputStream immagine)
+	{
+		GestioneQuery database = new GestioneQuery();
+		database.inserisciImmagine(immagine, this);
+		database.chiudiConnessione();
 	}
 }

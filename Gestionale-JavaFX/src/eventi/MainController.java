@@ -6,12 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
-import gestioneDB.GestioneQuery;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,7 +26,6 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
@@ -35,6 +34,7 @@ import javafx.stage.Stage;
 import models.Cliente;
 import models.Fattura;
 import models.Gioiello;
+import models.Immagine;
 import models.Ordine;
 
 public class MainController extends Observable implements Observer
@@ -106,6 +106,17 @@ public class MainController extends Observable implements Observer
 		listViewFatture.getItems().addAll(Fattura.caricaFatture());
 	}
 	
+	private ArrayList<ImageView> caricaImmagini(ArrayList<Immagine> immagini)
+	{
+		ArrayList<ImageView> imageViewImmagini = new ArrayList<ImageView>();
+		for(Immagine i : immagini)
+		{
+			imageViewImmagini.add(new ImageView(i));
+		}
+		
+		return imageViewImmagini;
+	}
+	
 	public void start()
 	{
 		setGioielliEClienti();
@@ -114,7 +125,7 @@ public class MainController extends Observable implements Observer
 		contextMenuOrdini = new ContextMenu();
 		contextMenuFatture = new ContextMenu();
 		contextMenuClienti.getItems().addAll(new MenuItem("Aggiungi Ordine"), new MenuItem("Elimina Cliente"));
-		contextMenuGioielli.getItems().addAll(new MenuItem("Elimina Gioiello"), new MenuItem("AggiungiGioiello"));
+		contextMenuGioielli.getItems().addAll(new MenuItem("Elimina Gioiello"), new MenuItem("AggiungiGioiello"), new MenuItem("Aggiungi Immagine"));
 		contextMenuOrdini.getItems().addAll(new MenuItem("Elimina Ordine"), new MenuItem("Emetti Fattura"));
 		contextMenuFatture.getItems().addAll(new MenuItem("Stampa Fattura"),new MenuItem("Elimina Fattura"));
 		listViewOrdini.setContextMenu(contextMenuOrdini);
@@ -132,7 +143,8 @@ public class MainController extends Observable implements Observer
 		
 		listViewGioielli.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Gioiello> obs, Gioiello oldVal, Gioiello newVal) -> {
 			textAreaGioielli.setText(newVal.stampaCaratteristiche());
-			
+			listViewImmagini.getItems().clear();
+			listViewImmagini.getItems().addAll(caricaImmagini(newVal.caricaImmagini()));
 			contextMenuGioielli.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
@@ -143,16 +155,32 @@ public class MainController extends Observable implements Observer
 				}
 			});
 			
-			try 
-			{
-				listViewImmagini.getItems().clear();
-				listViewImmagini.getItems().add(new ImageView(new Image(new FileInputStream("immagine.jpg"))));
-				listViewImmagini.getItems().add(new ImageView(new Image(new FileInputStream("immagine.jpg"))));
-			} 
-			catch (FileNotFoundException e)
-			{
-				e.printStackTrace();
-			}
+			contextMenuGioielli.getItems().get(2).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					FileChooser percorsoSalvataggio = new FileChooser();
+					percorsoSalvataggio.setTitle("Carica Immagine");
+					//percorsoSalvataggio.getExtensionFilters().add();	
+					List<File> immagini = percorsoSalvataggio.showOpenMultipleDialog(new Stage());
+					if(immagini != null)
+					{
+						for(File f : immagini)
+						{
+							try 
+							{
+								newVal.aggiungiImmagine(new FileInputStream(f));
+								listViewImmagini.getItems().add(new ImageView(new Immagine(new FileInputStream(f))));
+							} 
+							catch (FileNotFoundException e) 
+							{
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+			});
 		});
 		
 		
@@ -172,9 +200,7 @@ public class MainController extends Observable implements Observer
 				public void handle(ActionEvent event) 
 				{
 						controllerOrdine = getControllerOrdine();
-						GestioneQuery database = new GestioneQuery();
-						controllerOrdine.initialize(database.caricaGioielli());
-						database.chiudiConnessione();
+						controllerOrdine.initialize(Gioiello.caricaGioielli());
 						cliente = newVal;
 				}
 			});
@@ -228,7 +254,6 @@ public class MainController extends Observable implements Observer
 						alert.showAndWait();
 					}
 				}
-				
 			});
 		});
 		
@@ -250,7 +275,6 @@ public class MainController extends Observable implements Observer
 					{
 						newVal.fatturaToFile(file.getPath());
 					}
-					
 				}
 				
 			});
@@ -259,6 +283,7 @@ public class MainController extends Observable implements Observer
 				@Override
 				public void handle(ActionEvent event) 
 				{
+					listViewFatture.getItems().remove(listViewFatture.getSelectionModel().getSelectedIndex());
 					newVal.elimina();
 				}
 			});

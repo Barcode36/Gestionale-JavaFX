@@ -58,12 +58,12 @@
           <Tab text="Gioielli">
                <content>
                   <BorderPane>
-                     <right>
-                        <ListView fx:id="listViewImmagini" prefHeight="1009.0" prefWidth="547.0" BorderPane.alignment="CENTER" />
-                     </right>
                      <center>
                         <JFXTextArea fx:id="textAreaGioielli" editable="false" BorderPane.alignment="CENTER" />
                      </center>
+                     <right>
+                        <ListView fx:id="listViewImmagini" BorderPane.alignment="CENTER" />
+                     </right>
                   </BorderPane>
                </content>
             </Tab>
