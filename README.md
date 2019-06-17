@@ -1,5 +1,5 @@
 # Gestionale-JavaFX
-# version 0.6.0 BETA
+# version 0.6.2 BETA
 
 This software is released "as is" and it is under development. To develop the graphic interface i'm using SceneBuilder for Java FX. 
 For any suggestion or to report a bug please contact the developer.
@@ -46,3 +46,6 @@ Added PDFBox to print bills into pdf format. Some bugfix and improvements.
 
 0.6.0 BETA
 Added view of objects' images, added Immagine class to models that extends JavaFX.Image because i need to know image id to delete image (this feature is not yet present). BugFix and improvements
+
+0.6.2 BETA
+Now you can modify products data, also bugfix and improvements. 
