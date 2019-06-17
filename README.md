@@ -1,5 +1,5 @@
 # Gestionale-JavaFX
-# version 0.6.2 BETA
+# version 0.6.3 BETA
 
 This software is released "as is" and it is under development. To develop the graphic interface i'm using SceneBuilder for Java FX. 
 For any suggestion or to report a bug please contact the developer.
@@ -49,3 +49,6 @@ Added view of objects' images, added Immagine class to models that extends JavaF
 
 0.6.2 BETA
 Now you can modify products data, also bugfix and improvements. 
+
+0.6.3 BETA
+Bugfix and improvements.
