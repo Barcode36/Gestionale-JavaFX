@@ -87,3 +87,6 @@ public class Main extends Application
 //peso
 //caratura
 //diametro
+
+//aggiungere delle stringhe che riescono a descrivere le caratteristiche di un oggetto
+//se un prodotto è da troppo tempo nel magazzino viene deprezzato per farlo vendere

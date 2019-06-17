@@ -65,7 +65,22 @@ public class AggiungiAnelloController extends Observable
 	void submit(ActionEvent event) //quando il tasto ok è premuto
     {
 		boolean tuttoOk = true;
-		double prezzo = Double.parseDouble(prezzoTextField.getText());
+		
+		double prezzo = 0;
+		try 
+		{
+			prezzo = Double.parseDouble(prezzoTextField.getText());
+		}
+		catch(NumberFormatException e)
+		{
+			tuttoOk = false;
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERRORE");
+			alert.setHeaderText("Errore di inserimento");
+			alert.setContentText("Inserisci un valore corretto nel campo Prezzo");
+			alert.showAndWait(); 
+		}
+		
 		double peso = Double.parseDouble(pesoTextField.getText());
 		MATERIALE materiale = materialeComboBox.getValue();
 		String genere = genereComboBox.getValue();

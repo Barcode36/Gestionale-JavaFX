@@ -2,6 +2,8 @@ package models;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+
+import gestioneDB.GestioneQuery;
 import javafx.scene.image.Image;
 
 public class Immagine extends Image 
@@ -33,6 +35,11 @@ public class Immagine extends Image
 	public int getIdImmagine() { return idImmagine; }
 	public void setIdImmagine(int idImmagine) { this.idImmagine = idImmagine; }
 	
-	
+	public void eliminaImmagine()
+	{
+		GestioneQuery database = new GestioneQuery();
+		database.eliminaImmagine(this);
+		database.chiudiConnessione();
+	}
 
 }

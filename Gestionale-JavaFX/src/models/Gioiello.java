@@ -31,6 +31,7 @@ public abstract class Gioiello
 	}
 	
 	public String getNomeGioiello() { return this.nomeGioiello; }
+	public void setNomeGioiello(String nomeGioiello) { this.nomeGioiello = nomeGioiello;}
 	
 	public boolean getVenduto() {return this.venduto;}
 	public void setVenduto(boolean venduto) { this.venduto = venduto;}

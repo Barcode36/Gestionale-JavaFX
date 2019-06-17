@@ -1,7 +1,6 @@
 package gestioneDB;
 
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -23,6 +22,8 @@ public class GestioneQuery
 {
 	private final String driver = "org.postgresql.Driver";
 	private final String url = "jdbc:postgresql://localhost/Gioielleria";
+	private final String databaseType = "postgres";
+	private final String password = "password";
 	private Connection con; 
 
 	public GestioneQuery()
@@ -30,7 +31,7 @@ public class GestioneQuery
 		try 
 		{
 			Class.forName(driver);
-			con = DriverManager.getConnection(url, "postgres", "password");
+			con = DriverManager.getConnection(url, databaseType, password);
 		} 
 		catch (ClassNotFoundException | SQLException e) 
 		{
@@ -78,6 +79,21 @@ public class GestioneQuery
 		}
 		
 		return immagini;
+	}
+	
+	public void eliminaImmagine(Immagine immagine)
+	{
+		try 
+		{
+			PreparedStatement cmd = con.prepareStatement("delete from immagini where idImmagine = ?");
+			cmd.setInt(1, immagine.getIdImmagine());
+			cmd.executeUpdate();
+			cmd.close();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void eliminaFattura(Fattura fattura)
@@ -559,6 +575,19 @@ public class GestioneQuery
 
 	public void eliminaGioiello(Gioiello gioiello)
 	{
+		try 
+		{
+			PreparedStatement cmd3 = con.prepareStatement("delete from Immagini where idProdotto = ?");
+			cmd3.setInt(1, gioiello.getId());
+			cmd3.executeUpdate();
+			cmd3.close();
+		} 
+		catch (SQLException e1) 
+		{
+			e1.printStackTrace();
+		}
+		
+		
 		if(gioiello instanceof Anello)
 		{
 			try 
@@ -600,7 +629,6 @@ public class GestioneQuery
 				e.printStackTrace();
 			}
 		}
-		
 	}
 	
 	public void eliminaCliente(Cliente cliente)
@@ -677,9 +705,10 @@ public class GestioneQuery
 			
 			while(res.next())
 			{
-				Gioiello gioiello = getGioiello(res.getInt(5));
-				if(gioiello == null) gioiello = getGioiello(res.getInt(6));
-				//ordini.add(new Ordine(res.getInt(1),res.getString(3),gioiello,res.getString(4),res.getString(8)));
+				Gioiello gioiello = getGioiello(res.getInt(2));
+				Ordine ordine = new Ordine(res.getInt(1),res.getString(4),gioiello,res.getString(5),res.getString(7),res.getInt(6));
+				ordine.setDataOrdine(res.getString(3));
+				ordini.add(ordine);
 			}
 			
 			cmd.close();
@@ -717,5 +746,31 @@ public class GestioneQuery
 			e.printStackTrace();
 		}
 		return ordini;
+	}
+	
+	public void modificaDatiGioiello(Gioiello gioiello)
+	{
+		try 
+		{
+			PreparedStatement cmd = con.prepareStatement("update prodotto set prezzo = ?, peso = ?, materiale = ?, genere = ?, nomeGioiello = ?, descrizione = ? where idProdotto = ?");
+			cmd.setDouble(1, gioiello.getPrezzo());
+			cmd.setDouble(2, gioiello.getPeso());
+			cmd.setString(3, gioiello.getMateriale().toString());
+			cmd.setString(4, gioiello.getGenere());
+			cmd.setString(5, gioiello.getNomeGioiello());
+			cmd.setString(6, gioiello.getDescrizione());
+			cmd.setInt(7, gioiello.getId());
+			cmd.executeUpdate();
+			cmd.close();
+			
+//			if(gioiello instanceof Anello)
+//			{
+//				PreparedStatement cmd2 = con.prepareStatement("update anello set");
+//			}
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 }

@@ -13,7 +13,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem fx:id="salvaMenuItem" mnemonicParsing="false" onAction="#menuItemSave" text="Salva" />
+                  <MenuItem fx:id="salvaMenuItem" mnemonicParsing="false" text="Salva" />
               <MenuItem mnemonicParsing="false" text="Chiudi" />
             </items>
           </Menu>
@@ -62,7 +62,7 @@
                         <JFXTextArea fx:id="textAreaGioielli" editable="false" BorderPane.alignment="CENTER" />
                      </center>
                      <right>
-                        <ListView fx:id="listViewImmagini" BorderPane.alignment="CENTER" />
+                        <ListView fx:id="listViewImmagini" prefHeight="1009.0" prefWidth="330.0" BorderPane.alignment="CENTER" />
                      </right>
                   </BorderPane>
                </content>
@@ -104,6 +104,21 @@
                      <center>
                         <JFXTextArea fx:id="textAreaFatture" editable="false" BorderPane.alignment="CENTER" />
                      </center>
+                  </BorderPane>
+               </content>
+            </Tab>
+            <Tab text="Scheduler">
+               <content>
+                  <BorderPane>
+                     <right>
+                        <JFXTextArea prefHeight="797.0" prefWidth="403.0" BorderPane.alignment="CENTER" />
+                     </right>
+                     <bottom>
+                        <JFXTextArea prefHeight="278.0" prefWidth="1641.0" BorderPane.alignment="CENTER" />
+                     </bottom>
+                     <left>
+                        <JFXListView prefHeight="797.0" prefWidth="456.0" BorderPane.alignment="CENTER" />
+                     </left>
                   </BorderPane>
                </content>
             </Tab>

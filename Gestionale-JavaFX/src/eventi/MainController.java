@@ -31,24 +31,28 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import models.Anello;
+import models.Bracciale;
 import models.Cliente;
 import models.Fattura;
 import models.Gioiello;
 import models.Immagine;
 import models.Ordine;
 
-public class MainController extends Observable implements Observer
+public class MainController implements Observer
 {	
-	//private Gioiello g;
+	private Gioiello g;
 	private Cliente cliente;
 	private ContextMenu contextMenuClienti;
 	private ContextMenu contextMenuGioielli;
 	private ContextMenu contextMenuOrdini;
 	private ContextMenu contextMenuFatture;
+	private ContextMenu contextMenuImmagini;
 	private AggiungiAnelloController controllerAnello;
 	private AggiungiClienteController controllerCliente;
 	private AggiungiBraccialeController controllerBracciale;
 	private AggiungiOrdineController controllerOrdine;
+	private ModificaDatiBraccialeController modificaBracciale;
 	
 	@FXML
     private TabPane tabPane;
@@ -106,17 +110,6 @@ public class MainController extends Observable implements Observer
 		listViewFatture.getItems().addAll(Fattura.caricaFatture());
 	}
 	
-	private ArrayList<ImageView> caricaImmagini(ArrayList<Immagine> immagini)
-	{
-		ArrayList<ImageView> imageViewImmagini = new ArrayList<ImageView>();
-		for(Immagine i : immagini)
-		{
-			imageViewImmagini.add(new ImageView(i));
-		}
-		
-		return imageViewImmagini;
-	}
-	
 	public void start()
 	{
 		setGioielliEClienti();
@@ -124,14 +117,17 @@ public class MainController extends Observable implements Observer
 		contextMenuGioielli = new ContextMenu();
 		contextMenuOrdini = new ContextMenu();
 		contextMenuFatture = new ContextMenu();
+		contextMenuImmagini = new ContextMenu();
 		contextMenuClienti.getItems().addAll(new MenuItem("Aggiungi Ordine"), new MenuItem("Elimina Cliente"));
-		contextMenuGioielli.getItems().addAll(new MenuItem("Elimina Gioiello"), new MenuItem("AggiungiGioiello"), new MenuItem("Aggiungi Immagine"));
+		contextMenuGioielli.getItems().addAll(new MenuItem("Elimina Gioiello"), new MenuItem("Aggiungi Immagine"), new MenuItem("Modifica"));
 		contextMenuOrdini.getItems().addAll(new MenuItem("Elimina Ordine"), new MenuItem("Emetti Fattura"));
 		contextMenuFatture.getItems().addAll(new MenuItem("Stampa Fattura"),new MenuItem("Elimina Fattura"));
+		contextMenuImmagini.getItems().addAll(new MenuItem("Elimina Immagine"), new MenuItem("Visualizza"));
 		listViewOrdini.setContextMenu(contextMenuOrdini);
 		listViewGioielli.setContextMenu(contextMenuGioielli);
 		listViewClienti.setContextMenu(contextMenuClienti);
 		listViewFatture.setContextMenu(contextMenuFatture);
+		listViewImmagini.setContextMenu(contextMenuImmagini);
 		listViewGioielli.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listViewClienti.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listViewOrdini.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -140,154 +136,11 @@ public class MainController extends Observable implements Observer
 	
 	private void showInListView()
 	{	
-		
-		listViewGioielli.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Gioiello> obs, Gioiello oldVal, Gioiello newVal) -> {
-			textAreaGioielli.setText(newVal.stampaCaratteristiche());
-			listViewImmagini.getItems().clear();
-			listViewImmagini.getItems().addAll(caricaImmagini(newVal.caricaImmagini()));
-			contextMenuGioielli.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent event) 
-				{
-					listViewGioielli.getItems().remove(listViewGioielli.getSelectionModel().getSelectedItem());
-					newVal.eliminaGioiello();
-				}
-			});
-			
-			contextMenuGioielli.getItems().get(2).setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent event) 
-				{
-					FileChooser percorsoSalvataggio = new FileChooser();
-					percorsoSalvataggio.setTitle("Carica Immagine");
-					//percorsoSalvataggio.getExtensionFilters().add();	
-					List<File> immagini = percorsoSalvataggio.showOpenMultipleDialog(new Stage());
-					if(immagini != null)
-					{
-						for(File f : immagini)
-						{
-							try 
-							{
-								newVal.aggiungiImmagine(new FileInputStream(f));
-								listViewImmagini.getItems().add(new ImageView(new Immagine(new FileInputStream(f))));
-							} 
-							catch (FileNotFoundException e) 
-							{
-								e.printStackTrace();
-							}
-						}
-					}
-				}
-			});
-		});
-		
-		
-		listViewClienti.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Cliente> obs, Cliente oldVal, Cliente newVal) ->{
-			textAreaClienti.clear();
-			textAreaClienti.setText(newVal.stampaCaratteristiche());
-			
-			listViewOrdini.getItems().clear();
-			textAreaOrdine.clear();
-			textAreaGioielloOrdine.clear();
-			ArrayList<Ordine> ordini = newVal.getOrdini();
-			if(ordini.size() > 0) listViewOrdini.getItems().addAll(ordini);
-			
-			contextMenuClienti.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent event) 
-				{
-						controllerOrdine = getControllerOrdine();
-						controllerOrdine.initialize(Gioiello.caricaGioielli());
-						cliente = newVal;
-				}
-			});
-			
-			contextMenuClienti.getItems().get(1).setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent event) 
-				{
-					listViewClienti.getItems().remove(listViewClienti.getSelectionModel().getSelectedIndex());
-					newVal.eliminaCliente();
-				}
-			});
-		});
-		
-		listViewOrdini.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Ordine> obs, Ordine oldVal, Ordine newVal)->{
-			
-			if(newVal != null) textAreaOrdine.setText(newVal.getInformazioni());
-			if(newVal != null && newVal.getGioiello() != null) textAreaGioielloOrdine.setText(newVal.getGioiello().stampaCaratteristiche());
-			else textAreaGioielloOrdine.setText("Nessun Gioiello presente in quest'ordine");
-			contextMenuOrdini.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
-				
-				@Override
-				public void handle(ActionEvent event) 
-				{
-					listViewOrdini.getItems().remove(listViewOrdini.getSelectionModel().getSelectedIndex());
-					textAreaOrdine.clear();
-					textAreaGioielloOrdine.clear();
-					newVal.eliminaOrdine();
-				}
-			});
-			
-			contextMenuOrdini.getItems().get(1).setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent event) 
-				{
-					try
-					{
-						Fattura.emettiFattura(newVal);
-						Fattura fattura = Fattura.caricaFattura(newVal);
-						listViewFatture.getItems().add(fattura);
-					}
-					catch(SQLException e)
-					{
-						//e.printStackTrace();
-						Alert alert = new Alert(AlertType.ERROR);
-						alert.setTitle("ATTENZIONE");
-						alert.setHeaderText(null);
-						alert.setContentText("ERRORE: Fattura già emessa per quest'ordine");
-						alert.showAndWait();
-					}
-				}
-			});
-		});
-		
-		listViewFatture.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Fattura> obs, Fattura oldVal, Fattura newVal)->{
-			
-			textAreaFatture.setText(newVal.stampaFattura());
-			
-			contextMenuFatture.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent event) 
-				{
-					FileChooser percorsoSalvataggio = new FileChooser();
-					percorsoSalvataggio.setTitle("Salva Fattura");
-					percorsoSalvataggio.setInitialFileName("Fattura #"+newVal.getIdFattura()+".pdf");
-					percorsoSalvataggio.getExtensionFilters().add(new ExtensionFilter("pdf file", ".pdf"));
-					File file = percorsoSalvataggio.showSaveDialog(new Stage());
-					if(file != null)
-					{
-						newVal.fatturaToFile(file.getPath());
-					}
-				}
-				
-			});
-			
-			contextMenuFatture.getItems().get(1).setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) 
-				{
-					listViewFatture.getItems().remove(listViewFatture.getSelectionModel().getSelectedIndex());
-					newVal.elimina();
-				}
-			});
-		});
+		tabGioielli();
+		tabClienti();
+		visualizzazioneOrdini();
+		tabFatture();
+		visualizzazioneImmagini();
 	}
 	
 	@FXML
@@ -377,13 +230,12 @@ public class MainController extends Observable implements Observer
 			cliente.aggiungiOrdine(controllerOrdine.getOrdine());
 			listViewOrdini.getItems().add(controllerOrdine.getOrdine());
 		}
-	}
-	
-	@FXML
-	void menuItemSave(ActionEvent event) 
-	{
-		setChanged();
-		notifyObservers("Salvato");
+		
+		if(arg.equals("modificato bracciale"))
+		{
+			Gioiello g = modificaBracciale.getGioiello();
+			textAreaGioielli.setText(g.stampaCaratteristiche());
+		}
 	}
 	
 	private AggiungiOrdineController getControllerOrdine()
@@ -407,5 +259,301 @@ public class MainController extends Observable implements Observer
 		AggiungiOrdineController controller = loader.getController();
 		controller.addObserver(this);
 		return controller;
+	}
+	
+	private ControllerVisualizzatoreImmagini getControllerVisualizzatoreImmagini()
+	{
+		Stage visualizzatoreImmagini = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("VisualizzatoreImmagini.fxml"));
+		BorderPane visualizzatoreImmaginiPane = null;
+		try 
+		{
+			visualizzatoreImmaginiPane = (BorderPane) loader.load();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		Scene scene = new Scene(visualizzatoreImmaginiPane,900,600);
+		visualizzatoreImmagini.setTitle("Aggiungi Cliente");
+		visualizzatoreImmagini.setScene(scene);
+		visualizzatoreImmagini.show();
+		ControllerVisualizzatoreImmagini controller = loader.getController();
+		return controller;
+	}
+	
+	private ModificaDatiAnelloController getModificaDatiAnello()
+	{
+		Stage modificaDati = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("ModificaDatiAnello.fxml"));
+		BorderPane modificadatiPane = null;
+		try 
+		{
+			modificadatiPane = (BorderPane) loader.load();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		Scene scene = new Scene(modificadatiPane,900,600);
+		modificaDati.setTitle("Modifica Anello");
+		modificaDati.setScene(scene);
+		modificaDati.show();
+		return loader.getController();
+	}
+	
+	private ModificaDatiBraccialeController getModificaDatiBracciale()
+	{
+		Stage modificaDati = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("ModificaDatiBracciale.fxml"));
+		BorderPane modificadatiPane = null;
+		try 
+		{
+			modificadatiPane = (BorderPane) loader.load();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		Scene scene = new Scene(modificadatiPane,900,600);
+		modificaDati.setTitle("Modifica Bracciale");
+		modificaDati.setScene(scene);
+		modificaDati.show();
+		ModificaDatiBraccialeController controller = loader.getController();
+		controller.addObserver(this);
+		return controller;	
+	}
+	
+	private void tabGioielli()
+	{
+		listViewGioielli.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Gioiello> obs, Gioiello oldVal, Gioiello newVal) -> {
+			textAreaGioielli.setText(newVal.stampaCaratteristiche());
+			listViewImmagini.getItems().clear();
+			listViewImmagini.getItems().addAll(caricaImmagini(newVal.caricaImmagini()));
+			contextMenuGioielli.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					listViewGioielli.getItems().remove(listViewGioielli.getSelectionModel().getSelectedItem());
+					newVal.eliminaGioiello();
+				}
+			});
+			
+			contextMenuGioielli.getItems().get(1).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					FileChooser percorsoSalvataggio = new FileChooser();
+					percorsoSalvataggio.setTitle("Carica Immagine");
+					//percorsoSalvataggio.getExtensionFilters().add();	
+					List<File> immagini = percorsoSalvataggio.showOpenMultipleDialog(new Stage());
+					if(immagini != null)
+					{
+						for(File f : immagini)
+						{
+							try 
+							{
+								newVal.aggiungiImmagine(new FileInputStream(f));
+								ImageView im = new ImageView(new Immagine(new FileInputStream(f)));
+								im.setFitHeight(300);
+								im.setFitWidth(300);
+								listViewImmagini.getItems().add(im);
+							} 
+							catch (FileNotFoundException e) 
+							{
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+			});
+			
+			contextMenuGioielli.getItems().get(2).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					if(newVal instanceof Anello)
+					{
+						ModificaDatiAnelloController modifica = getModificaDatiAnello();
+						modifica.initialize((Anello)newVal);
+					}
+					if(newVal instanceof Bracciale)
+					{
+						modificaBracciale = getModificaDatiBracciale();
+						modificaBracciale.initialize((Bracciale)newVal);
+					}
+				}
+			});
+		});
+	}
+	
+	private ArrayList<ImageView> caricaImmagini(ArrayList<Immagine> immagini)
+	{
+		ArrayList<ImageView> imageViewImmagini = new ArrayList<ImageView>();
+		for(Immagine i : immagini)
+		{
+			ImageView im = new ImageView(i);
+			im.setFitHeight(300);
+			im.setFitWidth(300);
+			imageViewImmagini.add(im);
+		}
+		
+		return imageViewImmagini;
+	}
+	
+	private void tabClienti()
+	{
+		listViewClienti.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Cliente> obs, Cliente oldVal, Cliente newVal) ->{
+			textAreaClienti.clear();
+			textAreaClienti.setText(newVal.stampaCaratteristiche());
+			
+			listViewOrdini.getItems().clear();
+			textAreaOrdine.clear();
+			textAreaGioielloOrdine.clear();
+			ArrayList<Ordine> ordini = newVal.getOrdini();
+			if(ordini.size() > 0) listViewOrdini.getItems().addAll(ordini);
+			
+			contextMenuClienti.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+						controllerOrdine = getControllerOrdine();
+						controllerOrdine.initialize(Gioiello.caricaGioielli());
+						cliente = newVal;
+				}
+			});
+			
+			contextMenuClienti.getItems().get(1).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					listViewClienti.getItems().remove(listViewClienti.getSelectionModel().getSelectedIndex());
+					newVal.eliminaCliente();
+				}
+			});
+		});
+	}
+	
+	private void visualizzazioneOrdini()
+	{
+		listViewOrdini.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Ordine> obs, Ordine oldVal, Ordine newVal)->{
+			
+			if(newVal != null) textAreaOrdine.setText(newVal.getInformazioni());
+			if(newVal != null && newVal.getGioiello() != null) textAreaGioielloOrdine.setText(newVal.getGioiello().stampaCaratteristiche());
+			else textAreaGioielloOrdine.setText("Nessun Gioiello presente in quest'ordine");
+			contextMenuOrdini.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					listViewOrdini.getItems().remove(listViewOrdini.getSelectionModel().getSelectedIndex());
+					textAreaOrdine.clear();
+					textAreaGioielloOrdine.clear();
+					newVal.eliminaOrdine();
+				}
+			});
+			
+			contextMenuOrdini.getItems().get(1).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					try
+					{
+						Fattura.emettiFattura(newVal);
+						Fattura fattura = Fattura.caricaFattura(newVal);
+						listViewFatture.getItems().add(fattura);
+					}
+					catch(SQLException e)
+					{
+						//e.printStackTrace();
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setTitle("ATTENZIONE");
+						alert.setHeaderText(null);
+						alert.setContentText("ERRORE: Fattura già emessa per quest'ordine");
+						alert.showAndWait();
+					}
+				}
+			});
+		});
+	}
+	
+	private void tabFatture()
+	{
+		listViewFatture.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Fattura> obs, Fattura oldVal, Fattura newVal)->{
+			
+			textAreaFatture.setText(newVal.stampaFattura());
+			
+			contextMenuFatture.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					FileChooser percorsoSalvataggio = new FileChooser();
+					percorsoSalvataggio.setTitle("Salva Fattura");
+					percorsoSalvataggio.setInitialFileName("Fattura #"+newVal.getIdFattura()+".pdf");
+					percorsoSalvataggio.getExtensionFilters().add(new ExtensionFilter("pdf file", ".pdf"));
+					File file = percorsoSalvataggio.showSaveDialog(new Stage());
+					if(file != null)
+					{
+						newVal.fatturaToFile(file.getPath());
+					}
+				}
+			});
+			
+			contextMenuFatture.getItems().get(1).setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					listViewFatture.getItems().remove(listViewFatture.getSelectionModel().getSelectedIndex());
+					newVal.elimina();
+				}
+			});
+		});
+	}
+	
+	private void visualizzazioneImmagini()
+	{
+		listViewImmagini.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends ImageView> obs, ImageView oldVal, ImageView newVal)->{
+			
+			contextMenuImmagini.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+//					try
+//					{
+						listViewImmagini.getItems().remove(listViewImmagini.getSelectionModel().getSelectedIndex());
+//					}
+//					catch(ArrayIndexOutOfBoundsException e)
+//					{
+//						Alert alert = new Alert(AlertType.WARNING);
+//						alert.setTitle("Attenzione");
+//						alert.setHeaderText("Impossibile eliminare");
+//						alert.setContentText("Nessun elemento presente");
+//						alert.showAndWait();
+//					}
+					Immagine i = (Immagine) newVal.getImage();
+					i.eliminaImmagine();
+				}
+			});
+			
+			contextMenuImmagini.getItems().get(1).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					ControllerVisualizzatoreImmagini visualizzatore = getControllerVisualizzatoreImmagini();
+					//System.out.println(visualizzatore);
+					visualizzatore.setImmagini(listViewImmagini);
+				}
+				
+			});
+		});
 	}
 }
