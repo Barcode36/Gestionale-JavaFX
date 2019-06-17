@@ -58,12 +58,24 @@
           <Tab text="Gioielli">
                <content>
                   <BorderPane>
-                     <center>
-                        <JFXTextArea fx:id="textAreaGioielli" editable="false" BorderPane.alignment="CENTER" />
-                     </center>
                      <right>
                         <ListView fx:id="listViewImmagini" prefHeight="1009.0" prefWidth="330.0" BorderPane.alignment="CENTER" />
                      </right>
+                     <center>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <center>
+                              <JFXTextArea fx:id="textAreaGioielli" editable="false" BorderPane.alignment="CENTER" />
+                           </center>
+                           <bottom>
+                              <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <items>
+                                    <JFXButton fx:id="modificaButtonGioielli" onAction="#modificaButtonGioielliPressed" text="Modifica" />
+                                    <JFXButton fx:id="eliminaButtonGioielli" onAction="#eliminaButtonGioielliPressed" text="Elimina" />
+                                 </items>
+                              </ToolBar>
+                           </bottom>
+                        </BorderPane>
+                     </center>
                   </BorderPane>
                </content>
             </Tab>

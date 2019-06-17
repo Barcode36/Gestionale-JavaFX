@@ -1,5 +1,7 @@
 package eventi;
 
+import java.util.Observable;
+
 import gestioneDB.GestioneQuery;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,7 +14,7 @@ import javafx.scene.control.TextField;
 import models.Anello;
 import models.MATERIALE;
 
-public class ModificaDatiAnelloController 
+public class ModificaDatiAnelloController extends Observable
 {
 	private Anello anello;
 	
@@ -42,6 +44,8 @@ public class ModificaDatiAnelloController
 
     @FXML
     private TextArea descrizioneTextArea;
+    
+    public Anello getAnello() { return this.anello;}
 	
     public void initialize(Anello gioiello)
     {
@@ -74,10 +78,18 @@ public class ModificaDatiAnelloController
     	anello.setNomeGioiello(nomeGioielloTextField.getText());
     	anello.setPeso(Double.parseDouble(pesoTextField.getText()));
     	anello.setDescrizione(descrizioneTextArea.getText());
+    	anello.setRaggio(Double.parseDouble(diametroTextField.getText()));
+    	anello.setMateriale(materialeComboBox.getValue());
+    	anello.setGenere(genereComboBox.getValue());
+    	
+    	if(pietraComboBox.getValue().equals("Si")) anello.setPietra(true);
+    	else anello.setPietra(false);
     	
     	GestioneQuery database = new GestioneQuery();
     	database.modificaDatiGioiello(anello);
     	database.chiudiConnessione();
+    	setChanged();
+    	notifyObservers("anello modificato");
     }
     
 }

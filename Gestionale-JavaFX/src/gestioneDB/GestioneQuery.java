@@ -122,7 +122,8 @@ public class GestioneQuery
 		
 		PreparedStatement cmd = con.prepareStatement("insert into Fattura(idOrdine,importo,dataEmissione,idCliente,nomeCliente) values (?,?,?,?,?)");
 		cmd.setInt(1, (int) ordine.getId());
-		cmd.setDouble(2, ordine.getGioiello().getPrezzo());
+		if(ordine.getGioiello() != null) cmd.setDouble(2, ordine.getGioiello().getPrezzo());
+		else cmd.setDouble(2, 0);
 		cmd.setString(3, LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 		cmd.setInt(4, ordine.getIdCliente());
 		cmd.setString(5, nomeCliente);
@@ -763,10 +764,26 @@ public class GestioneQuery
 			cmd.executeUpdate();
 			cmd.close();
 			
-//			if(gioiello instanceof Anello)
-//			{
-//				PreparedStatement cmd2 = con.prepareStatement("update anello set");
-//			}
+			if(gioiello instanceof Anello)
+			{
+				PreparedStatement cmd2 = con.prepareStatement("update anello set raggio = ?, pietra = ? where idProdotto = ?");
+				cmd2.setDouble(1, ((Anello) gioiello).getRaggio());
+				cmd2.setBoolean(2, ((Anello)gioiello).isPietra());
+				cmd2.setInt(3, gioiello.getId());
+				cmd2.executeUpdate();
+				cmd2.close();
+			}
+			
+			if(gioiello instanceof Bracciale)
+			{
+				PreparedStatement cmd2 = con.prepareStatement("update bracciale set lunghezza = ?, spessore = ?, larghezza = ? where idProdotto = ?");
+				cmd2.setDouble(1, ((Bracciale)gioiello).getLunghezza());
+				cmd2.setDouble(2, ((Bracciale)gioiello).getSpessore());
+				cmd2.setDouble(3, ((Bracciale)gioiello).getLarghezza());
+				cmd2.setInt(4,gioiello.getId());
+				cmd2.executeUpdate();
+				cmd2.close();
+			}
 		} 
 		catch (SQLException e) 
 		{

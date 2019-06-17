@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
@@ -26,6 +28,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
@@ -41,8 +44,9 @@ import models.Ordine;
 
 public class MainController implements Observer
 {	
-	private Gioiello g;
+	private Gioiello gioiello;
 	private Cliente cliente;
+	private int indice; //indice del gioiello selezionato nella listView
 	private ContextMenu contextMenuClienti;
 	private ContextMenu contextMenuGioielli;
 	private ContextMenu contextMenuOrdini;
@@ -53,6 +57,7 @@ public class MainController implements Observer
 	private AggiungiBraccialeController controllerBracciale;
 	private AggiungiOrdineController controllerOrdine;
 	private ModificaDatiBraccialeController modificaBracciale;
+	private ModificaDatiAnelloController modificaAnello;
 	
 	@FXML
     private TabPane tabPane;
@@ -95,6 +100,12 @@ public class MainController implements Observer
 	
 	@FXML
     private JFXButton aggiungiClienteButton;
+	
+	@FXML
+    private JFXButton eliminaButtonGioielli;
+	
+	@FXML
+	private JFXButton modificaButtonGioielli;
 	
 	@FXML
     private MenuItem aggiungiBraccialeMenuItem;
@@ -205,6 +216,49 @@ public class MainController implements Observer
 		System.out.println("chiuso");
     }
 	
+	@FXML
+    void modificaButtonGioielliPressed(ActionEvent event) 
+	{
+		if(gioiello != null)
+		{
+			if(gioiello instanceof Anello)
+			{
+				modificaAnello = getModificaDatiAnello();
+				modificaAnello.initialize((Anello)gioiello);
+			}
+			if(gioiello instanceof Bracciale)
+			{
+				modificaBracciale = getModificaDatiBracciale();
+				modificaBracciale.initialize((Bracciale)gioiello);
+			}
+		}
+    }
+
+    @FXML
+    void eliminaButtonGioielliPressed(ActionEvent event) 
+    {
+    	if(gioiello != null)
+    	{
+    		ButtonType si = new ButtonType("Si");
+    		ButtonType annulla = new ButtonType("Annulla");
+    		Alert alert = new Alert(AlertType.CONFIRMATION);
+    		alert.getButtonTypes().clear();
+    		alert.getButtonTypes().addAll(si,annulla);
+    		alert.setTitle("ATTENZIONE");
+    		alert.setHeaderText(null);
+    		alert.setContentText("Vuoi davvero eliminare quest'oggetto?");
+    		Optional<ButtonType> result = alert.showAndWait();
+    		if(result.get().equals(si))
+    		{
+    			listViewGioielli.getItems().remove(indice);
+    			textAreaGioielli.clear();
+        		gioiello.eliminaGioiello();
+        		gioiello = null;
+    		}
+    		else if(result.get() == annulla);
+    	}
+    }
+	
 	@Override
 	public void update(Observable o, Object arg) 
 	{ 
@@ -234,6 +288,11 @@ public class MainController implements Observer
 		if(arg.equals("modificato bracciale"))
 		{
 			Gioiello g = modificaBracciale.getGioiello();
+			textAreaGioielli.setText(g.stampaCaratteristiche());
+		}
+		if(arg.equals("anello modificato"))
+		{
+			Gioiello g = modificaAnello.getAnello();
 			textAreaGioielli.setText(g.stampaCaratteristiche());
 		}
 	}
@@ -299,7 +358,9 @@ public class MainController implements Observer
 		modificaDati.setTitle("Modifica Anello");
 		modificaDati.setScene(scene);
 		modificaDati.show();
-		return loader.getController();
+		ModificaDatiAnelloController controller = loader.getController();
+		controller.addObserver(this);
+		return controller;
 	}
 	
 	private ModificaDatiBraccialeController getModificaDatiBracciale()
@@ -327,9 +388,26 @@ public class MainController implements Observer
 	private void tabGioielli()
 	{
 		listViewGioielli.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Gioiello> obs, Gioiello oldVal, Gioiello newVal) -> {
-			textAreaGioielli.setText(newVal.stampaCaratteristiche());
-			listViewImmagini.getItems().clear();
-			listViewImmagini.getItems().addAll(caricaImmagini(newVal.caricaImmagini()));
+			
+			try
+			{
+				textAreaGioielli.setText(newVal.stampaCaratteristiche());
+				listViewImmagini.getItems().addAll(caricaImmagini(newVal.caricaImmagini()));
+				gioiello = newVal; //per controllare il tipo di gioiello quando si premono i bottoni modifica ed elimina
+				indice = listViewGioielli.getSelectionModel().getSelectedIndex();
+				listViewImmagini.getItems().clear();
+			}
+			catch(NullPointerException e)
+			{
+	    		Alert alert = new Alert(AlertType.INFORMATION);
+	    		alert.getButtonTypes().clear();
+	    		alert.getButtonTypes().add(new ButtonType("Chiudi") );
+	    		alert.setTitle(null);
+	    		alert.setHeaderText(null);
+	    		alert.setContentText("Ora non è presente nessun prodotto");
+	    		alert.showAndWait();
+			}
+			
 			contextMenuGioielli.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
@@ -377,8 +455,8 @@ public class MainController implements Observer
 				{
 					if(newVal instanceof Anello)
 					{
-						ModificaDatiAnelloController modifica = getModificaDatiAnello();
-						modifica.initialize((Anello)newVal);
+						modificaAnello = getModificaDatiAnello();
+						modificaAnello.initialize((Anello)newVal);
 					}
 					if(newVal instanceof Bracciale)
 					{
@@ -471,7 +549,6 @@ public class MainController implements Observer
 					}
 					catch(SQLException e)
 					{
-						//e.printStackTrace();
 						Alert alert = new Alert(AlertType.ERROR);
 						alert.setTitle("ATTENZIONE");
 						alert.setHeaderText(null);
@@ -526,18 +603,7 @@ public class MainController implements Observer
 				@Override
 				public void handle(ActionEvent event) 
 				{
-//					try
-//					{
 						listViewImmagini.getItems().remove(listViewImmagini.getSelectionModel().getSelectedIndex());
-//					}
-//					catch(ArrayIndexOutOfBoundsException e)
-//					{
-//						Alert alert = new Alert(AlertType.WARNING);
-//						alert.setTitle("Attenzione");
-//						alert.setHeaderText("Impossibile eliminare");
-//						alert.setContentText("Nessun elemento presente");
-//						alert.showAndWait();
-//					}
 					Immagine i = (Immagine) newVal.getImage();
 					i.eliminaImmagine();
 				}
