@@ -54,4 +54,4 @@ Now you can modify products data, also bugfix and improvements.
 Bugfix and improvements.
 
 0.6.5 BETA
-Added CaricaFinestre to load controller Windows (for example AggiungiAnello, AggiungiBracciale, ecc..). Fixed some bugs.
+Added CaricaFinestre to load controller windows (for example AggiungiAnello, AggiungiBracciale, ecc..). Fixed some bugs.
