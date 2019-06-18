@@ -23,7 +23,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -58,6 +57,7 @@ public class MainController implements Observer
 	private AggiungiOrdineController controllerOrdine;
 	private ModificaDatiBraccialeController modificaBracciale;
 	private ModificaDatiAnelloController modificaAnello;
+	private CaricaFinestre caricaFinestre;
 	
 	@FXML
     private TabPane tabPane;
@@ -120,7 +120,7 @@ public class MainController implements Observer
 //		database.popola();
 //		database.chiudiConnessione();
 		
-		barraDiCaricamento();
+		ProgressBarController bar = caricaFinestre.getProgressBarController();
 		listViewGioielli.getItems().addAll(Gioiello.caricaGioielli());
 		listViewClienti.getItems().addAll(Cliente.caricaClienti());
 		listViewFatture.getItems().addAll(Fattura.caricaFatture());
@@ -128,6 +128,7 @@ public class MainController implements Observer
 	
 	public void start()
 	{
+		caricaFinestre = new CaricaFinestre();
 		setGioielliEClienti();
 		contextMenuClienti = new ContextMenu();
 		contextMenuGioielli = new ContextMenu();
@@ -162,16 +163,7 @@ public class MainController implements Observer
 	@FXML
 	void aggiungiAnelloClicked(ActionEvent event) throws IOException 
 	{
-		Stage aggiungiGioielloStage = new Stage();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("AggiungiGioiello.fxml"));
-		BorderPane aggiungiGioielloPane = (BorderPane) loader.load();
-		Scene scene = new Scene(aggiungiGioielloPane,900,600);
-		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		aggiungiGioielloStage.setResizable(false);
-		aggiungiGioielloStage.setTitle("Aggiungi Anello");
-		aggiungiGioielloStage.setScene(scene);
-		aggiungiGioielloStage.show();
-		controllerAnello = loader.getController();
+		controllerAnello = caricaFinestre.getAnelloController();
 		controllerAnello.initialize();
 		controllerAnello.addObserver(this); 
 	}
@@ -304,90 +296,28 @@ public class MainController implements Observer
 	
 	private AggiungiOrdineController getControllerOrdine()
 	{
-		Stage aggiungiClienteStage = new Stage();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("AggiungiOrdine.fxml"));
-		BorderPane aggiungiClientePane = null;
-		try 
-		{
-			aggiungiClientePane = (BorderPane) loader.load();
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-		Scene scene = new Scene(aggiungiClientePane,900,600);
-		aggiungiClienteStage.setResizable(false);
-		aggiungiClienteStage.setTitle("Aggiungi Cliente");
-		aggiungiClienteStage.setScene(scene);
-		aggiungiClienteStage.show();
-		AggiungiOrdineController controller = loader.getController();
+		AggiungiOrdineController controller = caricaFinestre.getControllerOrdine();
 		controller.addObserver(this);
 		return controller;
 	}
 	
 	private ControllerVisualizzatoreImmagini getControllerVisualizzatoreImmagini()
 	{
-		Stage visualizzatoreImmagini = new Stage();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("VisualizzatoreImmagini.fxml"));
-		BorderPane visualizzatoreImmaginiPane = null;
-		try 
-		{
-			visualizzatoreImmaginiPane = (BorderPane) loader.load();
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-		Scene scene = new Scene(visualizzatoreImmaginiPane,900,600);
-		visualizzatoreImmagini.setTitle("Aggiungi Cliente");
-		visualizzatoreImmagini.setScene(scene);
-		visualizzatoreImmagini.show();
-		ControllerVisualizzatoreImmagini controller = loader.getController();
-		return controller;
+		return caricaFinestre.getControllerVisualizzatoreImmagini();
 	}
 	
 	private ModificaDatiAnelloController getModificaDatiAnello()
 	{
-		Stage modificaDati = new Stage();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("ModificaDatiAnello.fxml"));
-		BorderPane modificadatiPane = null;
-		try 
-		{
-			modificadatiPane = (BorderPane) loader.load();
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-		Scene scene = new Scene(modificadatiPane,900,600);
-		modificaDati.setTitle("Modifica Anello");
-		modificaDati.setScene(scene);
-		modificaDati.show();
-		ModificaDatiAnelloController controller = loader.getController();
+		ModificaDatiAnelloController controller = caricaFinestre.getModificaDatiAnello();
 		controller.addObserver(this);
 		return controller;
 	}
 	
 	private ModificaDatiBraccialeController getModificaDatiBracciale()
 	{
-		Stage modificaDati = new Stage();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("ModificaDatiBracciale.fxml"));
-		BorderPane modificadatiPane = null;
-		try 
-		{
-			modificadatiPane = (BorderPane) loader.load();
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-		Scene scene = new Scene(modificadatiPane,900,600);
-		modificaDati.setTitle("Modifica Bracciale");
-		modificaDati.setScene(scene);
-		modificaDati.show();
-		ModificaDatiBraccialeController controller = loader.getController();
+		ModificaDatiBraccialeController controller = caricaFinestre.getModificaDatiBracciale();
 		controller.addObserver(this);
-		return controller;	
+		return controller;
 	}
 	
 	private void tabGioielli()
@@ -623,13 +553,7 @@ public class MainController implements Observer
 					//System.out.println(visualizzatore);
 					visualizzatore.setImmagini(listViewImmagini);
 				}
-				
 			});
 		});
-	}
-	
-	private void barraDiCaricamento()
-	{
-		 
 	}
 }
