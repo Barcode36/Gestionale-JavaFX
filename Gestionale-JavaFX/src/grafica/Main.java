@@ -3,7 +3,9 @@ package grafica;
 import java.util.Optional;
 
 import eventi.MainController;
+import gestioneDB.InizializzazioneDatabase;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -15,7 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.fxml.FXMLLoader;
 
 
-public class Main extends Application 
+public class Main extends Application
 {
 	@Override
 	public void start(Stage primaryStage) 
@@ -34,6 +36,7 @@ public class Main extends Application
 			primaryStage.show();
 			MainController controller = loader.getController();
 			controller.start();
+			
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				
 				@Override
@@ -70,6 +73,12 @@ public class Main extends Application
 	
 	public static void main(String[] args) 
 	{
+		InizializzazioneDatabase data = new InizializzazioneDatabase();
+		if(data.controllaPrimoAvvio())
+		{
+			finestraPrimoAvvio(data);
+		}
+		
 		launch(args);
 	}
 	
@@ -81,7 +90,33 @@ public class Main extends Application
 		alert.setContentText("Salvare i dati prima di uscire?");
 		return alert;
 	}
+	
+	public static void finestraPrimoAvvio(InizializzazioneDatabase data)
+	{
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() 
+			{	
+				ButtonType ok = new ButtonType("Ok");
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.getButtonTypes().clear();
+				alert.getButtonTypes().add(ok);
+				alert.setTitle(null);
+				alert.setHeaderText(null);
+				alert.setContentText("Questa è la prima volta che avvii il programma,\n"
+						+ "verranno quindi creati tutti i file di configurazione\n"
+						+ "per il corretto funzionamento.");
+				
+				Optional<ButtonType> result = alert.showAndWait();
+				if(result.get() == ok)
+				{
+					data.scriviFile();
+				}
+			}
+		});
+	}
 }
+
 
 //caratteristiche pietre
 //peso

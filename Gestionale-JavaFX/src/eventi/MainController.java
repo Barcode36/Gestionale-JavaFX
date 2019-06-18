@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
@@ -24,6 +23,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -116,6 +116,11 @@ public class MainController implements Observer
 	
 	private void setGioielliEClienti()
 	{ 
+//		GestioneQuery database = new GestioneQuery();
+//		database.popola();
+//		database.chiudiConnessione();
+		
+		barraDiCaricamento();
 		listViewGioielli.getItems().addAll(Gioiello.caricaGioielli());
 		listViewClienti.getItems().addAll(Cliente.caricaClienti());
 		listViewFatture.getItems().addAll(Fattura.caricaFatture());
@@ -391,11 +396,11 @@ public class MainController implements Observer
 			
 			try
 			{
+				listViewImmagini.getItems().clear();
 				textAreaGioielli.setText(newVal.stampaCaratteristiche());
 				listViewImmagini.getItems().addAll(caricaImmagini(newVal.caricaImmagini()));
 				gioiello = newVal; //per controllare il tipo di gioiello quando si premono i bottoni modifica ed elimina
 				indice = listViewGioielli.getSelectionModel().getSelectedIndex();
-				listViewImmagini.getItems().clear();
 			}
 			catch(NullPointerException e)
 			{
@@ -603,7 +608,7 @@ public class MainController implements Observer
 				@Override
 				public void handle(ActionEvent event) 
 				{
-						listViewImmagini.getItems().remove(listViewImmagini.getSelectionModel().getSelectedIndex());
+					listViewImmagini.getItems().remove(listViewImmagini.getSelectionModel().getSelectedIndex());
 					Immagine i = (Immagine) newVal.getImage();
 					i.eliminaImmagine();
 				}
@@ -621,5 +626,10 @@ public class MainController implements Observer
 				
 			});
 		});
+	}
+	
+	private void barraDiCaricamento()
+	{
+		 
 	}
 }

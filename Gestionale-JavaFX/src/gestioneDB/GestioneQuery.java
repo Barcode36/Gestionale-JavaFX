@@ -23,7 +23,7 @@ public class GestioneQuery
 	private final String driver = "org.postgresql.Driver";
 	private final String url = "jdbc:postgresql://localhost/Gioielleria";
 	private final String databaseType = "postgres";
-	private final String password = "password";
+	private final String password = "3890498266";
 	private Connection con; 
 
 	public GestioneQuery()
@@ -69,7 +69,6 @@ public class GestioneQuery
 			{
 				immagini.add(new Immagine(res.getBinaryStream(1),res.getInt(2),res.getInt(3)));
 			}
-			
 			cmd.close();
 			res.close();
 		} 
@@ -200,6 +199,21 @@ public class GestioneQuery
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
+		}
+	}
+	
+	public void popola()
+	{
+		for(int i = 0; i < 100; i++)
+		{
+			if(i < 50)
+			{
+				salvaGioiello(new Anello(15+i,2,MATERIALE.ORO_GIALLO,"Maschile",false,3+i,true,"Anello"+i,""));
+			}
+			else
+			{
+				salvaGioiello(new Bracciale(18+i,1+i,MATERIALE.ACCIAIO,"Femminile",false,3+i,0.04+i,0.2+i,"Bracciale"+i,""));
+			}
 		}
 	}
 	
