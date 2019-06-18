@@ -78,7 +78,7 @@ public class Main extends Application
 		{
 			finestraPrimoAvvio(data);
 		}
-		
+		data.chiudiConnessione();
 		launch(args);
 	}
 	
@@ -106,7 +106,6 @@ public class Main extends Application
 				alert.setContentText("Questa è la prima volta che avvii il programma,\n"
 						+ "verranno quindi creati tutti i file di configurazione\n"
 						+ "per il corretto funzionamento.");
-				
 				Optional<ButtonType> result = alert.showAndWait();
 				if(result.get() == ok)
 				{

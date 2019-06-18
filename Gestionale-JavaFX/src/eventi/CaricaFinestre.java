@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class CaricaFinestre 
 {
@@ -103,10 +104,12 @@ public class CaricaFinestre
 		{
 			e.printStackTrace();
 		}
-		Scene scene = new Scene(progressBarPane,400,150);
+		Scene scene = new Scene(progressBarPane,400,100);
 		stage.setResizable(false);
 		stage.setTitle("Caricamento");
 		stage.setScene(scene);
+		//stage.initStyle(StageStyle.UNDECORATED);
+		stage.setAlwaysOnTop(true);
 		stage.show();
 		return loader.getController();
 	}
@@ -130,6 +133,49 @@ public class CaricaFinestre
 		aggiungiGioielloStage.setTitle("Aggiungi Anello");
 		aggiungiGioielloStage.setScene(scene);
 		aggiungiGioielloStage.show();
+		return loader.getController();
+	}
+	
+	public AggiungiBraccialeController getBraccialeController()
+	{
+		Stage aggiungiGioielloStage = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("AggiungiBracciale.fxml"));
+		BorderPane aggiungiGioielloPane = null;
+		try
+		{
+			aggiungiGioielloPane = (BorderPane) loader.load();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		Scene scene = new Scene(aggiungiGioielloPane,900,600);
+		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		aggiungiGioielloStage.setResizable(false);
+		aggiungiGioielloStage.setTitle("Aggiungi Bracciale");
+		aggiungiGioielloStage.setScene(scene);
+		aggiungiGioielloStage.show();
+		return loader.getController();
+	}
+	
+	public AggiungiClienteController getClienteController()
+	{
+		Stage aggiungiClienteStage = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("InterfacciaAggiungiCliente.fxml"));
+		BorderPane aggiungiClientePane = null;
+		try 
+		{
+			aggiungiClientePane = (BorderPane) loader.load();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		Scene scene = new Scene(aggiungiClientePane,900,600);
+		aggiungiClienteStage.setResizable(false);
+		aggiungiClienteStage.setTitle("Aggiungi Cliente");
+		aggiungiClienteStage.setScene(scene);
+		aggiungiClienteStage.show();
 		return loader.getController();
 	}
 }

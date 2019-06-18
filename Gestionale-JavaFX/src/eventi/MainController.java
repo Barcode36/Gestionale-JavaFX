@@ -3,7 +3,6 @@ package eventi;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +12,13 @@ import java.util.Optional;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
@@ -29,7 +29,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -112,24 +111,15 @@ public class MainController implements Observer
 	
 	@FXML
     private MenuItem aggiungiAnelloMenuItem;
-
-	
-	private void setGioielliEClienti()
-	{ 
-//		GestioneQuery database = new GestioneQuery();
-//		database.popola();
-//		database.chiudiConnessione();
-		
-		ProgressBarController bar = caricaFinestre.getProgressBarController();
-		listViewGioielli.getItems().addAll(Gioiello.caricaGioielli());
-		listViewClienti.getItems().addAll(Cliente.caricaClienti());
-		listViewFatture.getItems().addAll(Fattura.caricaFatture());
-	}
 	
 	public void start()
 	{
+//		GestioneQuery data = new GestioneQuery();
+//		data.popola();
+//		data.chiudiConnessione();
+		
 		caricaFinestre = new CaricaFinestre();
-		setGioielliEClienti();
+		carica();
 		contextMenuClienti = new ContextMenu();
 		contextMenuGioielli = new ContextMenu();
 		contextMenuOrdini = new ContextMenu();
@@ -161,7 +151,7 @@ public class MainController implements Observer
 	}
 	
 	@FXML
-	void aggiungiAnelloClicked(ActionEvent event) throws IOException 
+	void aggiungiAnelloClicked(ActionEvent event)
 	{
 		controllerAnello = caricaFinestre.getAnelloController();
 		controllerAnello.initialize();
@@ -169,35 +159,17 @@ public class MainController implements Observer
 	}
 	
 	@FXML
-    void aggiungiBraccialeClicked(ActionEvent event) throws IOException 
+    void aggiungiBraccialeClicked(ActionEvent event)
 	{
-		Stage aggiungiGioielloStage = new Stage();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("AggiungiBracciale.fxml"));
-		BorderPane aggiungiGioielloPane = (BorderPane) loader.load();
-		Scene scene = new Scene(aggiungiGioielloPane,900,600);
-		//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		aggiungiGioielloStage.setResizable(false);
-		aggiungiGioielloStage.setTitle("Aggiungi Bracciale");
-		aggiungiGioielloStage.setScene(scene);
-		aggiungiGioielloStage.show();
-		//aggiungiGioielloStage.showAndWait();
-		controllerBracciale = loader.getController();
+		controllerBracciale = caricaFinestre.getBraccialeController();
 		controllerBracciale.initialize();
 		controllerBracciale.addObserver(this); 
     }
 	
 	@FXML
-    void aggiungiCliente(ActionEvent event) throws IOException 
+    void aggiungiCliente(ActionEvent event)
 	{
-		Stage aggiungiClienteStage = new Stage();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("InterfacciaAggiungiCliente.fxml"));
-		BorderPane aggiungiClientePane = (BorderPane) loader.load();
-		Scene scene = new Scene(aggiungiClientePane,900,600);
-		aggiungiClienteStage.setResizable(false);
-		aggiungiClienteStage.setTitle("Aggiungi Cliente");
-		aggiungiClienteStage.setScene(scene);
-		aggiungiClienteStage.show();
-		controllerCliente = loader.getController();
+		controllerCliente = caricaFinestre.getClienteController();
 		controllerCliente.addObserver(this);
     }
 	
@@ -299,11 +271,6 @@ public class MainController implements Observer
 		AggiungiOrdineController controller = caricaFinestre.getControllerOrdine();
 		controller.addObserver(this);
 		return controller;
-	}
-	
-	private ControllerVisualizzatoreImmagini getControllerVisualizzatoreImmagini()
-	{
-		return caricaFinestre.getControllerVisualizzatoreImmagini();
 	}
 	
 	private ModificaDatiAnelloController getModificaDatiAnello()
@@ -419,7 +386,7 @@ public class MainController implements Observer
 	
 	private void tabClienti()
 	{
-		listViewClienti.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Cliente> obs, Cliente oldVal, Cliente newVal) ->{
+		listViewClienti.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Cliente> obs, Cliente oldVal, Cliente newVal) -> {
 			textAreaClienti.clear();
 			textAreaClienti.setText(newVal.stampaCaratteristiche());
 			
@@ -454,7 +421,7 @@ public class MainController implements Observer
 	
 	private void visualizzazioneOrdini()
 	{
-		listViewOrdini.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Ordine> obs, Ordine oldVal, Ordine newVal)->{
+		listViewOrdini.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Ordine> obs, Ordine oldVal, Ordine newVal) -> {
 			
 			if(newVal != null) textAreaOrdine.setText(newVal.getInformazioni());
 			if(newVal != null && newVal.getGioiello() != null) textAreaGioielloOrdine.setText(newVal.getGioiello().stampaCaratteristiche());
@@ -497,7 +464,7 @@ public class MainController implements Observer
 	
 	private void tabFatture()
 	{
-		listViewFatture.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Fattura> obs, Fattura oldVal, Fattura newVal)->{
+		listViewFatture.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Fattura> obs, Fattura oldVal, Fattura newVal) -> {
 			
 			textAreaFatture.setText(newVal.stampaFattura());
 			
@@ -531,7 +498,7 @@ public class MainController implements Observer
 	
 	private void visualizzazioneImmagini()
 	{
-		listViewImmagini.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends ImageView> obs, ImageView oldVal, ImageView newVal)->{
+		listViewImmagini.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends ImageView> obs, ImageView oldVal, ImageView newVal) -> {
 			
 			contextMenuImmagini.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
 
@@ -549,11 +516,94 @@ public class MainController implements Observer
 				@Override
 				public void handle(ActionEvent event) 
 				{
-					ControllerVisualizzatoreImmagini visualizzatore = getControllerVisualizzatoreImmagini();
-					//System.out.println(visualizzatore);
+					ControllerVisualizzatoreImmagini visualizzatore = caricaFinestre.getControllerVisualizzatoreImmagini();
 					visualizzatore.setImmagini(listViewImmagini);
 				}
 			});
 		});
+	}
+	
+	private void carica()
+	{
+		System.out.println("sto caricando");
+		
+		ProgressBarController bar = caricaFinestre.getProgressBarController();
+		Task<Object> task = traskCreator();
+		Thread t = new Thread(task);
+		t.start();
+		bar.progressBar.progressProperty().unbind();
+		bar.progressBar.progressProperty().bind(task.progressProperty());
+		
+		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			
+			@Override
+			public void handle(WorkerStateEvent event) 
+			{
+				Stage s = (Stage) bar.progressBarPane.getScene().getWindow();
+				s.close();
+			}
+		});
+		
+		//new Thread(task).start(); la stessa cosa che è scritta sopra
+	}
+	
+	private Task<Object> traskCreator()
+	{
+		return new Task<Object>() {
+
+			@Override
+			protected Object call() throws Exception 
+			{
+				updateProgress(0, 10);
+				
+				Platform.runLater(new Runnable() {
+
+					@Override
+					public void run() 
+					{
+						//chiedere al prof come parallelizzare bene
+					}
+				});
+				
+				Platform.runLater(new Runnable() {
+
+					@Override
+					public void run() 
+					{
+						
+					}
+				});
+				
+				ArrayList<Gioiello> gi = Gioiello.caricaGioielli();
+				ArrayList<Cliente> cli = Cliente.caricaClienti();
+				ArrayList<Fattura> fat = Fattura.caricaFatture();
+				
+				int tot = gi.size() + cli.size() + fat.size(); 
+				updateProgress(0, tot);
+				
+				for(int i = 0; i < gi.size(); i++)
+				{
+					Thread.sleep(2);
+					listViewGioielli.getItems().add(gi.get(i));
+					updateProgress(i, tot);
+				}
+				
+				for(int i = 0; i < cli.size(); i++)
+				{
+					Thread.sleep(2);
+					listViewClienti.getItems().add(cli.get(i));
+					updateProgress(gi.size()+i, tot);
+				}
+				
+				for(int i = 0; i < fat.size(); i++)
+				{
+					Thread.sleep(2);
+					listViewFatture.getItems().add(fat.get(i));
+					updateProgress(tot-fat.size()+i, tot);
+				}
+				
+				return true;
+			}
+		};
 	}
 }

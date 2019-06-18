@@ -204,9 +204,9 @@ public class GestioneQuery
 	
 	public void popola()
 	{
-		for(int i = 0; i < 100; i++)
+		for(int i = 0; i < 500; i++)
 		{
-			if(i < 50)
+			if(i < 250)
 			{
 				salvaGioiello(new Anello(15+i,2,MATERIALE.ORO_GIALLO,"Maschile",false,3+i,true,"Anello"+i,""));
 			}
@@ -386,7 +386,14 @@ public class GestioneQuery
 	public ArrayList<Gioiello> caricaGioielli() 
 	{
 		ArrayList<Gioiello> gioielli = new ArrayList<Gioiello>();
-		
+		new Runnable() 
+		{
+			@Override
+			public void run() 
+			{
+				System.out.println("sono nel thread");
+			}
+		};
 	    try 
 	    {
 	    	PreparedStatement cmd = con.prepareStatement("select * from prodotto inner join anello on anello.idProdotto = prodotto.idProdotto");
@@ -476,6 +483,27 @@ public class GestioneQuery
 		}
 		
 		return size;
+	}
+	
+	public int getFattureNelDB()
+	{
+		int fatture = 0;
+		
+		try 
+		{
+			PreparedStatement cmd = con.prepareStatement("select count(*) from fattura");
+			ResultSet res = cmd.executeQuery();
+			while(res.next()) fatture+=res.getInt(1);
+			
+			cmd.close();
+			res.close();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return fatture;
 	}
 	
 	public ArrayList<Cliente> caricaClienti()

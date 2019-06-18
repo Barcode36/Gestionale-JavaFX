@@ -1,14 +1,14 @@
 package eventi;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.BorderPane;
 
 public class ProgressBarController 
 {
     @FXML
-    private ProgressBar progressBar;
-
+    ProgressBar progressBar;
+	
 	@FXML
-    private Label progressLabel;
+    BorderPane progressBarPane;
 }
