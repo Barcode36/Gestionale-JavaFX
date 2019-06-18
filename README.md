@@ -55,3 +55,6 @@ Bugfix and improvements.
 
 0.6.5 BETA
 Added CaricaFinestre to load controller windows (for example AggiungiAnello, AggiungiBracciale, ecc..). Fixed some bugs.
+
+0.6.6 BETA
+Added ProgressBar to know how the loading process is.
