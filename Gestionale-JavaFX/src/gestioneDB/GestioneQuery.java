@@ -23,7 +23,7 @@ public class GestioneQuery
 	private final String driver = "org.postgresql.Driver";
 	private final String url = "jdbc:postgresql://localhost/Gioielleria";
 	private final String databaseType = "postgres";
-	private final String password = "3890498266";
+	private final String password = "password";
 	private Connection con; 
 
 	public GestioneQuery()
