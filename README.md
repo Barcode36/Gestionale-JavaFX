@@ -1,5 +1,5 @@
 # Gestionale-JavaFX
-# version 0.6.6 BETA
+# version 0.7 BETA
 
 This software is released "as is" and it is under development. To develop the graphic interface i'm using SceneBuilder for Java FX. 
 For any suggestion or to report a bug please contact the developer.
@@ -58,3 +58,6 @@ Added CaricaFinestre to load controller windows (for example AggiungiAnello, Agg
 
 0.6.6 BETA
 Added ProgressBar to know how the loading process is.
+
+0.7 BETA
+Added query and interface to search objects into database. Bugfix and improvements.
