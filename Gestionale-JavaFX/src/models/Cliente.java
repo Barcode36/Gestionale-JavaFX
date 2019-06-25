@@ -68,6 +68,7 @@ public class Cliente
 	public static ArrayList<Cliente> caricaClienti()
 	{
 		GestioneQuery database = new GestioneQuery();
+		System.out.println("sto caricando i clienti");
 		ArrayList<Cliente> clienti = database.caricaClienti();
 		database.chiudiConnessione();
 		return clienti;

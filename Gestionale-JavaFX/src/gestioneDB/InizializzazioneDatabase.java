@@ -48,7 +48,7 @@ public class InizializzazioneDatabase
 	public boolean getAvvio() { return this.avvio; }
 	public void setAvvio(boolean avvio) { this.avvio = avvio; }
 	
-	public boolean controllaPrimoAvvio()
+	public static boolean controllaPrimoAvvio()
 	{
 		boolean primoAvvio = false;
 		BufferedReader file;

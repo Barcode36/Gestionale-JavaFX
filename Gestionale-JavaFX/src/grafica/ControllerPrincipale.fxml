@@ -36,10 +36,7 @@
             <JFXListView fx:id="listViewGioielli" BorderPane.alignment="CENTER" />
          </center>
          <top>
-            <JFXToolbar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <left>
-                  <JFXButton fx:id="aggiungiClienteButton" onAction="#aggiungiCliente" prefHeight="31.0" prefWidth="122.0" text="Nuovo Cliente" BorderPane.alignment="CENTER" />
-               </left>
+            <JFXToolbar prefHeight="42.0" prefWidth="279.0" BorderPane.alignment="CENTER">
                <right>
                   <MenuButton mnemonicParsing="false" prefHeight="31.0" prefWidth="157.0" text="Nuovo Gioiello" BorderPane.alignment="CENTER">
                     <items>
@@ -48,8 +45,18 @@
                     </items>
                   </MenuButton>
                </right>
+               <left>
+                  <JFXButton fx:id="aggiungiClienteButton" onAction="#aggiungiCliente" prefHeight="31.0" prefWidth="122.0" text="Nuovo Cliente" BorderPane.alignment="CENTER" />
+               </left>
             </JFXToolbar>
          </top>
+         <bottom>
+            <JFXToolbar prefHeight="45.0" prefWidth="279.0" BorderPane.alignment="CENTER">
+               <center>
+                  <JFXButton fx:id="serchButton" onAction="#searchButtonPressed" prefHeight="31.0" prefWidth="96.0" text="Cerca" BorderPane.alignment="CENTER" />
+               </center>
+            </JFXToolbar>
+         </bottom>
       </BorderPane>
    </left>
    <center>

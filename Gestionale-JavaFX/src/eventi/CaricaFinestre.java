@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class CaricaFinestre 
 {
@@ -176,6 +175,26 @@ public class CaricaFinestre
 		aggiungiClienteStage.setTitle("Aggiungi Cliente");
 		aggiungiClienteStage.setScene(scene);
 		aggiungiClienteStage.show();
+		return loader.getController();
+	}
+	
+	public SearchController getSearchController()
+	{
+		Stage search = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("Search.fxml"));
+		BorderPane searchPane = null;
+		try 
+		{
+			searchPane = (BorderPane) loader.load();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		Scene scene = new Scene(searchPane,900,600);
+		search.setTitle("Cerca");
+		search.setScene(scene);
+		search.show();
 		return loader.getController();
 	}
 }

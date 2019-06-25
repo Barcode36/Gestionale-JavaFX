@@ -73,12 +73,13 @@ public class Main extends Application
 	
 	public static void main(String[] args) 
 	{
-		InizializzazioneDatabase data = new InizializzazioneDatabase();
-		if(data.controllaPrimoAvvio())
+		if(InizializzazioneDatabase.controllaPrimoAvvio())
 		{
+			InizializzazioneDatabase data = new InizializzazioneDatabase();
 			finestraPrimoAvvio(data);
+			data.chiudiConnessione();
 		}
-		data.chiudiConnessione();
+		
 		launch(args);
 	}
 	

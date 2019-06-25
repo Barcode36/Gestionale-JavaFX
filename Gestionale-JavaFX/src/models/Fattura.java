@@ -57,6 +57,7 @@ public class Fattura
 	public static ArrayList<Fattura> caricaFatture()
 	{
 		GestioneQuery database = new GestioneQuery();
+		System.out.println("sto caricando le fatture");
 		ArrayList<Fattura> fatture = database.caricaFatture();
 		database.chiudiConnessione();
 		return fatture;

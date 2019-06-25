@@ -12,7 +12,6 @@ import java.util.Optional;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
-import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -107,17 +106,16 @@ public class MainController implements Observer
 	private JFXButton modificaButtonGioielli;
 	
 	@FXML
+    private JFXButton serchButton;
+	
+	@FXML
     private MenuItem aggiungiBraccialeMenuItem;
 	
 	@FXML
     private MenuItem aggiungiAnelloMenuItem;
 	
 	public void start()
-	{
-//		GestioneQuery data = new GestioneQuery();
-//		data.popola();
-//		data.chiudiConnessione();
-		
+	{	
 		caricaFinestre = new CaricaFinestre();
 		carica();
 		contextMenuClienti = new ContextMenu();
@@ -138,6 +136,7 @@ public class MainController implements Observer
 		listViewGioielli.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listViewClienti.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listViewOrdini.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		listViewImmagini.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		showInListView();
 	}
 	
@@ -226,6 +225,13 @@ public class MainController implements Observer
     		}
     		else if(result.get() == annulla);
     	}
+    }
+    
+    @FXML
+    void searchButtonPressed(ActionEvent event) 
+    {
+    	SearchController search = caricaFinestre.getSearchController();
+    	search.start();
     }
 	
 	@Override
@@ -554,25 +560,7 @@ public class MainController implements Observer
 			@Override
 			protected Object call() throws Exception 
 			{
-				updateProgress(0, 10);
-				
-				Platform.runLater(new Runnable() {
-
-					@Override
-					public void run() 
-					{
-						//chiedere al prof come parallelizzare bene
-					}
-				});
-				
-				Platform.runLater(new Runnable() {
-
-					@Override
-					public void run() 
-					{
-						
-					}
-				});
+				//updateProgress(0, 10);
 				
 				ArrayList<Gioiello> gi = Gioiello.caricaGioielli();
 				ArrayList<Cliente> cli = Cliente.caricaClienti();
@@ -583,21 +571,21 @@ public class MainController implements Observer
 				
 				for(int i = 0; i < gi.size(); i++)
 				{
-					Thread.sleep(2);
+					//Thread.sleep(5);
 					listViewGioielli.getItems().add(gi.get(i));
 					updateProgress(i, tot);
 				}
 				
 				for(int i = 0; i < cli.size(); i++)
 				{
-					Thread.sleep(2);
+					//Thread.sleep(5);
 					listViewClienti.getItems().add(cli.get(i));
 					updateProgress(gi.size()+i, tot);
 				}
 				
 				for(int i = 0; i < fat.size(); i++)
 				{
-					Thread.sleep(2);
+					//Thread.sleep(5);
 					listViewFatture.getItems().add(fat.get(i));
 					updateProgress(tot-fat.size()+i, tot);
 				}

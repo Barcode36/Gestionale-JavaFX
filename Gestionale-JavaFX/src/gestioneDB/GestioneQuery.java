@@ -23,7 +23,7 @@ public class GestioneQuery
 	private final String driver = "org.postgresql.Driver";
 	private final String url = "jdbc:postgresql://localhost/Gioielleria";
 	private final String databaseType = "postgres";
-	private final String password = "password";
+	private final String password = "3890498266";
 	private Connection con; 
 
 	public GestioneQuery()
@@ -202,7 +202,7 @@ public class GestioneQuery
 		}
 	}
 	
-	public void popola()
+	public void popolaGioielli()
 	{
 		for(int i = 0; i < 500; i++)
 		{
@@ -214,6 +214,14 @@ public class GestioneQuery
 			{
 				salvaGioiello(new Bracciale(18+i,1+i,MATERIALE.ACCIAIO,"Femminile",false,3+i,0.04+i,0.2+i,"Bracciale"+i,""));
 			}
+		}
+	}
+	
+	public void popolaClienti()
+	{
+		for(int i = 0; i < 10; i++)
+		{
+			salvaClienti(new Cliente("ClienteNome"+i,"ClienteCognome"+i,"36554215448"+i));
 		}
 	}
 	
@@ -386,14 +394,6 @@ public class GestioneQuery
 	public ArrayList<Gioiello> caricaGioielli() 
 	{
 		ArrayList<Gioiello> gioielli = new ArrayList<Gioiello>();
-		new Runnable() 
-		{
-			@Override
-			public void run() 
-			{
-				System.out.println("sono nel thread");
-			}
-		};
 	    try 
 	    {
 	    	PreparedStatement cmd = con.prepareStatement("select * from prodotto inner join anello on anello.idProdotto = prodotto.idProdotto");
@@ -831,5 +831,77 @@ public class GestioneQuery
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public ArrayList<Gioiello> getGioielli(String query, String tipologia)
+	{
+		ArrayList<Gioiello> gioielli = new ArrayList<Gioiello>();
+		
+		if(tipologia.equals("Bracciale"))
+		{
+			try 
+			{
+				PreparedStatement cmd2 = con.prepareStatement(query);
+				ResultSet res2 = cmd2.executeQuery();
+		    	while(res2.next())
+		    	{
+		    		int gioielloId = res2.getInt(1);
+				    double prezzo = res2.getDouble(2);
+				    double peso = res2.getDouble(3);
+				    MATERIALE materiale = MATERIALE.valueOf(res2.getString(4));
+				    String genere = res2.getString(5);
+				    boolean venduto = res2.getBoolean(6);
+				    String nomeGioiello = res2.getString(7);
+				    String descrizione = res2.getString(9);
+				    double lunghezza = res2.getDouble(11);
+				    double spessore = res2.getDouble(12);
+				    double larghezza = res2.getDouble(13);
+				    Bracciale bracciale = new Bracciale(prezzo,peso,materiale,genere,venduto,lunghezza,spessore,larghezza,nomeGioiello,descrizione);
+				    bracciale.setId(gioielloId);
+				    gioielli.add(bracciale);
+		    	}
+		    	cmd2.close();
+		    	res2.close();
+			} 
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		if(tipologia.equals("Anello"))
+		{
+	    	try 
+			{
+	    		PreparedStatement cmd = con.prepareStatement(query);
+		    	ResultSet res = cmd.executeQuery();
+		    	while (res.next()) 
+		    	{
+				    int gioielloId = res.getInt(1);
+				    double prezzo = res.getDouble(2);
+				    double peso = res.getDouble(3);
+				    MATERIALE materiale = MATERIALE.valueOf(res.getString(4));
+				    String genere = res.getString(5);
+				    boolean venduto = res.getBoolean(6);
+				    String nomeGioiello = res.getString(7);
+				    String descrizione = res.getString(9);
+				    double raggio = res.getDouble(11);
+				    boolean pietra = res.getBoolean(12);
+				    Anello anello = new Anello(prezzo,peso,materiale,genere,venduto,raggio,pietra, nomeGioiello,descrizione);
+				    anello.setId(gioielloId);
+				    gioielli.add(anello);
+		    	}
+		    	
+		    	cmd.close();
+		    	res.close();
+			} 
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return gioielli;
 	}
 }

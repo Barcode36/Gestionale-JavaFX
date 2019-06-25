@@ -73,8 +73,18 @@ public abstract class Gioiello
 	public static ArrayList<Gioiello> caricaGioielli()
 	{
 		GestioneQuery database = new GestioneQuery();
+		System.out.println("sto caricando i gioielli");
 		ArrayList<Gioiello> gioielli = database.caricaGioielli();
 		database.chiudiConnessione();
+		return gioielli;
+	}
+	
+	public static ArrayList<Gioiello> caricaGioielli(String query, String tipologia)
+	{
+		GestioneQuery database = new GestioneQuery();
+		ArrayList<Gioiello> gioielli = database.getGioielli(query, tipologia);
+		database.chiudiConnessione();
+		
 		return gioielli;
 	}
 	
