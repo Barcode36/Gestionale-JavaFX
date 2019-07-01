@@ -1,4 +1,4 @@
-package eventi;
+package controller;
 
 import java.util.Observable;
 import com.jfoenix.controls.JFXComboBox;

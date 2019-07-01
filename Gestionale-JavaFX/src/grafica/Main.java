@@ -2,7 +2,7 @@ package grafica;
 
 import java.util.Optional;
 
-import eventi.MainController;
+import controller.MainController;
 import gestioneDB.InizializzazioneDatabase;
 import javafx.application.Application;
 import javafx.application.Platform;

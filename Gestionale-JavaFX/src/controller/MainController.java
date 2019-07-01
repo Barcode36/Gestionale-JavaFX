@@ -1,4 +1,4 @@
-package eventi;
+package controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,7 +13,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
 
-import controller.ModificaOrecchinoController;
+import eventi.CaricaFinestre;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;

@@ -2,7 +2,19 @@ package eventi;
 
 import java.io.IOException;
 
+import controller.AggiungiAnelloController;
+import controller.AggiungiBraccialeController;
+import controller.AggiungiClienteController;
+import controller.AggiungiCollanaController;
+import controller.AggiungiOrdineController;
+import controller.AggiungiOrecchinoController;
+import controller.ControllerVisualizzatoreImmagini;
+import controller.ModificaDatiAnelloController;
+import controller.ModificaDatiBraccialeController;
+import controller.ModificaDatiCollanaController;
 import controller.ModificaOrecchinoController;
+import controller.ProgressBarController;
+import controller.SearchController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;

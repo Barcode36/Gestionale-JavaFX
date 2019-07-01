@@ -1,4 +1,4 @@
-package eventi;
+package controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,6 +15,8 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+
+import eventi.CaricaFinestre;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
