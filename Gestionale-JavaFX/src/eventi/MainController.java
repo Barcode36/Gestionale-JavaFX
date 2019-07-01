@@ -12,6 +12,8 @@ import java.util.Optional;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
+
+import controller.ModificaOrecchinoController;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -34,10 +36,12 @@ import javafx.stage.Stage;
 import models.Anello;
 import models.Bracciale;
 import models.Cliente;
+import models.Collana;
 import models.Fattura;
 import models.Gioiello;
 import models.Immagine;
 import models.Ordine;
+import models.Orecchino;
 
 public class MainController implements Observer
 {	
@@ -53,8 +57,12 @@ public class MainController implements Observer
 	private AggiungiClienteController controllerCliente;
 	private AggiungiBraccialeController controllerBracciale;
 	private AggiungiOrdineController controllerOrdine;
+	private AggiungiOrecchinoController controllerOrecchino;
+	private AggiungiCollanaController controllerCollana;
 	private ModificaDatiBraccialeController modificaBracciale;
 	private ModificaDatiAnelloController modificaAnello;
+	private ModificaDatiCollanaController modificaCollana;
+	private ModificaOrecchinoController modificaOrecchino;
 	private CaricaFinestre caricaFinestre;
 	
 	@FXML
@@ -80,6 +88,9 @@ public class MainController implements Observer
 	
 	@FXML
 	private MenuItem salvaMenuItem;
+	
+	@FXML
+    private MenuItem aggiungiOrecchinoMenuItem;
 	
 	@FXML
     private JFXListView<Gioiello> listViewGioielli;
@@ -113,6 +124,10 @@ public class MainController implements Observer
 	
 	@FXML
     private MenuItem aggiungiAnelloMenuItem;
+	
+	@FXML
+    private MenuItem aggiungiCollanaMenuItem;
+	
 	
 	public void start()
 	{	
@@ -166,6 +181,22 @@ public class MainController implements Observer
     }
 	
 	@FXML
+    void aggiungiOrecchinoClicked(ActionEvent event) 
+	{
+		controllerOrecchino = caricaFinestre.getOrecchinoController();
+		controllerOrecchino.initialize();
+		controllerOrecchino.addObserver(this);
+    }
+	
+	@FXML
+    void aggiungiCollanaClicked(ActionEvent event) 
+	{
+		controllerCollana = caricaFinestre.getCollanaController();
+		controllerCollana.initialize();
+		controllerCollana.addObserver(this);
+    }
+	
+	@FXML
     void aggiungiCliente(ActionEvent event)
 	{
 		controllerCliente = caricaFinestre.getClienteController();
@@ -187,19 +218,7 @@ public class MainController implements Observer
 	@FXML
     void modificaButtonGioielliPressed(ActionEvent event) 
 	{
-		if(gioiello != null)
-		{
-			if(gioiello instanceof Anello)
-			{
-				modificaAnello = getModificaDatiAnello();
-				modificaAnello.initialize((Anello)gioiello);
-			}
-			if(gioiello instanceof Bracciale)
-			{
-				modificaBracciale = getModificaDatiBracciale();
-				modificaBracciale.initialize((Bracciale)gioiello);
-			}
-		}
+		if(gioiello != null) apriFinestreModifica(gioiello);
     }
 
     @FXML
@@ -237,20 +256,9 @@ public class MainController implements Observer
 	@Override
 	public void update(Observable o, Object arg) 
 	{ 
-		if(arg.equals("Anello Creato")) //messaggio ricevuto dal controller Anello
-		{
-			listViewGioielli.getItems().add(controllerAnello.getGioiello());
-		}
-		
-		if(arg.equals("Bracciale Creato")) //messaggio ricevuto dal controller bracciale
-		{
-			listViewGioielli.getItems().add(controllerBracciale.getGioiello());
-		}
-		
-		if(arg.equals("Cliente creato")) //messaggio ricevuto dal controlle cliente
-		{
-			listViewClienti.getItems().add(cliente = controllerCliente.getCliente());
-		}
+		if(arg.equals("Anello Creato")) listViewGioielli.getItems().add(controllerAnello.getGioiello());
+		if(arg.equals("Bracciale Creato")) listViewGioielli.getItems().add(controllerBracciale.getGioiello());
+		if(arg.equals("Cliente creato")) listViewClienti.getItems().add(cliente = controllerCliente.getCliente());
 		
 		if(arg.equals("Ordine Creato"))
 		{
@@ -260,35 +268,17 @@ public class MainController implements Observer
 			listViewOrdini.getItems().add(controllerOrdine.getOrdine());
 		}
 		
-		if(arg.equals("modificato bracciale"))
-		{
-			Gioiello g = modificaBracciale.getGioiello();
-			textAreaGioielli.setText(g.stampaCaratteristiche());
-		}
-		if(arg.equals("anello modificato"))
-		{
-			Gioiello g = modificaAnello.getAnello();
-			textAreaGioielli.setText(g.stampaCaratteristiche());
-		}
+		if(arg.equals("Orecchino Creato")) listViewGioielli.getItems().add(controllerOrecchino.getGioiello());
+		if(arg.equals("Collana creata")) listViewGioielli.getItems().add(controllerCollana.getGioiello());
+		if(arg.equals("modificato bracciale")) textAreaGioielli.setText(modificaBracciale.getGioiello().stampaCaratteristiche());
+		if(arg.equals("anello modificato")) textAreaGioielli.setText(modificaAnello.getAnello().stampaCaratteristiche());
+		if(arg.equals("Collana modificata")) textAreaGioielli.setText(modificaCollana.getGioiello().stampaCaratteristiche());
+		if(arg.equals("Orecchino modificato")) textAreaGioielli.setText(modificaOrecchino.getGioiello().stampaCaratteristiche());
 	}
 	
 	private AggiungiOrdineController getControllerOrdine()
 	{
 		AggiungiOrdineController controller = caricaFinestre.getControllerOrdine();
-		controller.addObserver(this);
-		return controller;
-	}
-	
-	private ModificaDatiAnelloController getModificaDatiAnello()
-	{
-		ModificaDatiAnelloController controller = caricaFinestre.getModificaDatiAnello();
-		controller.addObserver(this);
-		return controller;
-	}
-	
-	private ModificaDatiBraccialeController getModificaDatiBracciale()
-	{
-		ModificaDatiBraccialeController controller = caricaFinestre.getModificaDatiBracciale();
 		controller.addObserver(this);
 		return controller;
 	}
@@ -361,16 +351,7 @@ public class MainController implements Observer
 				@Override
 				public void handle(ActionEvent event) 
 				{
-					if(newVal instanceof Anello)
-					{
-						modificaAnello = getModificaDatiAnello();
-						modificaAnello.initialize((Anello)newVal);
-					}
-					if(newVal instanceof Bracciale)
-					{
-						modificaBracciale = getModificaDatiBracciale();
-						modificaBracciale.initialize((Bracciale)newVal);
-					}
+					apriFinestreModifica(newVal);
 				}
 			});
 		});
@@ -593,5 +574,33 @@ public class MainController implements Observer
 				return true;
 			}
 		};
+	}
+	
+	private void apriFinestreModifica(Gioiello g)
+	{
+		if(g instanceof Anello)
+		{
+			modificaAnello = caricaFinestre.getModificaDatiAnello();
+			modificaAnello.initialize((Anello)g);
+			modificaAnello.addObserver(this);
+		}
+		if(g instanceof Bracciale)
+		{
+			modificaBracciale = caricaFinestre.getModificaDatiBracciale();
+			modificaBracciale.initialize((Bracciale)g);
+			modificaBracciale.addObserver(this);
+		}
+		if(g instanceof Collana)
+		{
+			modificaCollana = caricaFinestre.getModificaCollana();
+			modificaCollana.initialize((Collana)g);
+			modificaCollana.addObserver(this);
+		}
+		if(g instanceof Orecchino)
+		{
+			modificaOrecchino = caricaFinestre.getModificaOrecchino();
+			modificaOrecchino.initialize((Orecchino)g);
+			modificaOrecchino.addObserver(this);
+		}
 	}
 }

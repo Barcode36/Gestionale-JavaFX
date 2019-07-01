@@ -100,7 +100,7 @@ public class SearchController extends Observable implements Observer
     	ObservableList<MATERIALE> opzioni = FXCollections.observableArrayList(MATERIALE.ORO_BIANCO,MATERIALE.ORO_GIALLO,MATERIALE.ARGENTO,MATERIALE.ACCIAIO,MATERIALE.RAME,MATERIALE.ZINCO);
 		materialeComboBox.setItems(opzioni);
 		
-		ObservableList<String> opzioni2 = FXCollections.observableArrayList("Anello", "Bracciale");
+		ObservableList<String> opzioni2 = FXCollections.observableArrayList("Anello", "Bracciale", "Orecchino", "Collana");
 		tipologiaComboBox.setItems(opzioni2);
 		
 		ObservableList<String> opzioni3 = FXCollections.observableArrayList("Maschile","Femminile");

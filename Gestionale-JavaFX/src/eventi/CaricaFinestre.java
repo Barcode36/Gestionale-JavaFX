@@ -2,6 +2,7 @@ package eventi;
 
 import java.io.IOException;
 
+import controller.ModificaOrecchinoController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -193,6 +194,86 @@ public class CaricaFinestre
 		}
 		Scene scene = new Scene(searchPane,900,600);
 		search.setTitle("Cerca");
+		search.setScene(scene);
+		search.show();
+		return loader.getController();
+	}
+	
+	public AggiungiOrecchinoController getOrecchinoController()
+	{
+		Stage search = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("AggiungiOrecchino.fxml"));
+		BorderPane orecchinoPane = null;
+		try 
+		{
+			orecchinoPane = (BorderPane) loader.load();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		Scene scene = new Scene(orecchinoPane,900,600);
+		search.setTitle("Aggiungi Orecchino");
+		search.setScene(scene);
+		search.show();
+		return loader.getController();
+	}
+	
+	public AggiungiCollanaController getCollanaController()
+	{
+		Stage search = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("AggiungiCollana.fxml"));
+		BorderPane collanaPane = null;
+		try 
+		{
+			collanaPane = (BorderPane) loader.load();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		Scene scene = new Scene(collanaPane,900,600);
+		search.setTitle("Aggiungi collana");
+		search.setScene(scene);
+		search.show();
+		return loader.getController();
+	}
+	
+	public ModificaDatiCollanaController getModificaCollana()
+	{
+		Stage search = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("ModificaDatiCollana.fxml"));
+		BorderPane collanaPane = null;
+		try 
+		{
+			collanaPane = (BorderPane) loader.load();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		Scene scene = new Scene(collanaPane,900,600);
+		search.setTitle("Modifica collana");
+		search.setScene(scene);
+		search.show();
+		return loader.getController();
+	}
+	
+	public ModificaOrecchinoController getModificaOrecchino()
+	{
+		Stage search = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("ModificaOrecchino.fxml"));
+		BorderPane collanaPane = null;
+		try 
+		{
+			collanaPane = (BorderPane) loader.load();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		Scene scene = new Scene(collanaPane,900,600);
+		search.setTitle("Modifica orecchino");
 		search.setScene(scene);
 		search.show();
 		return loader.getController();

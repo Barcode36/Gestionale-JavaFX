@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ModificaOrecchinoController">
+   <top>
+      <Label prefHeight="21.0" prefWidth="143.0" text="Modifica Orecchino" BorderPane.alignment="CENTER" />
+   </top>
+   <center>
+      <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <FlowPane hgap="5.0" prefHeight="37.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="96.0" text="Prezzo" />
+                  <JFXTextField fx:id="inserisciPrezzoTextField" />
+                  <Label prefHeight="21.0" prefWidth="14.0" text="€" />
+               </children>
+            </FlowPane>
+            <FlowPane prefHeight="35.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="102.0" text="Peso" />
+                  <JFXTextField fx:id="inserisciPesoTextField" />
+                  <Label text="grammi" />
+               </children>
+            </FlowPane>
+            <FlowPane prefHeight="35.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="103.0" text="Altezza" />
+                  <JFXTextField fx:id="altezzaTextField" />
+                  <Label prefHeight="21.0" prefWidth="25.0" text="cm" />
+               </children>
+            </FlowPane>
+            <FlowPane prefHeight="35.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="103.0" text="Spessore" />
+                  <JFXTextField fx:id="spessoreTextField" />
+                  <Label text="cm" />
+               </children>
+            </FlowPane>
+            <FlowPane prefHeight="35.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="104.0" text="Nome Gioiello" />
+                  <JFXTextField fx:id="nomeGioielloTextField" prefHeight="31.0" prefWidth="168.0" />
+               </children>
+            </FlowPane>
+            <FlowPane prefHeight="36.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="104.0" text="Materiale" />
+                  <JFXComboBox fx:id="selezionaMaterialeBox" prefHeight="31.0" prefWidth="153.0" />
+               </children>
+            </FlowPane>
+            <FlowPane prefHeight="50.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="104.0" text="Genere" />
+                  <JFXComboBox fx:id="selezionaGenereBox" prefHeight="31.0" prefWidth="153.0" />
+               </children>
+            </FlowPane>
+            <FlowPane prefHeight="35.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="38.0" prefWidth="150.0" text="Tipologia Orecchino" />
+                  <JFXTextField fx:id="tipologiaTextField" prefHeight="31.0" prefWidth="345.0" />
+               </children>
+            </FlowPane>
+            <JFXTextArea fx:id="descrizioneTextArea" prefHeight="249.0" prefWidth="900.0" promptText="Inserisci una descrizione o dei commenti" />
+            <FlowPane prefHeight="0.0" prefWidth="900.0" />
+            <JFXButton onAction="#submit" prefHeight="31.0" prefWidth="72.0" text="OK" />
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
+

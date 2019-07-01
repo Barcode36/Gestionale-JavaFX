@@ -42,6 +42,8 @@
                     <items>
                       <MenuItem fx:id="aggiungiAnelloMenuItem" mnemonicParsing="false" onAction="#aggiungiAnelloClicked" text="Aggiungi Anello" />
                       <MenuItem fx:id="aggiungiBraccialeMenuItem" mnemonicParsing="false" onAction="#aggiungiBraccialeClicked" text="Aggiungi Bracciale" />
+                        <MenuItem fx:id="aggiungiOrecchinoMenuItem" mnemonicParsing="false" onAction="#aggiungiOrecchinoClicked" text="Aggiungi Orecchino" />
+                        <MenuItem fx:id="aggiungiCollanaMenuItem" mnemonicParsing="false" onAction="#aggiungiCollanaClicked" text="Aggiungi Collana" />
                     </items>
                   </MenuButton>
                </right>

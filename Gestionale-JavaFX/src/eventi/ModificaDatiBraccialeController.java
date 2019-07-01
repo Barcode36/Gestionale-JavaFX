@@ -5,8 +5,6 @@ import java.util.Observable;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
-
-import gestioneDB.GestioneQuery;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -85,9 +83,7 @@ public class ModificaDatiBraccialeController extends Observable
 		 bracciale.setMateriale(selezionaMaterialeBox.getValue());
 		 bracciale.setGenere(selezionaGenereBox.getValue());
 		 
-		 GestioneQuery database = new GestioneQuery();
-		 database.modificaDatiGioiello(bracciale);
-		 database.chiudiConnessione();
+		 bracciale.modificaDati();
 		 
 		 setChanged();
 		 notifyObservers("modificato bracciale");

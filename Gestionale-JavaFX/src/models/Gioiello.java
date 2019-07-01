@@ -88,6 +88,13 @@ public abstract class Gioiello
 		return gioielli;
 	}
 	
+	public void modificaDati()
+	{
+		GestioneQuery database = new GestioneQuery();
+		database.modificaDatiGioiello(this);
+		database.chiudiConnessione();
+	}
+	
 	public ArrayList<Immagine> caricaImmagini()
 	{
 		//non inserire png
@@ -103,4 +110,7 @@ public abstract class Gioiello
 		database.inserisciImmagine(immagine, this);
 		database.chiudiConnessione();
 	}
+	
+	@Override
+	public String toString() { return this.nomeGioiello; }
 }

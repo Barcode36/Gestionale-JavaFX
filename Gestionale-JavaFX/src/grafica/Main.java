@@ -24,7 +24,7 @@ public class Main extends Application
 	{
 		try 
 		{	
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("ControllerPrincipale.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("ControllerPrincipale2.fxml"));
 			BorderPane root = (BorderPane) loader.load();
 			Scene scene = new Scene(root,1366,768);
 			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());

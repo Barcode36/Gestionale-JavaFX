@@ -8,18 +8,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import models.Anello;
 import models.Bracciale;
 import models.Cliente;
+import models.Collana;
 import models.Fattura;
 import models.Gioiello;
 import models.Immagine;
 import models.MATERIALE;
 import models.Ordine;
+import models.Orecchino;
 
 public class GestioneQuery
 {
+	private final String anello = "Anello";
+	private final String bracciale = "Bracciale";
+	private final String orecchino = "Orecchino";
+	private final String collana = "Collana";
+	
 	private final String driver = "org.postgresql.Driver";
 	private final String url = "jdbc:postgresql://localhost/Gioielleria";
 	private final String databaseType = "postgres";
@@ -242,16 +249,8 @@ public class GestioneQuery
 				cmd.executeUpdate();
 				cmd.close();
 				
-				PreparedStatement cmd2 = con.prepareStatement("select MAX(idProdotto) from prodotto");
-				ResultSet ultimoProdottoinserito = cmd2.executeQuery();
-				
-				int id = 0;
-				while(ultimoProdottoinserito.next()) id = ultimoProdottoinserito.getInt(1);
-				cmd2.close();
-				ultimoProdottoinserito.close();
-				
 				PreparedStatement cmd3 = con.prepareStatement("insert into anello(idProdotto,raggio,pietra) values(?,?,?)");
-				cmd3.setInt(1, id);
+				cmd3.setInt(1, getNumUltimoGioiello());
 				cmd3.setDouble(2, a.getRaggio());
 				cmd3.setBoolean(3, a.isPietra());
 				cmd3.executeUpdate();
@@ -272,22 +271,60 @@ public class GestioneQuery
 				cmd.executeUpdate();
 				cmd.close();
 				
-				PreparedStatement cmd2 = con.prepareStatement("select MAX(idProdotto) from prodotto");
-				ResultSet ultimoProdottoinserito = cmd2.executeQuery();
-				
-				int id = 0;
-				while(ultimoProdottoinserito.next()) id = ultimoProdottoinserito.getInt(1);
-				cmd2.close();
-				ultimoProdottoinserito.close();
-				
 				PreparedStatement cmd3 = con.prepareStatement("insert into bracciale(idProdotto,lunghezza,larghezza,spessore) values(?,?,?,?)");
-				cmd3.setInt(1, id);
+				cmd3.setInt(1, getNumUltimoGioiello());
 				cmd3.setDouble(2, a.getLunghezza());
 				cmd3.setDouble(3, a.getLarghezza());
 				cmd3.setDouble(4, a.getSpessore());
 				cmd3.executeUpdate();
 				cmd3.close();
 				
+			}
+			
+			else if(gioiello instanceof Orecchino)
+			{
+				Orecchino a = (Orecchino)gioiello;
+				
+				PreparedStatement cmd = con.prepareStatement("insert into prodotto (prezzo,peso,materiale,genere,nomeGioiello,descrizione,nomeTabella) values(?,?,?,?,?,?,'orecchino')");
+				cmd.setDouble(1, a.getPrezzo());
+				cmd.setDouble(2, a.getPeso());
+				cmd.setString(3, a.getMateriale().toString());
+				cmd.setString(4, a.getGenere());
+				cmd.setString(5, a.getNomeGioiello());
+				cmd.setString(6, a.getDescrizione());
+				cmd.executeUpdate();
+				cmd.close();
+				
+				PreparedStatement cmd2 = con.prepareStatement("insert into orecchino (idProdotto,altezza,tipologiaOrecchino,spessore) values (?,?,?,?)");
+				cmd2.setInt(1, getNumUltimoGioiello());
+				cmd2.setDouble(2,a.getAltezza());
+				cmd2.setString(3, a.getTipologiaOrecchino());
+				cmd2.setDouble(4, a.getSpessore());
+				cmd2.executeUpdate();
+				cmd2.close();
+			}
+			
+			else if(gioiello instanceof Collana)
+			{
+				Collana a = (Collana)gioiello;
+				
+				PreparedStatement cmd = con.prepareStatement("insert into prodotto (prezzo,peso,materiale,genere,nomeGioiello,descrizione,nomeTabella) values(?,?,?,?,?,?,'collana')");
+				cmd.setDouble(1, a.getPrezzo());
+				cmd.setDouble(2, a.getPeso());
+				cmd.setString(3, a.getMateriale().toString());
+				cmd.setString(4, a.getGenere());
+				cmd.setString(5, a.getNomeGioiello());
+				cmd.setString(6, a.getDescrizione());
+				cmd.executeUpdate();
+				cmd.close();
+				
+				PreparedStatement cmd2 = con.prepareStatement("insert into collana (idProdotto,lunghezza,spessore,ciondolo) values (?,?,?,?)");
+				cmd2.setInt(1, getNumUltimoGioiello());
+				cmd2.setDouble(2, a.getLunghezza());
+				cmd2.setDouble(3, a.getSpessore());
+				cmd2.setBoolean(4, a.isCiondolo());
+				cmd2.executeUpdate();
+				cmd2.close();
 			}
 		}
 		catch(SQLException e)
@@ -318,6 +355,7 @@ public class GestioneQuery
 	
 	public Gioiello getGioiello(int id) 
 	{
+		Gioiello gioiello = null;
 		try 
 		{
 			PreparedStatement cmd = con.prepareStatement("select nomeTabella from prodotto where idProdotto = ?");
@@ -334,24 +372,8 @@ public class GestioneQuery
 				PreparedStatement cmd2 = con.prepareStatement("select * from prodotto inner join anello on anello.idProdotto = prodotto.idProdotto and anello.idProdotto = ?");
 				cmd2.setInt(1, id);
 		    	ResultSet res2 = cmd2.executeQuery();
-		    	
-		    	while (res2.next()) 
-		    	{
-				    int gioielloId = res2.getInt(1);
-				    double prezzo = res2.getDouble(2);
-				    double peso = res2.getDouble(3);
-				    MATERIALE materiale = MATERIALE.valueOf(res2.getString(4));
-				    String genere = res2.getString(5);
-				    boolean venduto = res2.getBoolean(6);
-				    String nomeGioiello = res2.getString(7);
-				    String descrizione = res2.getString(9);
-				    double raggio = res2.getDouble(11);
-				    boolean pietra = res2.getBoolean(12);
-				    Anello anello = new Anello(prezzo,peso,materiale,genere,venduto,raggio,pietra, nomeGioiello,descrizione);
-				    anello.setId(gioielloId);
-				    return anello;
-		    	}
-		    	
+		    	ArrayList<Gioiello> gi = costruisciGioielli(res2, anello);
+		    	if(gi.size() > 0) gioiello = gi.get(0);
 		    	cmd2.close();
 		    	res2.close();
 			}
@@ -360,26 +382,30 @@ public class GestioneQuery
 				PreparedStatement cmd2 = con.prepareStatement("select * from prodotto inner join bracciale on bracciale.idProdotto = prodotto.IdProdotto and bracciale.idProdotto = ?");
 				cmd2.setInt(1, id);
 		    	ResultSet res2 = cmd2.executeQuery();
-		    	while(res2.next())
-		    	{
-		    		int gioielloId = res2.getInt(1);
-				    double prezzo = res2.getDouble(2);
-				    double peso = res2.getDouble(3);
-				    MATERIALE materiale = MATERIALE.valueOf(res2.getString(4));
-				    String genere = res2.getString(5);
-				    boolean venduto = res2.getBoolean(6);
-				    String nomeGioiello = res2.getString(7);
-				    String descrizione = res2.getString(9);
-				    double lunghezza = res2.getDouble(11);
-				    double spessore = res2.getDouble(12);
-				    double larghezza = res2.getDouble(13);
-				    Bracciale bracciale =  new Bracciale(prezzo,peso,materiale,genere,venduto,lunghezza,spessore,larghezza,nomeGioiello,descrizione);
-				    bracciale.setId(gioielloId);
-				    return bracciale;
-		    	}
-		    	
+		    	ArrayList<Gioiello> gi = costruisciGioielli(res2, bracciale);
+		    	if(gi.size() > 0) gioiello = gi.get(0);
 		    	cmd2.close();
 		    	res2.close();
+			}
+			
+			else if(nomeTabella != null && nomeTabella.equals("orecchino"))
+			{
+				PreparedStatement cmd3 = con.prepareStatement("select * from prodotto inner join orecchino on orecchino.idProdotto = prodotto.idProdotto");
+		    	ResultSet res3 = cmd3.executeQuery();
+		    	ArrayList<Gioiello> gi = costruisciGioielli(res3, orecchino);
+		    	if(gi.size() > 0) gioiello = gi.get(0);		    	
+		    	cmd3.close();
+		    	res3.close();
+			}
+			
+			else if(nomeTabella != null && nomeTabella.equals("collana"))
+			{
+				PreparedStatement cmd4 = con.prepareStatement("select * from prodotto inner join collana on collana.idProdotto = prodotto.idProdotto");
+		    	ResultSet res4 = cmd4.executeQuery();
+		    	ArrayList<Gioiello> gi = costruisciGioielli(res4, collana);
+		    	if(gi.size() > 0) gioiello = gi.get(0);
+		    	cmd4.close();
+		    	res4.close();
 			}
 			
 		} 
@@ -388,7 +414,8 @@ public class GestioneQuery
 			System.out.println("sono quì");
 			e.printStackTrace();
 		}
-		return null;
+		
+		return gioiello;
 	}
 
 	public ArrayList<Gioiello> caricaGioielli() 
@@ -398,47 +425,28 @@ public class GestioneQuery
 	    {
 	    	PreparedStatement cmd = con.prepareStatement("select * from prodotto inner join anello on anello.idProdotto = prodotto.idProdotto");
 	    	ResultSet res = cmd.executeQuery();
-	    	while (res.next()) 
-	    	{
-			    int gioielloId = res.getInt(1);
-			    double prezzo = res.getDouble(2);
-			    double peso = res.getDouble(3);
-			    MATERIALE materiale = MATERIALE.valueOf(res.getString(4));
-			    String genere = res.getString(5);
-			    boolean venduto = res.getBoolean(6);
-			    String nomeGioiello = res.getString(7);
-			    String descrizione = res.getString(9);
-			    double raggio = res.getDouble(11);
-			    boolean pietra = res.getBoolean(12);
-			    Anello anello = new Anello(prezzo,peso,materiale,genere,venduto,raggio,pietra, nomeGioiello,descrizione);
-			    anello.setId(gioielloId);
-			    gioielli.add(anello);
-	    	}
+	    	gioielli.addAll(costruisciGioielli(res, anello));
+	    	res.close();
+	    	cmd.close();
 	    	
 	    	PreparedStatement cmd2 = con.prepareStatement("select * from prodotto inner join bracciale on bracciale.idProdotto = prodotto.IdProdotto");
 	    	ResultSet res2 = cmd2.executeQuery();
-	    	while(res2.next())
-	    	{
-	    		int gioielloId = res2.getInt(1);
-			    double prezzo = res2.getDouble(2);
-			    double peso = res2.getDouble(3);
-			    MATERIALE materiale = MATERIALE.valueOf(res2.getString(4));
-			    String genere = res2.getString(5);
-			    boolean venduto = res2.getBoolean(6);
-			    String nomeGioiello = res2.getString(7);
-			    String descrizione = res2.getString(9);
-			    double lunghezza = res2.getDouble(11);
-			    double spessore = res2.getDouble(12);
-			    double larghezza = res2.getDouble(13);
-			    Bracciale bracciale = new Bracciale(prezzo,peso,materiale,genere,venduto,lunghezza,spessore,larghezza,nomeGioiello,descrizione);
-			    bracciale.setId(gioielloId);
-			    gioielli.add(bracciale);
-	    	}
-	    	
-	    	cmd.close();
-	    	cmd2.close();
-	    	res.close();
+	    	gioielli.addAll(costruisciGioielli(res2, bracciale));
 	    	res2.close();
+	    	cmd2.close();
+	    	
+	    	PreparedStatement cmd3 = con.prepareStatement("select * from prodotto inner join orecchino on orecchino.idProdotto = prodotto.idProdotto");
+	    	ResultSet res3 = cmd3.executeQuery();
+	    	gioielli.addAll(costruisciGioielli(res3, orecchino));
+	    	res3.close();
+	    	cmd3.close();
+	    	
+	    	PreparedStatement cmd4 = con.prepareStatement("select * from prodotto inner join collana on collana.idProdotto = prodotto.idProdotto");
+	    	ResultSet res4 = cmd4.executeQuery();
+	    	gioielli.addAll(costruisciGioielli(res4, collana));
+	    	res4.close();
+	    	cmd4.close();
+	    	
 		} 
 	    catch (SQLException e) 
 	    {
@@ -672,6 +680,48 @@ public class GestioneQuery
 				e.printStackTrace();
 			}
 		}
+		
+		if(gioiello instanceof Orecchino)
+		{
+			try
+			{
+				PreparedStatement cmd = con.prepareStatement("update ordine set idProdotto = null where idProdotto = ?");
+				cmd.setLong(1, gioiello.getId());
+				cmd.executeUpdate();
+				cmd.close();
+				
+				PreparedStatement cmd4 = con.prepareStatement("delete from orecchino where idProdotto = ?; delete from prodotto where idProdotto = ?");
+				cmd4.setLong(1, gioiello.getId());
+				cmd4.setLong(1, gioiello.getId());
+				cmd4.executeUpdate();
+				cmd4.close();
+			}
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		if(gioiello instanceof Collana)
+		{
+			try
+			{
+				PreparedStatement cmd = con.prepareStatement("update ordine set idProdotto = null where idProdotto = ?");
+				cmd.setLong(1, gioiello.getId());
+				cmd.executeUpdate();
+				cmd.close();
+				
+				PreparedStatement cmd2 = con.prepareStatement("delete from collana where idProdotto = ?; delete from prodotto where idProdotto = ?");
+				cmd2.setInt(1, gioiello.getId());
+				cmd2.setInt(2, gioiello.getId());
+				cmd2.executeUpdate();
+				cmd2.close();
+			}
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void eliminaCliente(Cliente cliente)
@@ -826,6 +876,26 @@ public class GestioneQuery
 				cmd2.executeUpdate();
 				cmd2.close();
 			}
+			
+			if(gioiello instanceof Orecchino)
+			{
+				PreparedStatement cmd2 = con.prepareStatement("update orecchino set spessore = ?, altezza = ?, tipologiaOrecchino = ?");
+				cmd2.setDouble(1,((Orecchino)gioiello).getSpessore());
+				cmd2.setDouble(2, ((Orecchino)gioiello).getAltezza());
+				cmd2.setString(3, ((Orecchino)gioiello).getTipologiaOrecchino());
+				cmd2.executeUpdate();
+				cmd2.close();
+			}
+			
+			if(gioiello instanceof Collana)
+			{
+				PreparedStatement cmd2 = con.prepareStatement("update collana set lunghezza = ?, spessore = ?, ciondolo = ?");
+				cmd2.setDouble(1, ((Collana)gioiello).getLunghezza());
+				cmd2.setDouble(2, ((Collana)gioiello).getSpessore());
+				cmd2.setBoolean(3, ((Collana)gioiello).isCiondolo());
+				cmd2.executeUpdate();
+				cmd2.close();
+			}
 		} 
 		catch (SQLException e) 
 		{
@@ -837,29 +907,13 @@ public class GestioneQuery
 	{
 		ArrayList<Gioiello> gioielli = new ArrayList<Gioiello>();
 		
-		if(tipologia.equals("Bracciale"))
+		if(tipologia.equals(bracciale))
 		{
 			try 
 			{
 				PreparedStatement cmd2 = con.prepareStatement(query);
 				ResultSet res2 = cmd2.executeQuery();
-		    	while(res2.next())
-		    	{
-		    		int gioielloId = res2.getInt(1);
-				    double prezzo = res2.getDouble(2);
-				    double peso = res2.getDouble(3);
-				    MATERIALE materiale = MATERIALE.valueOf(res2.getString(4));
-				    String genere = res2.getString(5);
-				    boolean venduto = res2.getBoolean(6);
-				    String nomeGioiello = res2.getString(7);
-				    String descrizione = res2.getString(9);
-				    double lunghezza = res2.getDouble(11);
-				    double spessore = res2.getDouble(12);
-				    double larghezza = res2.getDouble(13);
-				    Bracciale bracciale = new Bracciale(prezzo,peso,materiale,genere,venduto,lunghezza,spessore,larghezza,nomeGioiello,descrizione);
-				    bracciale.setId(gioielloId);
-				    gioielli.add(bracciale);
-		    	}
+				gioielli.addAll(costruisciGioielli(res2, bracciale));
 		    	cmd2.close();
 		    	res2.close();
 			} 
@@ -869,12 +923,65 @@ public class GestioneQuery
 			}
 		}
 		
-		if(tipologia.equals("Anello"))
+		if(tipologia.equals(anello))
 		{
 	    	try 
 			{
 	    		PreparedStatement cmd = con.prepareStatement(query);
 		    	ResultSet res = cmd.executeQuery();
+		    	gioielli.addAll(costruisciGioielli(res, anello));
+		    	cmd.close();
+		    	res.close();
+			} 
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		if(tipologia.equals(orecchino))
+		{
+			try 
+			{
+				PreparedStatement cmd3 = con.prepareStatement(query);
+				ResultSet res3 = cmd3.executeQuery();
+				gioielli.addAll(costruisciGioielli(res3, orecchino));
+				cmd3.close();
+				res3.close();
+			} 
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		if(tipologia.equals(collana))
+		{
+			try 
+			{
+				PreparedStatement cmd4 = con.prepareStatement(query);
+				ResultSet res4 = cmd4.executeQuery();
+				gioielli.addAll(costruisciGioielli(res4, collana));
+				cmd4.close();
+				res4.close();
+			} 
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		return gioielli;
+	}
+	
+	private ArrayList<Gioiello> costruisciGioielli(ResultSet res, String tipologia)
+	{
+		ArrayList<Gioiello> gioielli = new ArrayList<Gioiello>();
+		
+		if(tipologia.equals(anello))
+		{
+			try 
+			{
 		    	while (res.next()) 
 		    	{
 				    int gioielloId = res.getInt(1);
@@ -891,9 +998,6 @@ public class GestioneQuery
 				    anello.setId(gioielloId);
 				    gioielli.add(anello);
 		    	}
-		    	
-		    	cmd.close();
-		    	res.close();
 			} 
 			catch (SQLException e) 
 			{
@@ -901,6 +1005,90 @@ public class GestioneQuery
 			}
 		}
 		
+		if(tipologia.equals(bracciale))
+		{
+			try 
+			{
+		    	while(res.next())
+		    	{
+		    		int gioielloId = res.getInt(1);
+				    double prezzo = res.getDouble(2);
+				    double peso = res.getDouble(3);
+				    MATERIALE materiale = MATERIALE.valueOf(res.getString(4));
+				    String genere = res.getString(5);
+				    boolean venduto = res.getBoolean(6);
+				    String nomeGioiello = res.getString(7);
+				    String descrizione = res.getString(9);
+				    double lunghezza = res.getDouble(11);
+				    double spessore = res.getDouble(12);
+				    double larghezza = res.getDouble(13);
+				    Bracciale bracciale = new Bracciale(prezzo,peso,materiale,genere,venduto,lunghezza,spessore,larghezza,nomeGioiello,descrizione);
+				    bracciale.setId(gioielloId);
+				    gioielli.add(bracciale);
+		    	}
+			} 
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		if(tipologia.equals(collana))
+		{
+			try 
+			{
+				while(res.next())
+				{
+					int gioielloId = res.getInt(1);
+		    		double prezzo = res.getDouble(2);
+				    double peso = res.getDouble(3);
+				    MATERIALE materiale = MATERIALE.valueOf(res.getString(4));
+				    String genere = res.getString(5);
+				    boolean venduto = res.getBoolean(6);
+				    String nomeGioiello = res.getString(7);
+				    String descrizione = res.getString(9);
+				    double lunghezza = res.getDouble(11);
+				    double spessore = res.getDouble(12);
+				    boolean ciondolo = res.getBoolean(13);
+				    
+				    Collana collana = new Collana(prezzo,peso,materiale,genere,venduto,descrizione,nomeGioiello,lunghezza,ciondolo,spessore);
+				    collana.setId(gioielloId);
+				    gioielli.add(collana);
+				}
+			} 
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		if(tipologia.equals(orecchino))
+		{
+			try 
+			{
+				while(res.next())
+				{
+					int gioielloId = res.getInt(1);
+		    		double prezzo = res.getDouble(2);
+				    double peso = res.getDouble(3);
+				    MATERIALE materiale = MATERIALE.valueOf(res.getString(4));
+				    String genere = res.getString(5);
+				    boolean venduto = res.getBoolean(6);
+				    String nomeGioiello = res.getString(7);
+				    String descrizione = res.getString(9);
+				    double spessore = res.getDouble(11);
+				    double altezza = res.getDouble(12);
+				    String tipologiaOrecchino = res.getString(13);
+				    Orecchino orecchino = new Orecchino(prezzo,peso,materiale,genere,venduto,descrizione,nomeGioiello,spessore,altezza,tipologiaOrecchino);
+				    orecchino.setId(gioielloId);
+				    gioielli.add(orecchino);
+				}
+			} 
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
+		}
 		
 		return gioielli;
 	}
