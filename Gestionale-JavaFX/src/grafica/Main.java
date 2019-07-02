@@ -36,37 +36,6 @@ public class Main extends Application
 			primaryStage.show();
 			MainController controller = loader.getController();
 			controller.start();
-//			GestioneQuery data = new GestioneQuery();
-//			data.popolaGioielli();
-//			data.chiudiConnessione();
-			
-			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-				
-				@Override
-				public void handle(WindowEvent event) 
-				{	
-					ButtonType si = new ButtonType("Si");
-					ButtonType no = new ButtonType("No");
-					ButtonType annulla = new ButtonType("Annulla");
-					Alert alert = finestraSalvataggio();
-					alert.getButtonTypes().clear();
-					alert.getButtonTypes().addAll(si,no,annulla);
-					Optional<ButtonType> result = alert.showAndWait();
-					if(result.get() == si)
-					{
-						//t.interrupt();
-					} 
-					else if(result.get() == no)
-					{
-						//chiedi:
-						//chiedere al prof
-					}
-					else if(result.get() == annulla)
-					{
-						//goto chiedi
-					}
-				}
-			});
 		} 
 		catch(Exception e) 
 		{
@@ -114,6 +83,7 @@ public class Main extends Application
 				if(result.get() == ok)
 				{
 					data.scriviFile();
+					data.creaTabelle();
 				}
 			}
 		});

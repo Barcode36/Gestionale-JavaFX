@@ -7,24 +7,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+<BorderPane fx:id="borderPaneRoot" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem fx:id="salvaMenuItem" mnemonicParsing="false" text="Salva" />
-              <MenuItem mnemonicParsing="false" text="Chiudi" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem mnemonicParsing="false" onAction="#menuItemChiudiPressed" text="Chiudi" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#menuItemAboutPressed" text="About" />
             </items>
           </Menu>
         </menus>
@@ -128,21 +122,6 @@
                      <center>
                         <JFXTextArea fx:id="textAreaFatture" editable="false" BorderPane.alignment="CENTER" />
                      </center>
-                  </BorderPane>
-               </content>
-            </Tab>
-            <Tab text="Scheduler">
-               <content>
-                  <BorderPane>
-                     <right>
-                        <JFXTextArea prefHeight="797.0" prefWidth="403.0" BorderPane.alignment="CENTER" />
-                     </right>
-                     <bottom>
-                        <JFXTextArea prefHeight="278.0" prefWidth="1641.0" BorderPane.alignment="CENTER" />
-                     </bottom>
-                     <left>
-                        <JFXListView prefHeight="797.0" prefWidth="456.0" BorderPane.alignment="CENTER" />
-                     </left>
                   </BorderPane>
                </content>
             </Tab>

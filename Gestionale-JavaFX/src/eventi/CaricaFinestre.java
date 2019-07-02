@@ -2,6 +2,7 @@ package eventi;
 
 import java.io.IOException;
 
+import controller.AboutController;
 import controller.AggiungiAnelloController;
 import controller.AggiungiBraccialeController;
 import controller.AggiungiClienteController;
@@ -372,6 +373,27 @@ public class CaricaFinestre
 		}
 		Scene scene = new Scene(visualizzaPane,900,800);
 		search.setTitle("VisualizzaFattura");
+		search.setScene(scene);
+		search.show();
+		return loader.getController();
+	}
+	
+	public AboutController getAboutController()
+	{
+		Stage search = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("AboutWindow.fxml"));
+		BorderPane visualizzaPane = null;
+		try 
+		{
+			visualizzaPane = (BorderPane) loader.load();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		Scene scene = new Scene(visualizzaPane,550,500);
+		search.setResizable(false);
+		search.setTitle("About");
 		search.setScene(scene);
 		search.show();
 		return loader.getController();

@@ -30,6 +30,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -71,6 +72,9 @@ public class MainController implements Observer
 	
 	@FXML
     private TabPane tabPane;
+	
+	@FXML
+	private BorderPane borderPaneRoot;
 	
 	@FXML
     private Tab tabClienti;
@@ -210,6 +214,19 @@ public class MainController implements Observer
 		controllerCliente.addObserver(this);
     }
 
+	@FXML
+    void menuItemChiudiPressed(ActionEvent event) 
+	{
+		Stage root = (Stage) borderPaneRoot.getScene().getWindow();
+		root.close();
+    }
+	
+	@FXML
+	void menuItemAboutPressed(ActionEvent event) 
+	{
+		AboutController about = caricaFinestre.getAboutController();
+		about.initialize();
+	}
 	
 	@FXML
     void modificaButtonGioielliPressed(ActionEvent event) 
