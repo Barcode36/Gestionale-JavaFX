@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<BorderPane fx:id="borderPaneFattura" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerEmettiFattura">
+   <top>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <items>
+            <JFXButton fx:id="stampaButton" onAction="#stampaButtonPressed" text="Stampa" />
+            <JFXButton fx:id="chiudiButton" onAction="#chiudiButtonPressed" text="Chiudi" />
+         </items>
+      </ToolBar>
+   </top>
+   <center>
+      <JFXTextArea fx:id="textAreaFattura" editable="false" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

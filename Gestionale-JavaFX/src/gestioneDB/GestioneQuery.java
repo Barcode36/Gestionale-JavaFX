@@ -126,19 +126,19 @@ public class GestioneQuery
 		String nomeCliente = null;
 		while(res.next()) nomeCliente = res.getString(1)+" "+res.getString(2);
 		
-		PreparedStatement cmd = con.prepareStatement("insert into Fattura(idOrdine,importo,dataEmissione,idCliente,nomeCliente) values (?,?,?,?,?)");
+		PreparedStatement cmd = con.prepareStatement("insert into Fattura(idOrdine,importo,dataEmissione,idCliente,nomeCliente,nomeProdotto) values (?,?,?,?,?,?)");
 		cmd.setInt(1, (int) ordine.getId());
 		if(ordine.getGioiello() != null) cmd.setDouble(2, ordine.getGioiello().getPrezzo());
 		else cmd.setDouble(2, 0);
 		cmd.setString(3, LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 		cmd.setInt(4, ordine.getIdCliente());
 		cmd.setString(5, nomeCliente);
+		cmd.setString(6, ordine.getGioiello().getNomeGioiello());
 		cmd.executeUpdate();
 		
 		cmd.close();
 		cmd2.close();
 		res.close();
-		//cuozm
 	}
 	
 	public Fattura caricaFattura(Ordine ordine)
@@ -157,7 +157,9 @@ public class GestioneQuery
 				int idOrdine = res.getInt(3);
 				int idCliente = res.getInt(4);
 				String nomeCliente = res.getString(5);
-				fattura = new Fattura(dataEmissione,importo,idOrdine,idCliente,nomeCliente);
+				String nomeGioiello = res.getString(6);
+				System.out.println("Nome Gioiello "+nomeGioiello);
+				fattura = new Fattura(dataEmissione,importo,idOrdine,idCliente,nomeCliente,nomeGioiello);
 			}
 		} 
 		catch (SQLException e) 
@@ -183,7 +185,8 @@ public class GestioneQuery
 				int idOrdine = res.getInt(3);
 				int idCliente = res.getInt(4);
 				String nomeCliente = res.getString(5);
-				fatture.add(new Fattura(dataEmissione,importo,idOrdine,idCliente,nomeCliente));
+				String nomeGioiello = res.getString(6);
+				fatture.add(new Fattura(dataEmissione,importo,idOrdine,idCliente,nomeCliente,nomeGioiello));
 			}
 			
 			cmd.close();

@@ -16,13 +16,15 @@ public class Fattura
 	private int idOrdine;
 	private int idCliente;
 	private String nomeCliente;
-	public Fattura(String dataEmissione, float importo, int idFattura, int idCliente, String nomeCliente) 
+	private String nomeGioiello;
+	public Fattura(String dataEmissione, float importo, int idFattura, int idCliente, String nomeCliente,String nomeGioiello) 
 	{
 		this.dataEmissione = dataEmissione;
 		this.importo = importo;
 		this.idOrdine = idFattura;
 		this.idCliente = idCliente;
 		this.nomeCliente = nomeCliente;
+		this.nomeGioiello = nomeGioiello;
 	}
 	public String getDataEmissione() { return dataEmissione; }
 	public void setDataEmissione(String dataEmissione) { this.dataEmissione = dataEmissione; }
@@ -99,6 +101,7 @@ public class Fattura
 				+" Data Emissione: "+dataEmissione+"\n"
 				+" Cliente: "+nomeCliente+"\n"
 				+" ID Cliente: "+idCliente+"\n"
+				+" Gioiello: "+nomeGioiello+"\n"
 				+" Importo: € "+importo;
 	}
 	

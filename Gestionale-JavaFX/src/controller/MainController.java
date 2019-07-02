@@ -66,6 +66,7 @@ public class MainController implements Observer
 	private ModificaDatiClienteController modificaCliente;
 	private ModificaOrdineController modificaOrdine;
 	private VisualizzaTuttoController visualizzaTuttoController;
+	private ControllerEmettiFattura emettiFatturaController;
 	private CaricaFinestre caricaFinestre;
 	
 	@FXML
@@ -208,18 +209,7 @@ public class MainController implements Observer
 		controllerCliente = caricaFinestre.getClienteController();
 		controllerCliente.addObserver(this);
     }
-	
-	@FXML
-    void tabClientiSelezionato(ActionEvent event) 
-	{
-		System.out.println("TAB");
-    }
-	
-	@FXML
-    void tabClientiChiuso(ActionEvent event) 
-	{
-		System.out.println("chiuso");
-    }
+
 	
 	@FXML
     void modificaButtonGioielliPressed(ActionEvent event) 
@@ -464,8 +454,10 @@ public class MainController implements Observer
 				public void handle(ActionEvent event) 
 				{
 					try
-					{
+					{	
 						Fattura.emettiFattura(newVal);
+						emettiFatturaController = caricaFinestre.getEmettiFattura();
+						emettiFatturaController.initialize(Fattura.caricaFattura(newVal));
 						Fattura fattura = Fattura.caricaFattura(newVal);
 						listViewFatture.getItems().add(fattura);
 					}

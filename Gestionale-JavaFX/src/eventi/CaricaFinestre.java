@@ -8,6 +8,7 @@ import controller.AggiungiClienteController;
 import controller.AggiungiCollanaController;
 import controller.AggiungiOrdineController;
 import controller.AggiungiOrecchinoController;
+import controller.ControllerEmettiFattura;
 import controller.ControllerVisualizzatoreImmagini;
 import controller.ModificaDatiAnelloController;
 import controller.ModificaDatiBraccialeController;
@@ -351,6 +352,26 @@ public class CaricaFinestre
 		}
 		Scene scene = new Scene(visualizzaPane,900,600);
 		search.setTitle("Modifica Ordine");
+		search.setScene(scene);
+		search.show();
+		return loader.getController();
+	}
+	
+	public ControllerEmettiFattura getEmettiFattura()
+	{
+		Stage search = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("EmettiFattura.fxml"));
+		BorderPane visualizzaPane = null;
+		try 
+		{
+			visualizzaPane = (BorderPane) loader.load();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		Scene scene = new Scene(visualizzaPane,900,800);
+		search.setTitle("VisualizzaFattura");
 		search.setScene(scene);
 		search.show();
 		return loader.getController();
