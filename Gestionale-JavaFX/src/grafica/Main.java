@@ -3,7 +3,6 @@ package grafica;
 import java.util.Optional;
 
 import controller.MainController;
-import gestioneDB.GestioneQuery;
 import gestioneDB.InizializzazioneDatabase;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -120,12 +119,3 @@ public class Main extends Application
 		});
 	}
 }
-
-
-//caratteristiche pietre
-//peso
-//caratura
-//diametro
-
-//aggiungere delle stringhe che riescono a descrivere le caratteristiche di un oggetto
-//se un prodotto è da troppo tempo nel magazzino viene deprezzato per farlo vendere

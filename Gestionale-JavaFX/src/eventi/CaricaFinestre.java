@@ -11,6 +11,7 @@ import controller.AggiungiOrecchinoController;
 import controller.ControllerVisualizzatoreImmagini;
 import controller.ModificaDatiAnelloController;
 import controller.ModificaDatiBraccialeController;
+import controller.ModificaDatiClienteController;
 import controller.ModificaDatiCollanaController;
 import controller.ModificaOrecchinoController;
 import controller.ProgressBarController;
@@ -309,6 +310,26 @@ public class CaricaFinestre
 		}
 		Scene scene = new Scene(visualizzaPane,1366,768);
 		search.setTitle("Visualizza Tutto");
+		search.setScene(scene);
+		search.show();
+		return loader.getController();
+	}
+	
+	public ModificaDatiClienteController getModificaCliente()
+	{
+		Stage search = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("ModificaDatiCliente.fxml"));
+		BorderPane visualizzaPane = null;
+		try 
+		{
+			visualizzaPane = (BorderPane) loader.load();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		Scene scene = new Scene(visualizzaPane,900,600);
+		search.setTitle("Modifica Cliente");
 		search.setScene(scene);
 		search.show();
 		return loader.getController();

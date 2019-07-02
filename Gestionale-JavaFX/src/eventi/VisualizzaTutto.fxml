@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.VisualizzaTuttoController">
    <top>
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -16,6 +15,7 @@
             <JFXButton fx:id="modificaButton" onAction="#modificaButtonPressed" prefHeight="31.0" prefWidth="90.0" text="Modifica" />
             <JFXButton fx:id="elimina" onAction="#eliminaButtonPressed" text="Elimina" />
             <JFXButton fx:id="visualizzaAncoraButton" onAction="#visualizzaAncoraPressed" text="Visualizza Ancora" />
+            <ProgressBar fx:id="progressBar" prefWidth="200.0" progress="0.0" />
          </items>
       </ToolBar>
    </top>

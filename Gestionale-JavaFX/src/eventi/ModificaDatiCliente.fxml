@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ModificaDatiClienteController">
+   <top>
+      <Label prefHeight="21.0" prefWidth="113.0" text="Aggiungi Cliente" textAlignment="CENTER" BorderPane.alignment="CENTER" />
+   </top>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <FlowPane prefHeight="39.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="42.0" prefWidth="137.0" text=" Nome" />
+                  <JFXTextField fx:id="inserisciNomeCliente" prefHeight="31.0" prefWidth="295.0" />
+               </children>
+            </FlowPane>
+            <FlowPane prefHeight="45.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="45.0" prefWidth="138.0" text=" Cognome" />
+                  <JFXTextField fx:id="inserisciCognomeCliente" prefHeight="31.0" prefWidth="297.0" />
+               </children>
+            </FlowPane>
+            <FlowPane prefHeight="40.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="41.0" prefWidth="147.0" text=" Numero di Telefono" />
+                  <JFXTextField fx:id="inserisciNumeroTelefono" prefHeight="31.0" prefWidth="289.0" />
+               </children>
+            </FlowPane>
+            <BorderPane prefHeight="424.0" prefWidth="900.0" />
+            <JFXButton fx:id="aggiungiButton" onAction="#aggiungiButtonPremuto" prefHeight="43.0" prefWidth="65.0" text="Ok" />
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
+

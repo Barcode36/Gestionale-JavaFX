@@ -9,7 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import models.Cliente;
 
-public class AggiungiClienteController extends Observable
+public class ModificaDatiClienteController extends Observable
 {
 	private Cliente cliente;
 	
@@ -25,6 +25,16 @@ public class AggiungiClienteController extends Observable
     @FXML
     private JFXButton aggiungiButton;
     
+    public void initialize(Cliente c)
+    {
+    	cliente = c;
+    	inserisciNomeCliente.setText(cliente.getNomeCliente());
+    	inserisciCognomeCliente.setText(cliente.getCognomeCliente());
+    	inserisciNumeroTelefono.setText(cliente.getNumeroTelefono());
+    }
+    
+    public Cliente getCliente() { return this.cliente; }
+    
     @FXML
     void aggiungiButtonPremuto(ActionEvent event) 
     {
@@ -34,13 +44,12 @@ public class AggiungiClienteController extends Observable
 		
     	if(mat.matches() && mat2.matches() && Pattern.matches("[0-9]+", inserisciNumeroTelefono.getText()))
     	{
-    		cliente = new Cliente(inserisciNomeCliente.getText(), inserisciCognomeCliente.getText(),inserisciNumeroTelefono.getText());
-    		cliente.salva();
+    		cliente.setNomeCliente(inserisciNomeCliente.getText());
+    		cliente.setCognomeCliente(inserisciCognomeCliente.getText());
+    		cliente.setNumeroTelefono(inserisciNumeroTelefono.getText());
+    		cliente.modifica();
     		setChanged();
-    		notifyObservers("Cliente creato");
+    		notifyObservers("Cliente modificato");
     	}
     }
-    
-    public Cliente getCliente() { return this.cliente; }
-    
 }

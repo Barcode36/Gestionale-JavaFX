@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
@@ -18,6 +17,8 @@ import gestioneDB.GestioneQuery;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -26,6 +27,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -37,7 +39,7 @@ import models.Gioiello;
 import models.Immagine;
 import models.Orecchino;
 
-public class VisualizzaTuttoController implements Observer
+public class VisualizzaTuttoController extends Observable implements Observer
 {
 	private ModificaDatiAnelloController modificaAnello;
 	private ModificaOrecchinoController modificaOrecchino;
@@ -55,6 +57,9 @@ public class VisualizzaTuttoController implements Observer
 	
 	@FXML
 	private JFXComboBox<String> tipologiaGioielloComboBox;
+	
+	@FXML
+    private ProgressBar progressBar;
 
 	@FXML
 	private JFXTextArea textAreaGioielli;
@@ -79,6 +84,7 @@ public class VisualizzaTuttoController implements Observer
 
 	public void start()
 	{
+		progressBar.setVisible(false);
 		caricaFinestre = new CaricaFinestre();
 		contextMenuImmagini = new ContextMenu();
 		contextMenuImmagini.getItems().addAll(new MenuItem("Elimina Immagine"), new MenuItem("Visualizza"));
@@ -89,7 +95,6 @@ public class VisualizzaTuttoController implements Observer
 		listViewGioielli.setContextMenu(contextMenuGioielli);
 		ObservableList<String> opzioni = FXCollections.observableArrayList("Anello","Bracciale","Orecchini","Collane");
 		tipologiaGioielloComboBox.setItems(opzioni);
-		//listViewGioielli.getItems().addAll(Gioiello.caricaGioielli());
 		
 		tabGioielli();
 		visualizzazioneImmagini();
@@ -124,6 +129,8 @@ public class VisualizzaTuttoController implements Observer
 				public void handle(ActionEvent event) 
 				{
 					listViewGioielli.getItems().remove(listViewGioielli.getSelectionModel().getSelectedItem());
+					setChanged();
+	        		notifyObservers("Gioiello eliminato");
 					newVal.eliminaGioiello();
 				}
 			});
@@ -224,7 +231,22 @@ public class VisualizzaTuttoController implements Observer
 			tipologia = GestioneQuery.orecchino;
 		}
 		
-		listViewGioielli.getItems().addAll(Gioiello.caricaGioielli(query, tipologia));
+		Task<Object> task = taskCreator(Gioiello.caricaGioielli(query, tipologia));
+		Thread t = new Thread(task);
+		t.start();
+		progressBar.setVisible(true);
+		progressBar.progressProperty().unbind();
+		progressBar.progressProperty().bind(task.progressProperty());
+		
+		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+
+			@Override
+			public void handle(WorkerStateEvent event) 
+			{
+				progressBar.setVisible(false);
+			}
+			
+		});
     }
 	
 	@FXML
@@ -260,7 +282,21 @@ public class VisualizzaTuttoController implements Observer
 		ArrayList<Gioiello> gioielli = Gioiello.caricaGioielli(query, tipologia);
 		if(gioielli.size() > 0)
 		{
-			listViewGioielli.getItems().addAll(gioielli);
+			Task<Object> task = taskCreator(gioielli);
+			Thread t = new Thread(task);
+			t.start();
+			progressBar.setVisible(true);
+			progressBar.progressProperty().unbind();
+			progressBar.progressProperty().bind(task.progressProperty());
+			
+			task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+
+				@Override
+				public void handle(WorkerStateEvent event) 
+				{
+					progressBar.setVisible(false);					
+				}
+			});
 		}
 		else
 		{
@@ -276,6 +312,26 @@ public class VisualizzaTuttoController implements Observer
 		}
 	}
 	
+	private Task<Object> taskCreator(ArrayList<Gioiello> gioielli)
+	{
+		return new Task<Object>() {
+
+			@Override
+			protected Object call() throws Exception 
+			{
+				updateProgress(0, gioielli.size());
+				for(int i = 0; i < gioielli.size(); i++)
+				{
+					Thread.sleep(3);
+					listViewGioielli.getItems().add(gioielli.get(i));
+					updateProgress(i, gioielli.size());
+				}
+				
+				return true;
+			}
+		};
+	}
+	
 	private ArrayList<ImageView> caricaImmagini(ArrayList<Immagine> immagini)
 	{
 		ArrayList<ImageView> imageViewImmagini = new ArrayList<ImageView>();
@@ -289,6 +345,8 @@ public class VisualizzaTuttoController implements Observer
 		
 		return imageViewImmagini;
 	}
+	
+	public Gioiello getGioiello() { return this.gioiello; }
 	
 	private void apriFinestreModifica(Gioiello g)
 	{
@@ -343,6 +401,8 @@ public class VisualizzaTuttoController implements Observer
     			listViewGioielli.getItems().remove(indice);
     			textAreaGioielli.clear();
         		gioiello.eliminaGioiello();
+        		setChanged();
+        		notifyObservers("Gioiello eliminato");
         		gioiello = null;
     		}
     		else if(result.get() == annulla);

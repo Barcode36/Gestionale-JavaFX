@@ -63,6 +63,8 @@ public class MainController implements Observer
 	private ModificaDatiAnelloController modificaAnello;
 	private ModificaDatiCollanaController modificaCollana;
 	private ModificaOrecchinoController modificaOrecchino;
+	private ModificaDatiClienteController modificaCliente;
+	private VisualizzaTuttoController visualizzaTuttoController;
 	private CaricaFinestre caricaFinestre;
 	
 	@FXML
@@ -141,7 +143,7 @@ public class MainController implements Observer
 		contextMenuOrdini = new ContextMenu();
 		contextMenuFatture = new ContextMenu();
 		contextMenuImmagini = new ContextMenu();
-		contextMenuClienti.getItems().addAll(new MenuItem("Aggiungi Ordine"), new MenuItem("Elimina Cliente"));
+		contextMenuClienti.getItems().addAll(new MenuItem("Aggiungi Ordine"),new MenuItem("Modifica"), new MenuItem("Elimina"));
 		contextMenuGioielli.getItems().addAll(new MenuItem("Elimina Gioiello"), new MenuItem("Aggiungi Immagine"), new MenuItem("Modifica"));
 		contextMenuOrdini.getItems().addAll(new MenuItem("Elimina Ordine"), new MenuItem("Emetti Fattura"));
 		contextMenuFatture.getItems().addAll(new MenuItem("Stampa Fattura"),new MenuItem("Elimina Fattura"));
@@ -259,7 +261,8 @@ public class MainController implements Observer
     @FXML
     void visualizzaTuttoPressed(ActionEvent event) 
     {
-    	VisualizzaTuttoController visualizzaTuttoController = caricaFinestre.getVisualizzaTutto();
+    	visualizzaTuttoController = caricaFinestre.getVisualizzaTutto();
+    	visualizzaTuttoController.addObserver(this);
     	visualizzaTuttoController.start();
     }
 	
@@ -284,6 +287,15 @@ public class MainController implements Observer
 		if(arg.equals("anello modificato")) textAreaGioielli.setText(modificaAnello.getAnello().stampaCaratteristiche());
 		if(arg.equals("Collana modificata")) textAreaGioielli.setText(modificaCollana.getGioiello().stampaCaratteristiche());
 		if(arg.equals("Orecchino modificato")) textAreaGioielli.setText(modificaOrecchino.getGioiello().stampaCaratteristiche());
+		
+		if(arg.equals("Gioiello eliminato"))
+		{
+			Gioiello gio = visualizzaTuttoController.getGioiello();
+			for(int i = 0; i < listViewGioielli.getItems().size(); i++)
+			{
+				if(listViewGioielli.getItems().get(i).getId() == gio.getId()) listViewGioielli.getItems().remove(i);
+			}
+		}
 	}
 	
 	private AggiungiOrdineController getControllerOrdine()
@@ -405,6 +417,16 @@ public class MainController implements Observer
 			});
 			
 			contextMenuClienti.getItems().get(1).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					modificaCliente = caricaFinestre.getModificaCliente();
+					modificaCliente.initialize(newVal);
+				}
+			});
+			
+			contextMenuClienti.getItems().get(2).setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) 

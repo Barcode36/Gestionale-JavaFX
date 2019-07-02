@@ -1093,4 +1093,22 @@ public class GestioneQuery
 		
 		return gioielli;
 	}
+	
+	public void modificaCliente(Cliente cliente)
+	{
+		try 
+		{
+			PreparedStatement cmd = con.prepareStatement("update cliente set nome = ?, cognome = ?, numeroTelefono = ? where idCliente = ?");
+			cmd.setString(1, cliente.getNomeCliente());
+			cmd.setString(2, cliente.getCognomeCliente());
+			cmd.setString(3, cliente.getNumeroTelefono());
+			cmd.setInt(4, cliente.getId());
+			cmd.executeUpdate();
+			cmd.close();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	}
 }

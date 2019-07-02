@@ -74,6 +74,12 @@ public class Cliente
 		return clienti;
 	}
 	
+	public void modifica()
+	{
+		GestioneQuery database = new GestioneQuery();
+		database.modificaCliente(this);
+		database.chiudiConnessione();
+	}
 	
 	public void eliminaOrdine(Ordine ordine)
 	{
