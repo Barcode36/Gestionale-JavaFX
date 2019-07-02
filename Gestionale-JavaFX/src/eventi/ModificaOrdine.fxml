@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ModificaOrdineController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ModificaOrdineController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" spacing="3.0" BorderPane.alignment="CENTER">
          <children>
@@ -24,8 +24,16 @@
                   <JFXComboBox fx:id="tipologiaComboBox" prefHeight="31.0" prefWidth="218.0" />
                </children>
             </FlowPane>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Gioiello" wrappingWidth="80.244140625" />
-            <JFXListView fx:id="gioielloListView" prefHeight="269.0" prefWidth="900.0" />
+            <FlowPane hgap="5.0" prefHeight="28.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="142.0" text=" Seleziona Gioiello:" />
+                  <JFXButton fx:id="bottoneCerca" onAction="#BottoneCercaPremuto" text="Cerca" />
+                  <JFXButton fx:id="bottoneVisualizzaTutti" onAction="#bottoneVisualizzaTuttiPremuto" text="Visualizza tutti" />
+                  <Label prefHeight="21.0" prefWidth="151.0" text="Gioiello selezionato:" />
+                  <JFXTextField fx:id="nomeGioielloTextField" editable="false" prefHeight="31.0" prefWidth="239.0" />
+               </children>
+            </FlowPane>
+            <BorderPane prefHeight="200.0" prefWidth="200.0" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Descrizione" wrappingWidth="111.0400390625" />
             <JFXTextArea fx:id="descrizioneTextArea" />
             <JFXButton fx:id="bottone" onAction="#bottonePremuto" prefHeight="31.0" prefWidth="76.0" text="Ok" />
@@ -33,4 +41,3 @@
       </VBox>
    </center>
 </BorderPane>
-

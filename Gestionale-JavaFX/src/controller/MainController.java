@@ -486,7 +486,7 @@ public class MainController implements Observer
 				public void handle(ActionEvent event) 
 				{
 					modificaOrdine = caricaFinestre.getModificaOrdine();
-					modificaOrdine.initialize(newVal, Gioiello.caricamentoParzialeGioielli());
+					modificaOrdine.initialize(newVal);
 				}
 			});
 		});
