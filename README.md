@@ -1,5 +1,5 @@
 # Gestionale-JavaFX
-# version 0.9 RTM
+# version 0.9.2 RTM
 
 This software is released "as is" and it is under development. To develop the user interface i'm using SceneBuilder for Java FX. 
 For any suggestion or to report a bug please contact the developer.
