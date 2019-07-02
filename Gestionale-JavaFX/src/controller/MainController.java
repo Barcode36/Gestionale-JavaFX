@@ -117,6 +117,9 @@ public class MainController implements Observer
 	private JFXButton modificaButtonGioielli;
 	
 	@FXML
+	private JFXButton visualizzaTuttoButton;
+	
+	@FXML
     private JFXButton serchButton;
 	
 	@FXML
@@ -251,6 +254,13 @@ public class MainController implements Observer
     {
     	SearchController search = caricaFinestre.getSearchController();
     	search.start();
+    }
+    
+    @FXML
+    void visualizzaTuttoPressed(ActionEvent event) 
+    {
+    	VisualizzaTuttoController visualizzaTuttoController = caricaFinestre.getVisualizzaTutto();
+    	visualizzaTuttoController.start();
     }
 	
 	@Override
@@ -530,7 +540,6 @@ public class MainController implements Observer
 				s.close();
 			}
 		});
-		
 		//new Thread(task).start(); la stessa cosa che è scritta sopra
 	}
 	
@@ -543,16 +552,17 @@ public class MainController implements Observer
 			{
 				//updateProgress(0, 10);
 				
-				ArrayList<Gioiello> gi = Gioiello.caricaGioielli();
+				ArrayList<Gioiello> gi = Gioiello.caricamentoParzialeGioielli(); //Gioiello.caricaGioielli();
 				ArrayList<Cliente> cli = Cliente.caricaClienti();
 				ArrayList<Fattura> fat = Fattura.caricaFatture();
+				
 				
 				int tot = gi.size() + cli.size() + fat.size(); 
 				updateProgress(0, tot);
 				
 				for(int i = 0; i < gi.size(); i++)
 				{
-					//Thread.sleep(5);
+					Thread.sleep(3);
 					listViewGioielli.getItems().add(gi.get(i));
 					updateProgress(i, tot);
 				}

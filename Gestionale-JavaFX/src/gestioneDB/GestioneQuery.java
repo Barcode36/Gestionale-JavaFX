@@ -22,10 +22,10 @@ import models.Orecchino;
 
 public class GestioneQuery
 {
-	private final String anello = "Anello";
-	private final String bracciale = "Bracciale";
-	private final String orecchino = "Orecchino";
-	private final String collana = "Collana";
+	public static final String anello = "Anello";
+	public static final String bracciale = "Bracciale";
+	public static final String orecchino = "Orecchino";
+	public static final String collana = "Collana";
 	
 	private final String driver = "org.postgresql.Driver";
 	private final String url = "jdbc:postgresql://localhost/Gioielleria";
@@ -211,7 +211,7 @@ public class GestioneQuery
 	
 	public void popolaGioielli()
 	{
-		for(int i = 0; i < 500; i++)
+		for(int i = 0; i < 800; i++)
 		{
 			if(i < 250)
 			{
@@ -219,7 +219,7 @@ public class GestioneQuery
 			}
 			else
 			{
-				salvaGioiello(new Bracciale(18+i,1+i,MATERIALE.ACCIAIO,"Femminile",false,3+i,0.04+i,0.2+i,"Bracciale"+i,""));
+				salvaGioiello(new Collana(23,23,MATERIALE.ACCIAIO,"Maschile",false,"Commento","Collana"+i,25,true,25));
 			}
 		}
 	}
@@ -1009,6 +1009,7 @@ public class GestioneQuery
 		{
 			try 
 			{
+				//System.out.println("entrato nel bracciale");
 		    	while(res.next())
 		    	{
 		    		int gioielloId = res.getInt(1);

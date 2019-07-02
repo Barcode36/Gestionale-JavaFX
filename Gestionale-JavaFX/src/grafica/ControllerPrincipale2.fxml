@@ -57,6 +57,9 @@
                <center>
                   <JFXButton fx:id="serchButton" onAction="#searchButtonPressed" prefHeight="31.0" prefWidth="96.0" text="Cerca" BorderPane.alignment="CENTER" />
                </center>
+               <right>
+                  <JFXButton fx:id="visualizzaTuttoButton" onAction="#visualizzaTuttoPressed" prefHeight="31.0" prefWidth="130.0" text="Visualizza tutto" BorderPane.alignment="CENTER" />
+               </right>
             </JFXToolbar>
          </bottom>
       </BorderPane>

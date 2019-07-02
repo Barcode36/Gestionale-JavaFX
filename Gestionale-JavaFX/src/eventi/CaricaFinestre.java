@@ -15,6 +15,7 @@ import controller.ModificaDatiCollanaController;
 import controller.ModificaOrecchinoController;
 import controller.ProgressBarController;
 import controller.SearchController;
+import controller.VisualizzaTuttoController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -80,6 +81,7 @@ public class CaricaFinestre
 		modificaDati.setTitle("Modifica Anello");
 		modificaDati.setScene(scene);
 		modificaDati.show();
+		//System.out.println(loader.getController().toString());
 		return loader.getController();
 	}
 	
@@ -286,6 +288,27 @@ public class CaricaFinestre
 		}
 		Scene scene = new Scene(collanaPane,900,600);
 		search.setTitle("Modifica orecchino");
+		search.setScene(scene);
+		search.show();
+		return loader.getController();
+	}
+	
+	public VisualizzaTuttoController getVisualizzaTutto()
+	{
+
+		Stage search = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("VisualizzaTutto.fxml"));
+		BorderPane visualizzaPane = null;
+		try 
+		{
+			visualizzaPane = (BorderPane) loader.load();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		Scene scene = new Scene(visualizzaPane,1366,768);
+		search.setTitle("Visualizza Tutto");
 		search.setScene(scene);
 		search.show();
 		return loader.getController();

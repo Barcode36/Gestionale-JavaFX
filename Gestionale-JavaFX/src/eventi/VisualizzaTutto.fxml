@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.VisualizzaTuttoController">
+   <top>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <items>
+            <JFXButton fx:id="visualizzaButton" onAction="#visualizzaButtonPressed" text="Visualizza" />
+            <JFXComboBox fx:id="tipologiaGioielloComboBox" prefHeight="31.0" prefWidth="180.0" />
+            <JFXButton fx:id="modificaButton" onAction="#modificaButtonPressed" prefHeight="31.0" prefWidth="90.0" text="Modifica" />
+            <JFXButton fx:id="elimina" onAction="#eliminaButtonPressed" text="Elimina" />
+            <JFXButton fx:id="visualizzaAncoraButton" onAction="#visualizzaAncoraPressed" text="Visualizza Ancora" />
+         </items>
+      </ToolBar>
+   </top>
+   <left>
+      <JFXListView fx:id="listViewGioielli" prefHeight="1035.0" prefWidth="300.0" BorderPane.alignment="CENTER" />
+   </left>
+   <center>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <center>
+            <JFXTextArea fx:id="textAreaGioielli" editable="false" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+   </center>
+   <right>
+      <ListView fx:id="listViewImmagini" prefHeight="1035.0" prefWidth="330.0" BorderPane.alignment="CENTER" />
+   </right>
+</BorderPane>

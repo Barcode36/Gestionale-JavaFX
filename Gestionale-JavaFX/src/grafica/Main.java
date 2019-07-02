@@ -3,6 +3,7 @@ package grafica;
 import java.util.Optional;
 
 import controller.MainController;
+import gestioneDB.GestioneQuery;
 import gestioneDB.InizializzazioneDatabase;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -36,6 +37,9 @@ public class Main extends Application
 			primaryStage.show();
 			MainController controller = loader.getController();
 			controller.start();
+//			GestioneQuery data = new GestioneQuery();
+//			data.popolaGioielli();
+//			data.chiudiConnessione();
 			
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				

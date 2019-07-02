@@ -88,6 +88,27 @@ public abstract class Gioiello
 		return gioielli;
 	}
 	
+	public static ArrayList<Gioiello> caricamentoParzialeGioielli()
+	{
+		ArrayList<Gioiello> gioielli = new ArrayList<Gioiello>();
+		GestioneQuery database = new GestioneQuery();
+		
+		String query1 = "select * from prodotto inner join anello on anello.idProdotto = prodotto.idProdotto limit 50";
+		gioielli.addAll(database.getGioielli(query1, GestioneQuery.anello));
+		
+		String query2 = "select * from prodotto inner join bracciale on bracciale.idProdotto = prodotto.IdProdotto limit 50";
+		gioielli.addAll(database.getGioielli(query2, GestioneQuery.bracciale));
+		
+		String query3 = "select * from prodotto inner join orecchino on orecchino.idProdotto = prodotto.idProdotto limit 50";
+		gioielli.addAll(database.getGioielli(query3, GestioneQuery.orecchino));
+		
+		String query4 = "select * from prodotto inner join collana on collana.idProdotto = prodotto.idProdotto limit 50";
+		gioielli.addAll(database.getGioielli(query4, GestioneQuery.collana));
+		
+		database.chiudiConnessione();
+		return gioielli;
+	}
+	
 	public void modificaDati()
 	{
 		GestioneQuery database = new GestioneQuery();
