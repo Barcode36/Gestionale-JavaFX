@@ -91,7 +91,7 @@ public class VisualizzaTuttoController extends Observable implements Observer
 		listViewImmagini.setContextMenu(contextMenuImmagini);
 		
 		contextMenuGioielli = new ContextMenu();
-		contextMenuGioielli.getItems().addAll(new MenuItem("Elimina Gioiello"), new MenuItem("Aggiungi Immagine"), new MenuItem("Modifica"));
+		contextMenuGioielli.getItems().addAll(new MenuItem("Elimina Gioiello"), new MenuItem("Aggiungi Immagine"), new MenuItem("Modifica"), new MenuItem("Aggiungi ad Ordine"));
 		listViewGioielli.setContextMenu(contextMenuGioielli);
 		ObservableList<String> opzioni = FXCollections.observableArrayList("Anello","Bracciale","Orecchini","Collane");
 		tipologiaGioielloComboBox.setItems(opzioni);
@@ -171,6 +171,17 @@ public class VisualizzaTuttoController extends Observable implements Observer
 				public void handle(ActionEvent event) 
 				{
 					apriFinestreModifica(newVal);
+				}
+			});
+			
+			contextMenuGioielli.getItems().get(3).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					gioiello = newVal;
+					setChanged();
+					notifyObservers("Gioiello selezionato visualizza");
 				}
 			});
 		});

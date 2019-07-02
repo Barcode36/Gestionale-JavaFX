@@ -1,78 +1,106 @@
 package controller;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
+
+import eventi.CaricaFinestre;
 import gestioneDB.GestioneQuery;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextArea;
 import models.Gioiello;
 import models.Ordine;
 
-public class AggiungiOrdineController extends Observable
+public class AggiungiOrdineController extends Observable implements Observer
 {
 	private Ordine ordine;
 	private Gioiello gioiello;
 	private String data;
+	private VisualizzaTuttoController visualizzaTutto;
+	private SearchController cercaController;
 	
 	@FXML
-    private DatePicker selettoreDataConsegna;
+	private DatePicker selettoreDataConsegna;
 
-    @FXML
-    private ListView<Gioiello> gioielloListView;
+	@FXML
+	private JFXButton bottoneCerca;
 
-    @FXML
-    private ComboBox<String> tipologiaComboBox;
+	@FXML
+	private JFXTextField nomeGioielloTextField;
 
-    @FXML
-    private TextArea descrizioneTextArea;
+	@FXML
+	private JFXComboBox<String> tipologiaComboBox;
+
+	@FXML
+	private JFXButton bottoneVisualizzaTutti;
+
+	@FXML
+	private JFXButton bottone;
+
+	@FXML
+	private JFXTextArea descrizioneTextArea;
+
 	
-    @FXML
-    private Button bottone;
     
     public Ordine getOrdine() { return this.ordine; }
     
-    public void initialize(ArrayList<Gioiello> gioielli)
+    public void initialize()
     {
-    	gioielloListView.getItems().clear();
-    	gioielloListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     	ObservableList<String> opzioni = FXCollections.observableArrayList("Riparazione","Creazione","Altro");
     	tipologiaComboBox.setItems(opzioni);
-    	gioielloListView.getItems().addAll(gioielli);
-		
-    	gioielloListView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Gioiello> obs, Gioiello oldVal, Gioiello newVal) -> {
-    		
-    		gioiello = newVal;
-    		try
-    		{
-    			data = selettoreDataConsegna.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-    		}
-    		catch(NullPointerException e)
-    		{
-    			data = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-    		}
-    		
-		});
+    	
     }
     
     @FXML
     void bottonePremuto(ActionEvent event) 
     {
+    	data =  selettoreDataConsegna.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
     	GestioneQuery database = new GestioneQuery();
     	ordine = new Ordine(database.getNumUltimoOrdine() + 1,data,gioiello,tipologiaComboBox.getValue(),descrizioneTextArea.getText(),0);
     	database.chiudiConnessione();
     	setChanged();
     	notifyObservers("Ordine Creato");
     }
+    
+    @FXML
+	void BottoneCercaPremuto(ActionEvent event) 
+    {
+    	CaricaFinestre carica = new CaricaFinestre();
+    	cercaController = carica.getSearchController();
+    	cercaController.start();
+    	cercaController.addObserver(this);
+	}
+
+	@FXML
+	void bottoneVisualizzaTuttiPremuto(ActionEvent event) 
+	{
+		CaricaFinestre carica = new CaricaFinestre();
+		visualizzaTutto = carica.getVisualizzaTutto();
+		visualizzaTutto.start();
+		visualizzaTutto.addObserver(this);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) 
+	{
+		if(arg.equals("Gioiello selezionato cerca"))
+		{
+			gioiello = cercaController.getGioiello();
+			nomeGioielloTextField.setText(gioiello.getNomeGioiello());
+		}
+		
+		if(arg.equals("Gioiello selezionato visualizza"))
+		{
+			gioiello = visualizzaTutto.getGioiello();
+			nomeGioielloTextField.setText(gioiello.getNomeGioiello());
+		}
+	}
 }

@@ -69,6 +69,13 @@ public class Ordine
 		database.eliminaOrdine(this);
 		database.chiudiConnessione();
 	}
+	
+	public void modificaOrdine()
+	{
+		GestioneQuery database = new GestioneQuery();
+		database.modificaOrdine(this);
+		database.chiudiConnessione();
+	}
 }
 
 

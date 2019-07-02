@@ -64,6 +64,7 @@ public class MainController implements Observer
 	private ModificaDatiCollanaController modificaCollana;
 	private ModificaOrecchinoController modificaOrecchino;
 	private ModificaDatiClienteController modificaCliente;
+	private ModificaOrdineController modificaOrdine;
 	private VisualizzaTuttoController visualizzaTuttoController;
 	private CaricaFinestre caricaFinestre;
 	
@@ -145,7 +146,7 @@ public class MainController implements Observer
 		contextMenuImmagini = new ContextMenu();
 		contextMenuClienti.getItems().addAll(new MenuItem("Aggiungi Ordine"),new MenuItem("Modifica"), new MenuItem("Elimina"));
 		contextMenuGioielli.getItems().addAll(new MenuItem("Elimina Gioiello"), new MenuItem("Aggiungi Immagine"), new MenuItem("Modifica"));
-		contextMenuOrdini.getItems().addAll(new MenuItem("Elimina Ordine"), new MenuItem("Emetti Fattura"));
+		contextMenuOrdini.getItems().addAll(new MenuItem("Elimina Ordine"), new MenuItem("Emetti Fattura"), new MenuItem("Modifica"));
 		contextMenuFatture.getItems().addAll(new MenuItem("Stampa Fattura"),new MenuItem("Elimina Fattura"));
 		contextMenuImmagini.getItems().addAll(new MenuItem("Elimina Immagine"), new MenuItem("Visualizza"));
 		listViewOrdini.setContextMenu(contextMenuOrdini);
@@ -411,7 +412,7 @@ public class MainController implements Observer
 				public void handle(ActionEvent event) 
 				{
 						controllerOrdine = getControllerOrdine();
-						controllerOrdine.initialize(Gioiello.caricaGioielli());
+						controllerOrdine.initialize();
 						cliente = newVal;
 				}
 			});
@@ -476,6 +477,16 @@ public class MainController implements Observer
 						alert.setContentText("ERRORE: Fattura già emessa per quest'ordine");
 						alert.showAndWait();
 					}
+				}
+			});
+			
+			contextMenuOrdini.getItems().get(2).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					modificaOrdine = caricaFinestre.getModificaOrdine();
+					modificaOrdine.initialize(newVal, Gioiello.caricamentoParzialeGioielli());
 				}
 			});
 		});

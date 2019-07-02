@@ -13,6 +13,7 @@ import controller.ModificaDatiAnelloController;
 import controller.ModificaDatiBraccialeController;
 import controller.ModificaDatiClienteController;
 import controller.ModificaDatiCollanaController;
+import controller.ModificaOrdineController;
 import controller.ModificaOrecchinoController;
 import controller.ProgressBarController;
 import controller.SearchController;
@@ -330,6 +331,26 @@ public class CaricaFinestre
 		}
 		Scene scene = new Scene(visualizzaPane,900,600);
 		search.setTitle("Modifica Cliente");
+		search.setScene(scene);
+		search.show();
+		return loader.getController();
+	}
+	
+	public ModificaOrdineController getModificaOrdine()
+	{
+		Stage search = new Stage();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("ModificaOrdine.fxml"));
+		BorderPane visualizzaPane = null;
+		try 
+		{
+			visualizzaPane = (BorderPane) loader.load();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		Scene scene = new Scene(visualizzaPane,900,600);
+		search.setTitle("Modifica Ordine");
 		search.setScene(scene);
 		search.show();
 		return loader.getController();

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ModificaOrdineController">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="3.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" prefHeight="21.0" prefWidth="906.0" text="Modifica Ordine" textAlignment="CENTER" />
+            <FlowPane prefHeight="28.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="32.0" prefWidth="120.0" text="Data Consegna" />
+                  <DatePicker fx:id="selettoreDataConsegna" />
+               </children>
+            </FlowPane>
+            <FlowPane prefHeight="47.0" prefWidth="900.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="121.0" text="Tipologia" />
+                  <JFXComboBox fx:id="tipologiaComboBox" prefHeight="31.0" prefWidth="218.0" />
+               </children>
+            </FlowPane>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Gioiello" wrappingWidth="80.244140625" />
+            <JFXListView fx:id="gioielloListView" prefHeight="269.0" prefWidth="900.0" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Descrizione" wrappingWidth="111.0400390625" />
+            <JFXTextArea fx:id="descrizioneTextArea" />
+            <JFXButton fx:id="bottone" onAction="#bottonePremuto" prefHeight="31.0" prefWidth="76.0" text="Ok" />
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
+

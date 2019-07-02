@@ -44,6 +44,7 @@ public class SearchController extends Observable implements Observer
 {
 	final ToggleGroup gruppoPeso = new ToggleGroup();
 	final ToggleGroup gruppoPrezzo = new ToggleGroup();
+	private Gioiello gioiello;
 	private ContextMenu contextMenuImmagini;
 	private ContextMenu contextMenuGioielli;
 	private ModificaDatiAnelloController modificaAnello;
@@ -121,7 +122,7 @@ public class SearchController extends Observable implements Observer
 		listViewImmagini.setContextMenu(contextMenuImmagini);
 		
 		contextMenuGioielli = new ContextMenu();
-		contextMenuGioielli.getItems().addAll(new MenuItem("Elimina Gioiello"), new MenuItem("Aggiungi Immagine"), new MenuItem("Modifica"));
+		contextMenuGioielli.getItems().addAll(new MenuItem("Elimina Gioiello"), new MenuItem("Aggiungi Immagine"), new MenuItem("Modifica"), new MenuItem("Aggiungi ad Ordine"));
 		listViewGioielli.setContextMenu(contextMenuGioielli);
 		listViewGioielli.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
@@ -262,8 +263,21 @@ public class SearchController extends Observable implements Observer
 					}
 				}
 			});
+			
+			contextMenuGioielli.getItems().get(3).setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					gioiello = newVal;
+					setChanged();
+					notifyObservers("Gioiello selezionato cerca");
+				}
+			});
 		});
 	}
+    
+    public Gioiello getGioiello() { return this.gioiello; }
     
     private void visualizzazioneImmagini()
 	{

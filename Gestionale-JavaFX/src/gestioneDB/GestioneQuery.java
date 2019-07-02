@@ -1111,4 +1111,23 @@ public class GestioneQuery
 			e.printStackTrace();
 		}
 	}
+	
+	public void modificaOrdine(Ordine ordine)
+	{
+		try 
+		{
+			PreparedStatement cmd = con.prepareStatement("update ordine set idProdotto = ?, dataScadenza = ?, tipologia = ?, descrizione = ? where idOrdine = ?");
+			cmd.setInt(1, ordine.getGioiello().getId());
+			cmd.setString(2, ordine.getDataScadenza());
+			cmd.setString(3, ordine.getTipologia());
+			cmd.setString(4, ordine.getDescrizione());
+			cmd.setInt(5, ordine.getId());
+			cmd.executeUpdate();
+			cmd.close();
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	}
 }
